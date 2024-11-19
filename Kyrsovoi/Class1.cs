@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Kyrsovoi
+{
+    internal class Class1
+    {
+        public static string l = "";
+        public static int k = 0;
+        public static string numberPhone = "";
+        public static string connection = $"host=localhost;uid=root;pwd=root;database=glamping;";
+        public static string saveQuery = "";
+        public static int add = 0;
+        public static string fioEmploes = "fio";
+        public static int id_employes = 0;
+        public static int employee_id = 0;
+        public static int unit_id = 0;
+
+    }
+}
