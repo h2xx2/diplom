@@ -28,8 +28,10 @@ namespace Kyrsovoi
             InitializeComponent();
         }
         public static string filePath = "";
+        public static string conString = Class1.connection;
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            RestoreDatabase(filePath);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +39,7 @@ namespace Kyrsovoi
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "sql files (*.sql)|*.sql",
-                Title = "Выберите sql файл ",
+                Title = "Выберите sql файл",
                 Multiselect = false
             };
 
@@ -47,6 +49,45 @@ namespace Kyrsovoi
             }
             tb.Text = filePath;
         }
-        
+        private void RestoreDatabase(string sqlFilePath)
+        {
+            try
+            {
+                // Открываем SQL файл для чтения
+                string sqlScript = File.ReadAllText(sqlFilePath);
+
+                // Подтверждение выполнения
+                string message = "Вы уверены, что хотите восстановить структуру базы данных? Это может удалить текущие данные.";
+                string caption = "Подтверждение восстановления";
+
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (MySqlConnection conn = new MySqlConnection(conString))
+                        {
+                            conn.Open();
+
+                            MySqlCommand command = new MySqlCommand(sqlScript, conn);
+
+                            // Выполняем запросы из SQL файла
+                            command.ExecuteNonQuery();
+
+                            MessageBox.Show("Структура базы данных успешно восстановлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при восстановлении структуры базы данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при восстановлении базы данных: {ex.Message}");
+            }
+        }
     }
 }
