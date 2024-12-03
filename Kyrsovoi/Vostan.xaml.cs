@@ -37,7 +37,7 @@ namespace Kyrsovoi
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "sql files (*.sql)|*.sql",
-                Title = "Выберите sql файл",
+                Title = "Выберите sql файл ",
                 Multiselect = false
             };
 
