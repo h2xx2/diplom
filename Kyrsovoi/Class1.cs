@@ -11,6 +11,7 @@ namespace Kyrsovoi
         public static string l = "";
         public static int k = 0;
         public static string numberPhone = "";
+        public static string numberPhoneEmploye = "";
         public static string connection = $"host=localhost;uid=root;pwd=root;database=glamping;";
         public static string saveQuery = "";
         public static int add = 0;
@@ -18,6 +19,9 @@ namespace Kyrsovoi
         public static int id_employes = 0;
         public static int employee_id = 0;
         public static int unit_id = 0;
+        public static string booking_id = "";
+        public static int role = 0;
+        public static int id_service = 0;
 
     }
 }

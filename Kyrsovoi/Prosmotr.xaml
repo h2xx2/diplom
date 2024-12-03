@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         Topmost="false"
         
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" Loaded="Window_Loaded">
     <Window.Resources>
 
         <!--Toggle Button style-->
@@ -293,27 +293,28 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <!-- Колонка для текста -->
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
                                         <!-- Колонка для кнопки -->
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Текстовые элементы в первой колонке -->
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding name}" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                        <TextBlock Text="{Binding surname}" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
-                                        <TextBlock Text="{Binding number}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                        <TextBlock Text="{Binding email}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
-                                    </StackPanel>
+                                        <TextBlock Text="{Binding name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding surname}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding number}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
 
                                     <!-- Кнопка во второй колонке, выравнивается вправо -->
-                                    <Button Grid.Column="1" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                             FontSize="16" Background="#525252" FontWeight="UltraLight"
                                             Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"
-                                            Click="Button_Click_1" Tag="{Binding}" />
+                                             Tag="{Binding}" Click="Button_Click_1" />
 
                                 </Grid>
                             </Border>
@@ -327,27 +328,28 @@
                             <DataTemplate>
                                 <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                     <!-- Используем Grid для управления расположением кнопки и текста -->
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <!-- Колонка для текста -->
-                                            <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <!-- Колонка для текста -->
+                                            <ColumnDefinition Width="110" />
                                             <!-- Колонка для кнопки -->
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Текстовые элементы в первой колонке -->
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding unit_name}" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                            <TextBlock Text="{Binding description}" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
-                                            <TextBlock Text="{Binding price_per_night}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                        <Image Source="{Binding photo}" Width="50" Height="50" Stretch="Fill"/>
-                                    </StackPanel>
+                                            <TextBlock Text="{Binding unit_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding description}" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" Width="150" FontSize="16" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding price_per_night}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
+                                    <Image Source="{Binding photo}" Grid.Column="3" Width="100" Height="100" Stretch="Fill"/>
 
                                         <!-- Кнопка во второй колонке, выравнивается вправо -->
-                                        <Button Grid.Column="1" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        <Button Name="redactButHome" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                     FontSize="16" Background="#525252" FontWeight="UltraLight"
                                     Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"
-                                    Click="Button_Click_1" Tag="{Binding}" />
+                                     Tag="{Binding}" Click="Button_Click_4" />
 
                                     </Grid>
                                 </Border>
@@ -361,27 +363,28 @@
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                         <!-- Используем Grid для управления расположением кнопки и текста -->
-                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
-                                                <!-- Колонка для текста -->
-                                                <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <!-- Колонка для текста -->
+                                                <ColumnDefinition Width="110" />
                                                 <!-- Колонка для кнопки -->
                                             </Grid.ColumnDefinitions>
 
                                             <!-- Текстовые элементы в первой колонке -->
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding first_name}" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                                <TextBlock Text="{Binding last_name}" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
-                                                <TextBlock Text="{Binding phone}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                                <TextBlock Text="{Binding email}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
-                                            </StackPanel>
+                                                <TextBlock Text="{Binding first_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding last_name}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding phone}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
 
                                             <!-- Кнопка во второй колонке, выравнивается вправо -->
-                                            <Button Grid.Column="1" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                     FontSize="16" Background="#525252" FontWeight="UltraLight"
                                     Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"
-                                    Click="Button_Click_1" Tag="{Binding}" />
+                                    Click="Button_Click_3" Tag="{Binding}" />
 
                                         </Grid>
                                     </Border>
@@ -395,46 +398,42 @@
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                         <!-- Используем Grid для управления расположением кнопки, текста и подписей -->
-                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
-                                                <!-- Колонка для данных -->
-                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="110" />
                                                 <!-- Колонка для кнопки -->
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <!-- Ряд для подписей -->
-                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="25" />
                                                 <!-- Ряд для текста данных -->
                                                 <RowDefinition Height="Auto" />
                                                 <!-- Ряд для кнопки -->
                                             </Grid.RowDefinitions>
 
                                             <!-- Подписи для данных -->
-                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
-                                                <TextBlock Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
-                                                <TextBlock Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
-                                                <TextBlock Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
-                                            </StackPanel>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
 
-                                            <!-- Разделитель -->
-                                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0 0 2 0" Margin="0 5"/>
+
 
                                             <!-- Текстовые элементы (данные) -->
-                                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding guests}" FontWeight="Bold" FontSize="16" Margin="10 0"/>
-                                                <TextBlock Text="{Binding employee}" FontWeight="Bold" FontSize="16" Margin="10 0"/>
-                                                <TextBlock Text="{Binding total_price}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
-                                                <TextBlock Text="{Binding created_at}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
-                                            </StackPanel>
+                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
+                                    <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
+
 
                                             <!-- Кнопка во второй колонке -->
-                                            <Button Grid.Row="2" Grid.Column="1" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            <Button Grid.Row="2" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                 FontSize="16" Background="#525252" FontWeight="UltraLight"
-                                Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"/>
+                                Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Click="Button_Click" Tag="{Binding}"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -447,21 +446,23 @@
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                         <!-- Используем Grid для управления расположением кнопки и текста -->
-                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
                                                 <!-- Колонка для текста -->
-                                                <ColumnDefinition Width="Auto" />
-                                                <!-- Колонка для кнопки -->
-                                            </Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
 
                                             <!-- Текстовые элементы в первой колонке -->
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding service_name}" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                                <TextBlock Text="{Binding description}" MaxWidth="250" TextWrapping="Wrap" FontSize="16" Margin="0 0 10 0"/>
-                                                <TextBlock Text="{Binding price}" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                            </StackPanel>
-                                        </Grid>
+                                        <TextBlock Text="{Binding service_name}"  Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                        <TextBlock Text="{Binding description}"  Grid.Column="1" MaxWidth="250" TextWrapping="Wrap" FontSize="16" Margin="0 0 10 0"/>
+                                        <TextBlock Text="{Binding price}"  Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0" TextAlignment="Center" />
+                                        <Button Grid.Column="3" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            FontSize="16" Background="#525252" FontWeight="UltraLight"
+                                            Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Tag="{Binding}" Click="Button_Click_5"/>
+                                </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -473,11 +474,11 @@
                          FontSize="20"
                          Background="Transparent"
                          Foreground="Black"
-                         MaxLength="50"
+                         MaxLength="40"
                         BorderBrush="Black"
-                        BorderThickness="0 0 0 1" TextChanged="tb1_TextChanged"
+                        BorderThickness="0 0 0 1" TextChanged="tb1_TextChanged" PreviewTextInput="tb1_PreviewTextInput"
                          />
-                    <TextBlock IsHitTestVisible="False" FontSize="20" Text="Поиск" Margin="85,50,500,350" Panel.ZIndex="10"
+                    <TextBlock Name="placeholder" IsHitTestVisible="False" FontSize="20" Text="Поиск" Margin="85,50,500,350" Panel.ZIndex="10"
                        Foreground="#FFA0A0A0">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -504,7 +505,7 @@
                         <ComboBoxItem Content="Все фильтры"/>
                     </ComboBox>
                     <!--filter-->
-                    <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="550,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
+                    <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="540,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
              FontSize="20"
              Background="Transparent"
              Foreground="Black"
@@ -518,7 +519,26 @@
                Width="30"
                Height="30"
                Margin="714,50,56,400" MouseDown="Image_MouseDown_1"/>
-            <Button Width="30" Height="30" Margin="760,50,10,400" Click="Button_Click_2"></Button>
+            <Image x:Name="addEmployee" Source="ImageButton/addSotryd.png"
+                    Stretch="Uniform"
+                    Width="30"
+                    Height="30"
+                    Margin="714,50,56,400" MouseDown="addEmployee_MouseDown" />
+            <Image x:Name="addService" Source="ImageButton/addService.png"
+                    Stretch="Uniform"
+                    Width="30"
+                    Height="30"
+                    Margin="714,50,56,400" MouseDown="addService_MouseDown" />
+            <Image x:Name="addHouse" Source="ImageButton/addHouse.png"
+                    Stretch="Uniform"
+                    Width="30"
+                    Height="30"
+                    Margin="714,50,56,400" MouseDown="addHouse_MouseDown"  />
+            <Button x:Name="Add_Booking" Width="30" Height="30" Margin="760,50,10,400" Click="Button_Click_2" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/addBrone.png"/>
+                </Button.Background>
+            </Button>
                     <!--Toolbar-->
                     <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown" >
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
@@ -568,7 +588,6 @@
                         <StackPanel x:Name="st_pnl">
                             <!--Grid for button-->
                             <Grid Height="90">
-                                <Button x:Name="button" Panel.ZIndex="999" Content="Button" HorizontalAlignment="Left" Margin="733,147,0,0" VerticalAlignment="Top" Click="Button_Click" Background="Black" Height="26" Width="60"/>
 
                                 <!--Menu title Menu-->
 
@@ -602,7 +621,7 @@
                                       Height="30"
                                       Width="30"
                                       BorderThickness="0"
-                                      Style="{StaticResource tb_style}" Unchecked="Tg_Btn_Unchecked" PreviewMouseLeftButtonDown="Tg_Btn_PreviewMouseLeftButtonDown" Click="Tg_Btn_Click">
+                                      Style="{StaticResource tb_style}" PreviewMouseLeftButtonDown="Tg_Btn_PreviewMouseLeftButtonDown">
 
                                     <!--toggle button default bckground-->
 
@@ -734,7 +753,7 @@
                                                Stretch="Fill"
                                                Width="30"
                                                Height="30"
-                                               Margin="11 0 0 0" MouseDown="Image_MouseDown"/>
+                                               Margin="11 0 0 0"/>
                                         <TextBlock Text="Услуги"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
@@ -802,7 +821,7 @@
 
                                 <!--supplier-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                                <ListViewItem Name="lvSupplier" HorizontalAlignment="Left"
                                         Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
                                     <!--Tooltip-->

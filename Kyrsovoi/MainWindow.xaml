@@ -109,9 +109,9 @@
                  FontSize="20"
                  Background="#66D9D9D9"
                  Foreground="White"
-                 MaxLength="50"
+                 MaxLength="30" PreviewTextInput="tb1_PreviewTextInput"
                  />
-        <TextBlock IsHitTestVisible="False" FontSize="20" Text="Эл.почта или телефон" Margin="65,131,50,147" Panel.ZIndex="10"
+        <TextBlock IsHitTestVisible="False" FontSize="20" Text="Логин" Margin="65,131,50,147" Panel.ZIndex="10"
                    Foreground="#FFEAEAEA">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -128,7 +128,7 @@
          FontSize="20"
          Background="#66D9D9D9"
          Foreground="White"
-         MaxLength="50" PasswordChanged="OnPasswordChanged"
+         MaxLength="30" PasswordChanged="OnPasswordChanged"
          />
         
         <TextBlock x:Name="watermatk" IsHitTestVisible="False" FontSize="20" Text="Пароль" Margin="65,199,0,-1" Panel.ZIndex="10"

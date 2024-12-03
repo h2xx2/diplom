@@ -10,17 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using MySql.Data.MySqlClient;
-
+using System.IO;
+using Word = Microsoft.Office.Interop.Word;
+using Microsoft.Office.Interop.Word;
+using System.Runtime.InteropServices;
 
 namespace Kyrsovoi
 {
     /// <summary>
     /// Логика взаимодействия для Prosmotr.xaml
     /// </summary>
-    public partial class Prosmotr : Window
+    public partial class Prosmotr : System.Windows.Window
     {
         public Prosmotr()
         {
@@ -29,6 +31,7 @@ namespace Kyrsovoi
             com = query;
             FillDataGrid(com);
             cb2.SelectedIndex = 2;
+            
         }
         public class Client {
             public string name { get; set; }
@@ -59,15 +62,16 @@ namespace Kyrsovoi
             public string hire_date { get; set; }
             public string phone { get; set; }
             public string email { get; set; }
-            public string salary { get; set; }
             public string login { get; set; }
             public string password { get; set; }
             public string role { get; set; }
         }
         public class Booking
         {
+            public string id_booking { get; set; }
             public string guests { get; set; }
             public string employee { get; set; }
+            public string unit { get; set; }
             public string check_in_date { get; set; }
             public string check_out_date { get; set; }
             public string total_price { get; set; }
@@ -76,14 +80,17 @@ namespace Kyrsovoi
         }
         public class Services
         {
+            public string id_service { get; set; }
             public string service_name { get; set; }
             public string description { get; set; }
             public string price { get; set; }
         }
-        
+        string filePath = "";
         string query = @"SELECT 
-                        CONCAT(guests.first_name, "" "", guests.last_name) AS guest,
-                        CONCAT(employees.first_name, "" "", employees.last_name) AS employee,
+                        b.booking_id,
+                        glampingunits.unit_name,
+                        CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
+                        CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
                         b.check_in_date, 
                         b.check_out_date, 
                         b.total_price, 
@@ -93,6 +100,8 @@ namespace Kyrsovoi
                         glamping.bookings b
                     LEFT JOIN 
                         guests ON guests.guest_id = b.booking_id
+					LEFT JOIN 
+                        glampingunits ON glampingunits.unit_id = b.unit_id
                     LEFT JOIN 
                         employees ON employees.employee_id = b.booking_id";
         string com = "";
@@ -121,6 +130,8 @@ namespace Kyrsovoi
                 Clients.Clear(); // Очистка коллекции перед загрузкой данных
                 Bookings.Clear();
                 Servic.Clear();
+                Homes.Clear();
+                Employees.Clear();
                 while (reader.Read())
                 {
                     if (raspred == 1)
@@ -151,8 +162,10 @@ namespace Kyrsovoi
                         homes.Visibility = Visibility.Collapsed;
                         Bookings.Add(new Booking
                         {
+                            id_booking = reader["booking_id"].ToString(),
                             guests = reader["guest"].ToString(),
                             employee = reader["employee"].ToString(),
+                            unit = reader["unit_name"].ToString(),
                             check_in_date = reader["check_in_date"].ToString(),
                             check_out_date = reader["check_out_date"].ToString(),
                             total_price = reader["total_price"].ToString(),
@@ -169,6 +182,7 @@ namespace Kyrsovoi
                         homes.Visibility = Visibility.Collapsed;
                         Servic.Add(new Services
                         {
+                            id_service = reader["service_id"].ToString(),
                             service_name = reader["service_name"].ToString(),
                             description = reader["description"].ToString(),
                             price = reader["price"].ToString(),
@@ -192,7 +206,6 @@ namespace Kyrsovoi
                             hire_date = reader["hire_date"].ToString(),
                             phone = reader["phone"].ToString(),
                             email = reader["email"].ToString(),
-                            salary = reader["salary"].ToString(),
                             login = reader["login"].ToString(),
                             password = reader["password"].ToString(),
                             role = reader["role"].ToString(),
@@ -202,30 +215,35 @@ namespace Kyrsovoi
                     }
                     if (raspred == 4)
                     {
-
-                        string imagePath = "C:\\Users\\dshma\\OneDrive\\Рабочий стол\\Курсовой проект\\Kyrsovoi\\Kyrsovoi\\bin\\Debug\\home\\" + reader["photo"].ToString(); // Извлекаем путь или имя файла
-                        BitmapImage bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
                         clients.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Collapsed;
                         bookings.Visibility = Visibility.Collapsed;
+                        service.Visibility = Visibility.Collapsed;
                         employee.Visibility = Visibility.Collapsed;
                         homes.Visibility = Visibility.Visible;
-                        Class1.unit_id = Convert.ToInt32(reader["unit_id"]);
+                        string fileName = ".\\home\\" + reader["photo"]?.ToString();
+                        string filepath = Path.GetFullPath(fileName); 
+
+                        // Загрузка изображения
+                        BitmapImage bitmap = new BitmapImage();
+                        if (!string.IsNullOrEmpty(filepath))
+                        {
+                            bitmap.BeginInit();
+                            bitmap.UriSource = new Uri(filepath, UriKind.Absolute);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                        }
+                        
+                        // Добавление данных
                         Homes.Add(new Home
                         {
-
+                            unit_id = reader["unit_id"].ToString(),
                             unit_name = reader["unit_name"].ToString(),
                             unit_type = reader["unit_type"].ToString(),
                             capacity = reader["capacity"].ToString(),
                             price_per_night = reader["price_per_night"].ToString(),
                             description = reader["description"].ToString(),
-                            status = reader["status"].ToString(),
                             photo = bitmap,
-                        }); ; ;
+                        });
                     }
 
 
@@ -233,7 +251,8 @@ namespace Kyrsovoi
                 reader.Close();
             }
         }
-        
+       
+
 
         private void Min_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -268,25 +287,6 @@ namespace Kyrsovoi
             }
         }
 
-        private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void Tg_Btn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //Tg_Btn.IsChecked = false;
-        }
-
-        private void Tg_Btn_Click(object sender, RoutedEventArgs e)
-        {
-            //Tg_Btn.IsChecked = false;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Class1.saveQuery = com;
@@ -295,13 +295,19 @@ namespace Kyrsovoi
             mainWindow.Show();
         }
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void Service_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (Class1.role == 0)
+            {
+                addService.Visibility = Visibility.Visible;
+            }
+            
+            placeholder.Visibility = Visibility.Visible;
+            addHouse.Visibility = Visibility.Collapsed;   
+            tb1.Visibility = Visibility.Visible;
+            addEmployee.Visibility = Visibility.Collapsed;
+            addUser.Visibility = Visibility.Collapsed;
+            Add_Booking.Visibility = Visibility.Collapsed;
             addUser.Visibility = Visibility.Collapsed;
             cb2.Width = 270;
             cb2.Margin = new Thickness(370, 50, 0, 0);
@@ -324,6 +330,13 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
+            addHouse.Visibility = Visibility.Collapsed;
+            placeholder.Visibility = Visibility.Visible;
+            addService.Visibility = Visibility.Collapsed;
+            tb1.Visibility = Visibility.Visible;
+            addEmployee.Visibility = Visibility.Collapsed;
+            addUser.Visibility = Visibility.Collapsed;
+            Add_Booking.Visibility = Visibility.Visible;
             tb1.Visibility = Visibility.Visible;
             cb1.Visibility = Visibility.Visible;
             cb2.Visibility = Visibility.Visible;
@@ -333,8 +346,10 @@ namespace Kyrsovoi
             tb1.Width = 210;
             tbNameForm.Text = "Бронирование";
             query = @"SELECT 
-                        CONCAT(guests.first_name, "" "", guests.last_name) AS guest,
-                        CONCAT(employees.first_name, "" "", employees.last_name) AS employee,
+                        b.booking_id,
+                        glampingunits.unit_name,
+                        CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
+                        CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
                         b.check_in_date, 
                         b.check_out_date, 
                         b.total_price, 
@@ -344,6 +359,8 @@ namespace Kyrsovoi
                         glamping.bookings b
                     LEFT JOIN 
                         guests ON guests.guest_id = b.booking_id
+					LEFT JOIN 
+                        glampingunits ON glampingunits.unit_id = b.unit_id
                     LEFT JOIN 
                         employees ON employees.employee_id = b.booking_id";
             raspred = 0;
@@ -360,6 +377,12 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_2(object sender, MouseButtonEventArgs e)
         {
+            addHouse.Visibility = Visibility.Collapsed;
+            placeholder.Visibility = Visibility.Visible;
+            addService.Visibility = Visibility.Collapsed;
+            tb1.Visibility = Visibility.Visible;
+            addEmployee.Visibility = Visibility.Collapsed;
+            Add_Booking.Visibility = Visibility.Collapsed;
             addUser.Visibility = Visibility.Visible;    
             cb2.Width = 270;
             cb2.Margin = new Thickness(370, 50, 0,0);
@@ -531,11 +554,6 @@ namespace Kyrsovoi
 
         }
 
-        //public void DoSomething()
-        //{
-        //    FillDataGrid(Class1.saveQuery);
-        //}
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -575,11 +593,17 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_3(object sender, MouseButtonEventArgs e)
         {
+            addHouse.Visibility = Visibility.Collapsed;
+            placeholder.Visibility = Visibility.Collapsed;
+            addService.Visibility = Visibility.Collapsed;
+            addEmployee.Visibility = Visibility.Visible;
+            addUser.Visibility = Visibility.Collapsed;
+            Add_Booking.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Collapsed;
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Collapsed;
             tbNameForm.Text = "Сотрудники";
-            query = "SELECT employee_id, first_name,last_name,position, hire_date, phone, email, salary, login,password, role FROM employees";
+            query = "SELECT employee_id, first_name,last_name,position, hire_date, phone, email, login,password, role FROM employees";
             raspred = 3;
             com = query;
             dopCom0 = "";
@@ -590,13 +614,22 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_4(object sender, MouseButtonEventArgs e)
         {
+            if (Class1.role == 0)
+            {
+                addHouse.Visibility = Visibility.Visible;
+            }
             
-
+            tb1.Visibility = Visibility.Collapsed;
+            addService.Visibility = Visibility.Collapsed;
+            placeholder.Visibility = Visibility.Collapsed;
+            addEmployee.Visibility = Visibility.Collapsed;
+            addUser.Visibility = Visibility.Collapsed;
+            Add_Booking.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Collapsed;
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Collapsed;
             tbNameForm.Text = "Дома";
-            query = "SELECT unit_id, unit_name,unit_type, capacity, price_per_night, description, status, photo FROM glampingunits";
+            query = "SELECT unit_id, unit_name,unit_type, capacity, price_per_night, description, photo FROM glampingunits";
             raspred = 4;
             com = query;
             dopCom0 = "";
@@ -607,8 +640,267 @@ namespace Kyrsovoi
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            if (Class1.role == 1)
+            {
+                redactBooking redactBooking = new redactBooking();
+                redactBooking.Show();
+            }
+            else
+            {
+                // Группировка бронирований по unit
+                var revenueReport = Bookings
+                    .GroupBy(b => b.unit)
+                    .Select(group => (dynamic)new
+                    {
+                        Unit = group.Key,
+                        RentalCount = group.Count(),
+                        TotalRevenue = group.Sum(b => decimal.Parse(b.total_price))
+                    })
+                    .ToList();
+
+                // Генерация отчёта
+                GenerateOfficialWordReport(revenueReport);
+            }
+        }
+        static void GenerateOfficialWordReport(List<dynamic> report)
+        {
+            // Создаем приложение Word
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+            Document document = wordApp.Documents.Add();
+
+            try
+            {
+                // Вставляем логотип (при необходимости замените путь)
+                string logoPath = Path.GetFullPath("Logo.png"); // Замените на путь к вашему логотипу
+                if (System.IO.File.Exists(logoPath))
+                {
+                    Range logoRange = document.Range(0, 0);
+                    Shape logoShape = document.Shapes.AddPicture(logoPath, false, true, 0, 0, 100, 50);
+                    logoShape.WrapFormat.Type = WdWrapType.wdWrapTopBottom;
+                }
+
+                // Заголовок отчёта
+                Word.Paragraph titleParagraph = document.Content.Paragraphs.Add();
+                titleParagraph.Range.Text = "Официальный Отчёт по Выручке";
+                titleParagraph.Range.Font.Size = 20;
+                titleParagraph.Range.Font.Bold = 1;
+                titleParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                titleParagraph.Range.InsertParagraphAfter();
+
+                // Подзаголовок
+                Word.Paragraph subtitleParagraph = document.Content.Paragraphs.Add();
+                subtitleParagraph.Range.Text = $"Дата формирования отчёта: {DateTime.Now:dd.MM.yyyy}";
+                subtitleParagraph.Range.Font.Size = 12;
+                subtitleParagraph.Range.Font.Italic = 1;
+                subtitleParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                subtitleParagraph.Range.InsertParagraphAfter();
+
+                // Пустая строка перед таблицей
+                document.Content.Paragraphs.Add();
+
+                // Таблица отчёта
+                Word.Table table = document.Tables.Add(document.Content.Paragraphs.Add().Range, report.Count + 1, 3);
+                table.Borders.Enable = 1; // Включаем границы
+                table.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                table.Range.Font.Size = 12;
+
+                // Заголовки столбцов
+                table.Cell(1, 1).Range.Text = "Дом";
+                table.Cell(1, 2).Range.Text = "Количество аренд";
+                table.Cell(1, 3).Range.Text = "Общая выручка";
+
+                table.Rows[1].Range.Font.Bold = 1; // Выделяем заголовки жирным
+                table.Rows[1].Shading.BackgroundPatternColor = WdColor.wdColorGray20; // Задаём фон заголовков
+
+                // Заполнение таблицы данными
+                for (int i = 0; i < report.Count; i++)
+                {
+                    table.Cell(i + 2, 1).Range.Text = report[i].Unit;
+                    table.Cell(i + 2, 2).Range.Text = report[i].RentalCount.ToString();
+                    table.Cell(i + 2, 3).Range.Text = $"{report[i].TotalRevenue:C}"; // Форматируем как валюту
+                }
+
+                // Итоговая строка
+                decimal totalRevenue = 0m;
+                foreach (var item in report) totalRevenue += item.TotalRevenue;
+
+                Row totalRow = table.Rows.Add();
+                totalRow.Cells[1].Range.Text = "ИТОГО";
+                totalRow.Cells[2].Merge(totalRow.Cells[3]); // Объединяем последние две ячейки
+                totalRow.Cells[2].Range.Text = $"{totalRevenue:C}";
+                totalRow.Range.Font.Bold = 1;
+
+                // Сохранение документа
+                string filePath = @"C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\homeОфициальный_Отчёт.docx";
+                document.SaveAs2(filePath);
+
+                Console.WriteLine($"Отчёт успешно сохранён: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+            finally
+            {
+                // Закрываем документ и приложение Word
+                if (document != null)
+                {
+                    document.Close();
+                    Marshal.ReleaseComObject(document);
+                }
+
+                if (wordApp != null)
+                {
+                    wordApp.Quit();
+                    Marshal.ReleaseComObject(wordApp);
+                }
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Получаем данные строки через Tag кнопки
+            var emloye = button?.Tag as Employee; // Замените Client на ваш класс данных
+
+            if (emloye != null)
+            {
+                Class1.numberPhoneEmploye = emloye.phone;
+            }
+            redactEmployee redactEmployee = new redactEmployee();
+            redactEmployee.Focus();
+
+            redactEmployee.Show();
+        }
+
+        private void addEmployee_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Class1.add = 1;
+                redactEmployee redactEmployee = new redactEmployee();
+                redactEmployee.Focus();
+
+                redactEmployee.Show();
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Получаем данные строки через Tag кнопки
+            var home = button?.Tag as Home; // Замените Client на ваш класс данных
+
+            if (home != null)
+            {
+                Class1.unit_id = Convert.ToInt32(home.unit_id);
+            }
+            addHouse addHouse = new addHouse();
+            addHouse.Focus();
+
+            addHouse.Show();
+        }
+
+        private void addHouse_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Class1.add = 1;
+                addHouse addHouse = new addHouse();
+                addHouse.Focus();
+
+                addHouse.Show();
+            }
+        }
+
+        private void Tg_Btn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Получаем данные строки через Tag кнопки
+            var booking = button?.Tag as Booking; // Замените Client на ваш класс данных
+
+            if (booking != null)
+            {
+                Class1.booking_id = booking.id_booking;
+            }
             redactBooking redactBooking = new redactBooking();
+            redactBooking.Focus();
+
             redactBooking.Show();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ImageBrush imageBrush = new ImageBrush();
+            
+            if (Class1.role == 0)
+            {
+                lvSupplier.Visibility = Visibility.Visible;
+                var button = this.FindName("redactButHome") as Button;
+                if (button != null)
+                {
+                    button.Visibility = Visibility.Visible;
+                }
+                addHouse.Visibility = Visibility.Visible;
+                addService.Visibility = Visibility.Visible;
+                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("report.png"), UriKind.RelativeOrAbsolute));
+                Add_Booking.Background = imageBrush;
+            }
+            else
+            {
+                lvSupplier.Visibility = Visibility.Collapsed;
+                var button = this.FindName("redactButHome") as Button;
+                if (button != null)
+                {
+                    button.Visibility = Visibility.Collapsed;
+                }
+                addHouse.Visibility = Visibility.Collapsed;
+                addService.Visibility = Visibility.Collapsed;
+                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("addBrone.png"), UriKind.RelativeOrAbsolute));
+                Add_Booking.Background = imageBrush;
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Получаем данные строки через Tag кнопки
+            var service = button?.Tag as Services; // Замените Client на ваш класс данных
+
+            if (service != null)
+            {
+                Class1.id_service = Convert.ToInt32(service.id_service);
+            }
+            redactService redactService = new redactService();
+            redactService.Focus();
+
+            redactService.Show();
+        }
+
+        private void addService_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Class1.add = 1;
+                redactService redactService = new redactService();
+                redactService.Focus();
+
+                redactService.Show();
+            }
+        }
+
+        private void tb1_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[а-яА-Я]+$");
         }
     }
 }

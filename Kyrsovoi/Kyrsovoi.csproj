@@ -60,16 +60,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="addHouse.xaml.cs">
+      <DependentUpon>addHouse.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Import.xaml.cs">
+      <DependentUpon>Import.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Prosmotr.xaml.cs">
       <DependentUpon>Prosmotr.xaml</DependentUpon>
     </Compile>
     <Compile Include="redactBooking.xaml.cs">
       <DependentUpon>redactBooking.xaml</DependentUpon>
     </Compile>
+    <Compile Include="redactEmployee.xaml.cs">
+      <DependentUpon>redactEmployee.xaml</DependentUpon>
+    </Compile>
     <Compile Include="redactKlient.xaml.cs">
       <DependentUpon>redactKlient.xaml</DependentUpon>
     </Compile>
+    <Compile Include="redactService.xaml.cs">
+      <DependentUpon>redactService.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vostan.xaml.cs">
+      <DependentUpon>Vostan.xaml</DependentUpon>
+    </Compile>
+    <Page Include="addHouse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Import.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,7 +113,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="redactEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="redactKlient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="redactService.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vostan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,6 +204,59 @@
   <ItemGroup>
     <Resource Include="ImageButton\affordableHomes.png" />
     <Resource Include="ImageButton\client.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\addSotryd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\addHouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\imageHolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\smena.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\addService.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="addBrone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageButton\report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imageHolder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

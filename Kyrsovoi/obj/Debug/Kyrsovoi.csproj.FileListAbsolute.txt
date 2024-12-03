@@ -1,6 +1,6 @@
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe.config
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.pdb
-C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe.config
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\MySql.Data.dll
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\System.Memory.dll
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\System.Threading.Tasks.Extensions.dll
@@ -8,16 +8,20 @@ C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Ky
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\System.Buffers.dll
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\MySql.Data.xml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.AssemblyReference.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\App.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.cache
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.lref
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.g.resources
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.Properties.Resources.resources
@@ -26,3 +30,43 @@ C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Ky
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.CopyComplete
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.exe
 C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.pdb
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.ResolveComReference.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe.config
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.pdb
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\MySql.Data.dll
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\System.Memory.dll
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\System.Buffers.dll
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\bin\Debug\MySql.Data.xml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.AssemblyReference.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.ResolveComReference.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Import.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\App.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.lref
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Import.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.g.resources
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.Properties.Resources.resources
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.GenerateResource.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.CoreCompileInputs.cache
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.CopyComplete
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.exe
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.pdb

@@ -104,26 +104,31 @@ namespace Kyrsovoi
                                 sda.Fill(dt);
 
                                 hashPassword = tb2.Password;
+                                hashPassword = GetHashPass(hashPassword);
                                 try
                                 {
                                     Class1.id_employes = Convert.ToInt32(dt.Rows[0].ItemArray.GetValue(0));
                                     Class1.fioEmploes = dt.Rows[0].ItemArray.GetValue(1).ToString() + " " + dt.Rows[0].ItemArray.GetValue(2).ToString();
-                                    hashbd = dt.Rows[0].ItemArray.GetValue(9).ToString();
-                                    string role = dt.Rows[0].ItemArray.GetValue(10).ToString();
+                                    hashbd = dt.Rows[0].ItemArray.GetValue(8).ToString();
+                                    string role = dt.Rows[0].ItemArray.GetValue(9).ToString();
 
                                     if (hashPassword == hashbd)
                                     {
                                         if (role != "Администратор")
                                         {
+                                            Class1.role = 1;
                                             Prosmotr main = new Prosmotr();
                                             main.ShowDialog();
+                                            Close();
                                         }
                                         else
                                         {
+                                            Class1.role = 0;
                                             Prosmotr main = new Prosmotr();
                                             main.ShowDialog();
+                                            Close();
                                         }
-                                        Close();
+                                        
                                     }
                                     else
                                     {
@@ -167,6 +172,11 @@ namespace Kyrsovoi
 
                 }
             }
+        }
+
+        private void tb1_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z0-9]+$");
         }
     }
 }

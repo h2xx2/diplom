@@ -1,11 +1,11 @@
-﻿<Window x:Class="Kyrsovoi.redactKlient"
+﻿<Window x:Class="Kyrsovoi.redactEmployee"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-         Height="400" Width="350" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
+         Height="530" Width="350" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -67,7 +67,7 @@
     <Grid>
         <!--toolbar-->
         <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
-            <TextBlock x:Name="tbtext" Text="Карточка клиента" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
+            <TextBlock x:Name="tbtext" Text="Карточка сотрудника" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
                 <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
@@ -76,7 +76,7 @@
                             <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
-                         Value="true">
+                 Value="true">
                                     <Setter Property="Source" Value="source/grey.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -92,7 +92,7 @@
                             <Setter Property="Source" Value="source/krest.png"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
-                                    Value="true">
+                            Value="true">
                                     <Setter Property="Source" Value="source/krest2.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -134,24 +134,48 @@
                     </StackPanel>
 
                     <!--<!— Заголовок Личная информация —>-->
-                    <TextBlock Text="Личная информация" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
+                    <TextBlock Text="Работа" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
                     <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Дата рождения" Width="85" VerticalAlignment="Center"/>
-                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="150" Margin="5,0" PreviewTextInput="db_PreviewTextInput">
-                            
-                        </DatePicker>
+                        <TextBlock Text="Дата оформления" Width="85" VerticalAlignment="Center"/>
+                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="150" Margin="5,0" PreviewTextInput="db_PreviewTextInput"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Паспорт" Width="80" VerticalAlignment="Center"/>
-                        <TextBox MaxLength="10" x:Name="passport" Text="{Binding Passport, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="10,0" PreviewTextInput="number_PreviewTextInput" />
+                        <TextBlock Text="Должность" Width="80" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="position" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="10,0" >
+                            <ComboBoxItem Content="Специалист по продажам"/>
+                            <ComboBoxItem Content="Маркетолог"/>
+                            <ComboBoxItem Content="Логист"/>
+                            <ComboBoxItem Content="Кулинар"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock Text="Права" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
+                    <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Логин" Width="85" VerticalAlignment="Center"/>
+                        <TextBox MaxLength="40" x:Name="login" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="10,0" PreviewTextInput="login_PreviewTextInput" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Сгенерировать пароль" Foreground="DarkGreen"  FontSize="10" Margin="80,10,0,0" Width="130" VerticalAlignment="Center" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Пароль" Width="80" VerticalAlignment="Center"/>
+                            <TextBox MaxLength="40" x:Name="password" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="15,0" PreviewTextInput="login_PreviewTextInput" />
+                    </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Роль" Width="80" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="role" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="15,0" >
+                            <ComboBoxItem Content="Администратор"/>
+                            <ComboBoxItem Content="Менеджер"/>
+                        </ComboBox>
                     </StackPanel>
                 </StackPanel>
             </Border>
 
             <!--Кнопки управления-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="150" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click"/>
             </StackPanel>
 
             <!--Кнопка Назад-->
