@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-             Height="210" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
+             Height="170" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
     <Grid>
         <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
             <TextBlock x:Name="tbtext" Text="Импортирование данных" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
-                <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
+                <Image Name="Min" Height="22" Width="22" Margin="0 10 " >
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
@@ -27,7 +27,7 @@
                         <BlurEffect Radius="0.5"/>
                     </Image.Effect>
                 </Image>
-                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                <Image Name="krest"  Height="13" Width="13" Margin="10">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Source" Value="source/krest.png"/>
@@ -50,24 +50,14 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,20">
-                            <Grid.ColumnDefinitions>
-                                <!-- Колонка для текста -->
-                                <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                            </Grid.RowDefinitions>
+                            
 
-                            <TextBlock Text="Восстановление структуры" FontSize="15" Grid.Column="0" Grid.Row="0" Margin="90,0,0,0"/>
-                            <TextBox Name="tb" IsReadOnly="True" Grid.Column="0" Grid.Row="1" Margin="10 0 0 0"/>
-                            <Button Grid.Column="1" Grid.Row="1" Height="25" Width="25" Click="Button_Click"/>
+                            <TextBlock TextAlignment="Center" Text="Восстановление структуры" FontSize="15" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0"/>
 
                         </Grid>
 
                     </StackPanel>
-                    <Button Content="Восстановление" Width="200" Height="25" Click="Button_Click_1"/>
+                    <Button Content="Восстановить" Width="200" Height="30" FontSize="17" Click="Button_Click_1"/>
                 </StackPanel>
             </Border>
         </Grid>
