@@ -77,5 +77,12 @@ namespace Kyrsovoi
                 MessageBox.Show($"Ошибка при восстановлении базы данных: {ex.Message}");
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Import import = new Import();
+            this.Close();
+            import.ShowDialog();    
+        }
     }
 }

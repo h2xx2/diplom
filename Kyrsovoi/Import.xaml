@@ -68,10 +68,12 @@
                         
                     </StackPanel>
                     <ComboBox Name="cb" Width="200" Margin="0 0 0 10">
-                        <ComboBoxItem/>
-                        <ComboBoxItem/>
-                        <ComboBoxItem/>
-                        <ComboBoxItem/>
+                        <ComboBoxItem Content="bookingservices"/>
+                        <ComboBoxItem Content="bookings"/>
+                        <ComboBoxItem Content="employees"/>
+                        <ComboBoxItem Content="glampingunits"/>
+                        <ComboBoxItem Content="guests"/>
+                        <ComboBoxItem Content="services"/>
                     </ComboBox>
                     <Button Content="Импорт" Width="200" Height="25" Click="Button_Click_1"/>
                 </StackPanel>

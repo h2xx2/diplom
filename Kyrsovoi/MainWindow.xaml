@@ -63,12 +63,14 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Window.Background>
-        <ImageBrush ImageSource="/UUrJ8IImkzs.jpg" Stretch="UniformToFill"/>
-    </Window.Background>
-    <Grid Margin="0,0,0,-5">
-        
-        <Grid x:Name="ToolBar" Background="Transparent" MouseDown="ToolBar_MouseDown">
+
+    <Grid  Margin="0,0,0,-5" >
+        <Grid.Background>
+            <ImageBrush ImageSource="/UUrJ8IImkzs.jpg" Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <Grid x:Name="ToolBar" Panel.ZIndex="2" MouseDown="ToolBar_MouseDown">
+
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
                 <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
                     <Image.Style>
@@ -124,18 +126,39 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
+        
         <PasswordBox x:Name="tb2" HorizontalAlignment="Left" Margin="58,199,0,0" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
          FontSize="20"
          Background="#66D9D9D9"
          Foreground="White"
          MaxLength="30" PasswordChanged="OnPasswordChanged"
          />
-        
+
         <TextBlock x:Name="watermatk" IsHitTestVisible="False" FontSize="20" Text="Пароль" Margin="65,199,0,-1" Panel.ZIndex="10"
            Foreground="#FFEAEAEA">
-            
+
         </TextBlock>
         <Label Content="Авторизация" HorizontalAlignment="Center" Margin="0,34,0,0" VerticalAlignment="Top"  FontSize="36" Foreground="White"/>
-
+        <TextBox x:Name="tb3" HorizontalAlignment="Left" Margin="400,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
+         FontSize="20"
+         Background="#66D9D9D9"
+         Foreground="White"
+         MaxLength="30" PreviewTextInput="tb1_PreviewTextInput"
+         />
+        <TextBlock IsHitTestVisible="False" FontSize="20" Text="Логин" Margin="65,131,50,147" Panel.ZIndex="10"
+           Foreground="#FFEAEAEA">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=tb3}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Image Name="CaptchaImage" Height="80" Margin="400, 0,40,100"/>
     </Grid>
+    
 </Window>

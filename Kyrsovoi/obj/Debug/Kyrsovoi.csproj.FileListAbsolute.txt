@@ -72,3 +72,5 @@ C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrs
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.pdb
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.baml
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.g.cs
+C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.baml

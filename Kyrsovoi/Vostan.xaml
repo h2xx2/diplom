@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-             Height="170" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
+             Height="230" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
     <Grid>
         <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
             <TextBlock x:Name="tbtext" Text="Импортирование данных" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
@@ -58,6 +58,7 @@
 
                     </StackPanel>
                     <Button Content="Восстановить" Width="200" Height="30" FontSize="17" Click="Button_Click_1"/>
+                    <Button Content="Импортирование" Width="200" Height="30" FontSize="17" Margin="0 20" Click="Button_Click"/>
                 </StackPanel>
             </Border>
         </Grid>
