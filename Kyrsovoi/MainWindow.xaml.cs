@@ -85,79 +85,94 @@ namespace Kyrsovoi
         {
             string login = tb1.Text;
             Class1.l = login;
-            string hashPassword = string.Empty;
+            string hashPassword = tb2.Password;
             string hashbd = string.Empty;
             if (login.Length != 0)
             {
                 string conString = @"server=localhost;user=root;pwd=root;database=glamping;";
-
+                if (login != Properties.Settings.Default.login && hashbd != Properties.Settings.Default.password)
+                { 
                 using (MySqlConnection con = new MySqlConnection(conString))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM employees Where login = '" + login + "';", con))
-                    {
-                        cmd.CommandType = CommandType.Text;
-
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                        using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM employees Where login = '" + login + "';", con))
                         {
-                            using (DataTable dt = new DataTable())
+                            cmd.CommandType = CommandType.Text;
+
+                            using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
                             {
-                                sda.Fill(dt);
-
-                                hashPassword = tb2.Password;
-                                hashPassword = GetHashPass(hashPassword);
-                                try
+                                using (DataTable dt = new DataTable())
                                 {
-                                    Class1.id_employes = Convert.ToInt32(dt.Rows[0].ItemArray.GetValue(0));
-                                    Class1.fioEmploes = dt.Rows[0].ItemArray.GetValue(1).ToString() + " " + dt.Rows[0].ItemArray.GetValue(2).ToString();
-                                    hashbd = dt.Rows[0].ItemArray.GetValue(8).ToString();
-                                    string role = dt.Rows[0].ItemArray.GetValue(9).ToString();
-
-                                    if (hashPassword == hashbd)
+                                    try
                                     {
-                                        if (role != "Администратор")
+                                        sda.Fill(dt);
+
+
+                                        hashPassword = GetHashPass(hashPassword);
+                                        try
                                         {
-                                            Class1.role = 1;
-                                            Prosmotr main = new Prosmotr();
-                                            main.ShowDialog();
-                                            Close();
+                                            Class1.id_employes = Convert.ToInt32(dt.Rows[0].ItemArray.GetValue(0));
+                                            Class1.fioEmploes = dt.Rows[0].ItemArray.GetValue(1).ToString() + " " + dt.Rows[0].ItemArray.GetValue(2).ToString();
+                                            hashbd = dt.Rows[0].ItemArray.GetValue(8).ToString();
+                                            string role = dt.Rows[0].ItemArray.GetValue(9).ToString();
+
+                                            if (hashPassword == hashbd)
+                                            {
+                                                if (role != "Администратор")
+                                                {
+                                                    Class1.role = 1;
+                                                    Prosmotr main = new Prosmotr();
+                                                    main.ShowDialog();
+                                                    Close();
+                                                }
+                                                else
+                                                {
+                                                    Class1.role = 0;
+                                                    Prosmotr main = new Prosmotr();
+                                                    main.ShowDialog();
+                                                    Close();
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
+                                                error++;
+                                                error1 = Class1.k;
+                                                if (error > 1 || error1 > 1)
+                                                {
+                                                    tb1.Clear();
+                                                    tb2.Clear();
+
+                                                }
+                                            }
                                         }
-                                        else
+                                        catch (IndexOutOfRangeException)
                                         {
-                                            Class1.role = 0;
-                                            Prosmotr main = new Prosmotr();
-                                            main.ShowDialog();
-                                            Close();
+                                            MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
+                                            error++;
+                                            error1 = Class1.k;
+                                            if (error > 1 || error1 > 1)
+                                            {
+                                                tb1.Clear();
+                                                tb2.Clear();
+
+                                            }
                                         }
-                                        
                                     }
-                                    else
-                                    {
-                                        MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
-                                        error++;
-                                        error1 = Class1.k;
-                                        if (error > 1 || error1 > 1)
-                                        {
-                                            tb1.Clear();
-                                            tb2.Clear();
-
-                                        }
-                                    }
-                                }
-                                catch (IndexOutOfRangeException)
-                                {
-                                    MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
-                                    error++;
-                                    error1 = Class1.k;
-                                    if (error > 1 || error1 > 1)
-                                    {
-                                        tb1.Clear();
-                                        tb2.Clear();
-
+                                    catch(MySqlException) {
+                                        MessageBox.Show("Отсутствует соединение с бд");
                                     }
                                 }
                             }
                         }
+                    
                     }
+                }
+                else
+                {
+                    Vostan vostan = new Vostan();
+                    this.Close();
+                    vostan.ShowDialog();
                 }
             }
             else

@@ -28,33 +28,18 @@ namespace Kyrsovoi
             InitializeComponent();
         }
         public static string filePath = "";
-        public static string conString = Class1.connection;
+        public static string conString = $"host=localhost;uid=root;pwd=root;database=;";
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            RestoreDatabase(filePath);
+            RestoreDatabase();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = "sql files (*.sql)|*.sql",
-                Title = "Выберите sql файл",
-                Multiselect = false
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                filePath = openFileDialog.FileName;
-            }
-            tb.Text = filePath;
-        }
-        private void RestoreDatabase(string sqlFilePath)
+        private void RestoreDatabase()
         {
             try
             {
                 // Открываем SQL файл для чтения
-                string sqlScript = File.ReadAllText(sqlFilePath);
+                string filepath = System.IO.Path.GetFullPath("glap.sql");
+                string sqlScript = File.ReadAllText(filepath);
 
                 // Подтверждение выполнения
                 string message = "Вы уверены, что хотите восстановить структуру базы данных? Это может удалить текущие данные.";
@@ -76,6 +61,9 @@ namespace Kyrsovoi
                             command.ExecuteNonQuery();
 
                             MessageBox.Show("Структура базы данных успешно восстановлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                            Import import = new Import();
+                            this.Close();
+                            import.ShowDialog();
                         }
                     }
                     catch (Exception ex)

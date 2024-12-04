@@ -37,7 +37,9 @@ namespace Kyrsovoi
 
         private void krest_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            MainWindow mainWindow = new MainWindow();
+            this.Close();
+            mainWindow.ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
