@@ -16,6 +16,9 @@ using System.IO;
 using Word = Microsoft.Office.Interop.Word;
 using Microsoft.Office.Interop.Word;
 using System.Runtime.InteropServices;
+using System.Data.Common;
+using System.Data;
+using System.Globalization;
 
 namespace Kyrsovoi
 {
@@ -29,9 +32,18 @@ namespace Kyrsovoi
             InitializeComponent();
             DataContext = this;
             com = query;
-            FillDataGrid(com);
+            FillDataGrid(_currentPage, com);
             cb2.SelectedIndex = 2;
-            
+            try
+            {
+                CalculateTotalPages(); // Рассчитать общее количество страниц
+                _currentPage = 1; // Установить начальную страницу
+                UpdatePageInfo(); // Обновить информацию о текущей странице
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         public class Client {
             public string name { get; set; }
@@ -77,7 +89,37 @@ namespace Kyrsovoi
             public string total_price { get; set; }
             public string booking_status { get; set; }
             public string created_at { get; set; }
+            public DateTime? Сheck_in_date
+            {
+                get
+                {
+                    if (DateTime.TryParseExact(check_in_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                        return date;
+                    return null; // Если формат даты неверный
+                }
+            }
+
+            // Свойство для цвета строки
+            public Brush RowColor
+            {
+                get
+                {
+                    if (Сheck_in_date.HasValue)
+                    {
+                        var daysDifference = (DateTime.Now - Сheck_in_date.Value).Days;
+
+                        if (daysDifference < 0)
+                            return Brushes.LightGreen; // Будущее
+                        if (daysDifference <= 3)
+                            return Brushes.Yellow; // Менее 3 дней
+                        return Brushes.Red; // Просрочено
+                    }
+                    return Brushes.Gray; // Если дата отсутствует
+                }
+            }
         }
+
+        
         public class Services
         {
             public string id_service { get; set; }
@@ -111,6 +153,10 @@ namespace Kyrsovoi
         string dopCom2 = string.Empty;
         string saveQuery = string.Empty;
 
+        int _pageSize = 10;
+        int _totalPages = 0;
+        int _currentPage = 1;
+
         public ObservableCollection<Client> Clients { get; set; } = new ObservableCollection<Client>();
         public ObservableCollection<Booking> Bookings { get; set; } = new ObservableCollection<Booking>();
         public ObservableCollection<Services> Servic { get; set; } = new ObservableCollection<Services>();
@@ -118,12 +164,17 @@ namespace Kyrsovoi
         public ObservableCollection<Employee> Employees { get; set; } = new ObservableCollection<Employee>();
         string connectionString = Class1.connection;
 
-        public void FillDataGrid(string com)
+        public void FillDataGrid(int _currentPage,string com)
         {
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                MySqlCommand command = new MySqlCommand(com, connection);
+                CalculateTotalPages();
+                UpdatePageInfo();     
+                GeneratePageButtons();
+
+                int offset = (_currentPage - 1) * _pageSize;
+                MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
                 connection.Open();
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -324,8 +375,7 @@ namespace Kyrsovoi
             cb2.SelectedIndex = 2;
             tb1.Clear();
             com = query;
-            FillDataGrid(com);
-            
+            FillDataGrid(_currentPage, com);
         }
 
         private void StackPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -368,7 +418,7 @@ namespace Kyrsovoi
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
-            FillDataGrid(com);
+            FillDataGrid(_currentPage, com);
             cb1.Visibility = Visibility.Visible;
             cb2.SelectedIndex = 2;
             tb1.Text = "";
@@ -394,8 +444,7 @@ namespace Kyrsovoi
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
-            FillDataGrid(com);
-            cb2.SelectedIndex = 4;
+            FillDataGrid(_currentPage, com); cb2.SelectedIndex = 4;
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Visible;
             cb2.SelectedIndex = 2;
@@ -418,21 +467,22 @@ namespace Kyrsovoi
             {
                 dopCom0 = $" where service_name like '%{tb1.Text}%'";
             }
-            if (dopCom2 != "")
+            if (dopCom2 != "" && dopCom0 != "")
             {
                 com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
-                FillDataGrid(com);
+                FillDataGrid(_currentPage, com);
             }
             if(dopCom2 == "")
             {
                 com = query + dopCom0 + dopCom1;
-                FillDataGrid(com);
+                FillDataGrid(_currentPage, com);
             }
             
         }
 
         private void cb2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             string column = String.Empty;
             if (raspred == 0)
             {
@@ -461,28 +511,28 @@ namespace Kyrsovoi
                 if (dopCom0 != "" && dopCom2 != "")
                 {
                     com = query + dopCom0 + " AND " + dopCom2;
-                    FillDataGrid(com);
+                    FillDataGrid(_currentPage, com);
                 }
                 if (dopCom0 == "" && dopCom2 == "")
                 {
                     com = query;
-                    FillDataGrid(com);
+                    FillDataGrid(_currentPage, com);
                 }
                 if (dopCom0 != "" && dopCom2 == "")
                 {
                     com = query + dopCom0;
-                    FillDataGrid(com);
+                    FillDataGrid(_currentPage, com);
                 }
                 if (dopCom0 == "" && dopCom2 != "")
                 {
                     com = query + " WHERE " + dopCom2;
-                    FillDataGrid(com);
+                    FillDataGrid(_currentPage, com);
                 }
             }
             if (dopCom0 != "" && dopCom2 !="")
             {
                 com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
-                FillDataGrid(com);
+                FillDataGrid(_currentPage, com);
             }
             if (dopCom0 == ""|| dopCom2 == "")
             {
@@ -492,17 +542,17 @@ namespace Kyrsovoi
                     if (dopCom0 == "" && dopCom2 != "")
                     {
                         com = query + " WHERE " + dopCom2 + dopCom1;
-                        FillDataGrid(com);
+                        FillDataGrid(_currentPage, com);
                     }
                     if (dopCom0 == "" && dopCom2 == "")
                     {
                         com = query + dopCom1;
-                        FillDataGrid(com);
+                        FillDataGrid(_currentPage, com);
                     }
                     if (dopCom2 == "" && dopCom0 != "")
                     {
                         com = query + dopCom0 + dopCom1;
-                        FillDataGrid(com);
+                        FillDataGrid(_currentPage, com);
                     }
                 }
                 
@@ -525,12 +575,12 @@ namespace Kyrsovoi
                     {
                         dopCom2 = "";
                         com = query + dopCom0 + dopCom1;
-                        FillDataGrid(com);
+                        FillDataGrid(_currentPage, com);
                     }
                     if (dopCom0 != "" && dopCom1 != "")
                     {
                         com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
-                        FillDataGrid(com);
+                        FillDataGrid(_currentPage, com);
                     }
                     if (dopCom0 == "" || dopCom1 == "")
                     {
@@ -538,13 +588,13 @@ namespace Kyrsovoi
                             if (dopCom0 == "")
                             {
                                 com = query + " WHERE " + dopCom2 + dopCom1;
-                                FillDataGrid(com);
+                                FillDataGrid(_currentPage, com);
                             }
 
                             if (dopCom1 == "")
                             {
                                 com = query + dopCom0 + " AND " + dopCom2;
-                                FillDataGrid(com);
+                                FillDataGrid(_currentPage, com);
                             }
                         }
                     }
@@ -609,7 +659,7 @@ namespace Kyrsovoi
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
-            FillDataGrid(com);
+            FillDataGrid(_currentPage, com);
         }
 
         private void StackPanel_MouseDown_4(object sender, MouseButtonEventArgs e)
@@ -635,7 +685,7 @@ namespace Kyrsovoi
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
-            FillDataGrid(com);
+            FillDataGrid(_currentPage, com);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -926,6 +976,73 @@ namespace Kyrsovoi
                 PageButtonsPanel.Children.Add(pageButton);
             }
         }
+        private void PageButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем номер страницы из Tag кнопки
+            if (sender is Button button && int.TryParse(button.Tag.ToString(), out int pageNumber))
+            {
+                _currentPage = pageNumber; // Обновляем текущую страницу
+                FillDataGrid(_currentPage, com); // Загружаем данные для выбранной страницы
+            }
+        }
+        private void UpdatePageInfo()
+        {
+            labelPageInfo.Text = $"Страница {_currentPage} из {_totalPages}";
 
+            // Обновляем кнопки страниц
+        }
+        private void CalculateTotalPages()
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    string sql = "";
+                    conn.Open();
+                    if (dopCom2 != "" )
+                    {
+                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id WHERE " + dopCom2 ;
+                    }
+                    if (dopCom2 != "" && dopCom0 != "")
+                    {
+                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id " + dopCom0 + " AND " + dopCom2 ;
+                    }
+                    if (dopCom2 == "")
+                    {
+                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id " + dopCom0;
+                    }
+                    MySqlCommand countCmd = new MySqlCommand($"SELECT COUNT(*) FROM bookings {sql}", conn);
+                    int totalItems = Convert.ToInt32(countCmd.ExecuteScalar());
+                    _totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
+
+                    // Генерация кнопок страниц
+                    GeneratePageButtons();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                FillDataGrid(_currentPage, com);
+                UpdatePageInfo();
+            }
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                FillDataGrid(_currentPage, com);
+                UpdatePageInfo();
+            }
+        }
     }
 }

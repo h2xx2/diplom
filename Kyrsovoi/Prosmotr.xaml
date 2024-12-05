@@ -305,7 +305,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Текстовые элементы в первой колонке -->
-                                        <TextBlock Text="{Binding name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding surname}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding number}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
@@ -323,154 +323,168 @@
                 </ListView>
             </Grid>
             <Grid x:Name="homes">
-                    <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                    <!-- Используем Grid для управления расположением кнопки и текста -->
+                <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
+                                <!-- Используем Grid для управления расположением кнопки и текста -->
                                 <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="2*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <!-- Колонка для текста -->
-                                            <ColumnDefinition Width="110" />
-                                            <!-- Колонка для кнопки -->
-                                        </Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <!-- Колонка для кнопки -->
+                                    </Grid.ColumnDefinitions>
 
-                                        <!-- Текстовые элементы в первой колонке -->
-                                            <TextBlock Text="{Binding unit_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <!-- Текстовые элементы в первой колонке -->
+                                    <TextBlock Text="{Binding unit_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding description}" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" Width="150" FontSize="16" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding price_per_night}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
                                     <Image Source="{Binding photo}" Grid.Column="3" Width="100" Height="100" Stretch="Fill"/>
 
-                                        <!-- Кнопка во второй колонке, выравнивается вправо -->
-                                        <Button Name="redactButHome" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    <!-- Кнопка во второй колонке, выравнивается вправо -->
+                                    <Button Name="redactButHome" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                     FontSize="16" Background="#525252" FontWeight="UltraLight"
                                     Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"
                                      Tag="{Binding}" Click="Button_Click_4" />
 
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-                    <Grid x:Name="employee">
-                        <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                        <!-- Используем Grid для управления расположением кнопки и текста -->
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid x:Name="employee">
+                <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
+                                <!-- Используем Grid для управления расположением кнопки и текста -->
                                 <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <!-- Колонка для текста -->
-                                                <ColumnDefinition Width="110" />
-                                                <!-- Колонка для кнопки -->
-                                            </Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <!-- Колонка для кнопки -->
+                                    </Grid.ColumnDefinitions>
 
-                                            <!-- Текстовые элементы в первой колонке -->
-                                                <TextBlock Text="{Binding first_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <!-- Текстовые элементы в первой колонке -->
+                                    <TextBlock Text="{Binding first_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding last_name}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding phone}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
 
-                                            <!-- Кнопка во второй колонке, выравнивается вправо -->
-                                            <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    <!-- Кнопка во второй колонке, выравнивается вправо -->
+                                    <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                     FontSize="16" Background="#525252" FontWeight="UltraLight"
                                     Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0"
                                     Click="Button_Click_3" Tag="{Binding}" />
 
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                    <Grid x:Name="bookings">
-                        <ListView ItemsSource="{Binding Bookings}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                        <!-- Используем Grid для управления расположением кнопки, текста и подписей -->
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid x:Name="bookings">
+                <ListView Name="list" ItemsSource="{Binding Bookings}" Margin="80,100,10,60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="White" />
+                                        <Style.Triggers>
+                                            <!-- Условие для красного цвета -->
+                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Red}">
+                                                <Setter Property="Background" Value="LightCoral" />
+                                            </DataTrigger>
+                                            <!-- Условие для жёлтого цвета -->
+                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Yellow}">
+                                                <Setter Property="Background" Value="LightYellow" />
+                                            </DataTrigger>
+                                            <!-- Условие для зелёного цвета -->
+                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.LightGreen}">
+                                                <Setter Property="Background" Value="LightGreen" />
+                                            </DataTrigger>
+                                            <!-- Условие для серого цвета (ошибка) -->
+                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Gray}">
+                                                <Setter Property="Background" Value="LightGray" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <!-- Ваше содержимое строки -->
                                 <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="110" />
-                                                <!-- Колонка для кнопки -->
-                                            </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="25" />
-                                                <!-- Ряд для текста данных -->
-                                                <RowDefinition Height="Auto" />
-                                                <!-- Ряд для кнопки -->
-                                            </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10,0" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10,0" />
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10,0" />
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10,0" />
 
-                                            <!-- Подписи для данных -->
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
+                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10,0" />
+                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10,0" />
+                                    <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10,0" />
+                                    <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10,0" />
 
-
-
-                                            <!-- Текстовые элементы (данные) -->
-                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
-                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
-                                    <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
-                                    <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
-
-
-                                            <!-- Кнопка во второй колонке -->
-                                            <Button Grid.Row="2" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                FontSize="16" Background="#525252" FontWeight="UltraLight"
-                                Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Click="Button_Click" Tag="{Binding}"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                    <Grid x:Name="service">
-                        <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                        <!-- Используем Grid для управления расположением кнопки и текста -->
-                                        <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Grid.ColumnDefinitions>
-                                                <!-- Колонка для текста -->
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
+                                    <Button Grid.Row="2" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        FontSize="16" Background="#525252" FontWeight="UltraLight"
+                        Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10,0" Tag="{Binding}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid x:Name="service">
+                <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
+                                <!-- Используем Grid для управления расположением кнопки и текста -->
+                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <!-- Колонка для текста -->
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="110" />
                                     </Grid.ColumnDefinitions>
 
-                                            <!-- Текстовые элементы в первой колонке -->
-                                        <TextBlock Text="{Binding service_name}"  Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                        <TextBlock Text="{Binding description}"  Grid.Column="1" MaxWidth="250" TextWrapping="Wrap" FontSize="16" Margin="0 0 10 0"/>
-                                        <TextBlock Text="{Binding price}"  Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0" TextAlignment="Center" />
-                                        <Button Grid.Column="3" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    <!-- Текстовые элементы в первой колонке -->
+                                    <TextBlock Text="{Binding service_name}"  Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding description}"  Grid.Column="1" MaxWidth="250" TextWrapping="Wrap" FontSize="16" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding price}"  Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0" TextAlignment="Center" />
+                                    <Button Grid.Column="3" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
                                             FontSize="16" Background="#525252" FontWeight="UltraLight"
                                             Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Tag="{Binding}" Click="Button_Click_5"/>
                                 </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
 
-                    <!--search-->
-                    <TextBox x:Name="tb1" HorizontalAlignment="Left"  Margin="80,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
+            <!--search-->
+            <TextBox x:Name="tb1" HorizontalAlignment="Left"  Margin="80,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"
                          Background="Transparent"
                          Foreground="Black"
@@ -478,26 +492,26 @@
                         BorderBrush="Black"
                         BorderThickness="0 0 0 1" TextChanged="tb1_TextChanged" PreviewTextInput="tb1_PreviewTextInput"
                          />
-                    <TextBlock Name="placeholder" IsHitTestVisible="False" FontSize="20" Text="Поиск" Margin="85,50,500,350" Panel.ZIndex="10"
+            <TextBlock Name="placeholder" IsHitTestVisible="False" FontSize="20" Text="Поиск" Margin="85,50,500,350" Panel.ZIndex="10"
                        Foreground="#FFA0A0A0">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Visibility" Value="Collapsed"></Setter>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=tb1}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <!--Sortable-->
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=tb1}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <!--Sortable-->
 
-            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 15"></Button>
+            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 15" Click="Button_Click_6"></Button>
 
-            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="10" VerticalAlignment="Bottom" Height="40"/>
-            <TextBlock FontSize="20" Width="40" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="80 , 0, 60, 10"/>
-            <Button Content="Назад" Width="100" VerticalAlignment="Bottom" Height="30" Margin="0, 0, 150, 15"></Button>
+            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="200 20 0 10" VerticalAlignment="Bottom" Height="40"/>
+            <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10"/>
+            <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 15" Click="Button_Click_7"></Button>
 
             <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"
@@ -505,23 +519,23 @@
                          IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"
 
                       >
-                        <ComboBoxItem Content="подтвержденный"/>
-                        <ComboBoxItem Content="завершенный"/>
-                        <ComboBoxItem Content="забронированный"/>
-                        <ComboBoxItem Content="отмененный"/>
-                        <ComboBoxItem Content="Все фильтры"/>
-                    </ComboBox>
-                    <!--filter-->
-                    <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="540,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
+                <ComboBoxItem Content="подтвержденный"/>
+                <ComboBoxItem Content="завершенный"/>
+                <ComboBoxItem Content="забронированный"/>
+                <ComboBoxItem Content="отмененный"/>
+                <ComboBoxItem Content="Все фильтры"/>
+            </ComboBox>
+            <!--filter-->
+            <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="540,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
              FontSize="20"
              Background="Transparent"
              Foreground="Black"
              IsReadOnly="True" SelectionChanged="cb2_SelectionChanged">
-                        <ComboBoxItem Content="По возрастанию"/>
-                        <ComboBoxItem Content="По убыванию"/>
-                        <ComboBoxItem Content="По умолчанию"/>
-                    </ComboBox>
-                    <Image x:Name="addUser" Source="ImageButton/addUser.png"
+                <ComboBoxItem Content="По возрастанию"/>
+                <ComboBoxItem Content="По убыванию"/>
+                <ComboBoxItem Content="По умолчанию"/>
+            </ComboBox>
+            <Image x:Name="addUser" Source="ImageButton/addUser.png"
                Stretch="Uniform"
                Width="30"
                Height="30"
@@ -556,59 +570,59 @@ HorizontalAlignment="Right"
                     <ImageBrush ImageSource="/addBrone.png"/>
                 </Button.Background>
             </Button>
-                    <!--Toolbar-->
-                    <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown" >
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
-                            <TextBlock x:Name="tbNameForm" Text="Бронирование" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 500 0"></TextBlock>
-                            <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
+            <!--Toolbar-->
+            <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown" >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
+                    <TextBlock x:Name="tbNameForm" Text="Бронирование" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 500 0"></TextBlock>
+                    <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
                                      Value="true">
-                                                <Setter Property="Source" Value="source/grey.png"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                                <Image.Effect>
-                                    <BlurEffect Radius="0.5"/>
-                                </Image.Effect>
-                            </Image>
-                            <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Setter Property="Source" Value="source/krest.png"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
+                                        <Setter Property="Source" Value="source/grey.png"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                        <Image.Effect>
+                            <BlurEffect Radius="0.5"/>
+                        </Image.Effect>
+                    </Image>
+                    <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="source/krest.png"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
                                                 Value="true">
-                                                <Setter Property="Source" Value="source/krest2.png"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                                <Image.Effect>
-                                    <BlurEffect Radius="1"/>
-                                </Image.Effect>
-                            </Image>
-                        </StackPanel>
-                    </Grid>
+                                        <Setter Property="Source" Value="source/krest2.png"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                        <Image.Effect>
+                            <BlurEffect Radius="1"/>
+                        </Image.Effect>
+                    </Image>
+                </StackPanel>
+            </Grid>
 
 
-                    <!--Navigation panel-->
-                    <Grid x:Name="nav_pnl"
+            <!--Navigation panel-->
+            <Grid x:Name="nav_pnl"
                   HorizontalAlignment="Left"
                   Width="65"
                   Background="#525252"
                   Panel.ZIndex="11">
-                        <StackPanel x:Name="st_pnl">
-                            <!--Grid for button-->
-                            <Grid Height="90">
+                <StackPanel x:Name="st_pnl">
+                    <!--Grid for button-->
+                    <Grid Height="90">
 
-                                <!--Menu title Menu-->
+                        <!--Menu title Menu-->
 
-                                <TextBlock Grid.Row="1"
+                        <TextBlock Grid.Row="1"
                                    Grid.Column="0"
                                    Margin="73 -20 0 0"
                                    Text="МЕНЮ"
@@ -620,17 +634,17 @@ HorizontalAlignment="Right"
                                    Style="{StaticResource font_style}">
                             
                             <!--shadow effect-->
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect BlurRadius="10"
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="10"
                                                   ShadowDepth="1"
                                                   Direction="-90"
                                                   Color="White"/>
-                                    </TextBlock.Effect>
+                            </TextBlock.Effect>
 
-                                </TextBlock>
+                        </TextBlock>
 
-                                <!--toggle button-->
-                                <ToggleButton x:Name="Tg_Btn"
+                        <!--toggle button-->
+                        <ToggleButton x:Name="Tg_Btn"
                                       Grid.Column="0"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Left"
@@ -640,266 +654,266 @@ HorizontalAlignment="Right"
                                       BorderThickness="0"
                                       Style="{StaticResource tb_style}" PreviewMouseLeftButtonDown="Tg_Btn_PreviewMouseLeftButtonDown">
 
-                                    <!--toggle button default bckground-->
+                            <!--toggle button default bckground-->
 
-                                    <ToggleButton.Background>
-                                        <ImageBrush ImageSource="/menu.png"
+                            <ToggleButton.Background>
+                                <ImageBrush ImageSource="/menu.png"
                                             Stretch="UniformToFill"/>
-                                    </ToggleButton.Background>
+                            </ToggleButton.Background>
 
-                                    <ToggleButton.Triggers>
+                            <ToggleButton.Triggers>
 
-                                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                            <BeginStoryboard>
-                                                <Storyboard x:Name="HideStackPanel">
-                                                    <DoubleAnimation
+                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                    <BeginStoryboard>
+                                        <Storyboard x:Name="HideStackPanel">
+                                            <DoubleAnimation
                                                 Storyboard.TargetName="nav_pnl"
                                                 Storyboard.TargetProperty="Width"
                                                 BeginTime="0:0:0"
                                                 From="270" To="65"
                                                 Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
 
-                                        <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                            <BeginStoryboard>
-                                                <Storyboard x:Name="ShowStackPanel">
-                                                    <DoubleAnimation
+                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                    <BeginStoryboard>
+                                        <Storyboard x:Name="ShowStackPanel">
+                                            <DoubleAnimation
                                                  Storyboard.TargetName="nav_pnl"
                                                  Storyboard.TargetProperty="Width"
                                                  BeginTime="0:0:0"
                                                  From="65" To="270"
                                                  Duration="0:0:0.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
 
-                                    </ToggleButton.Triggers>
+                            </ToggleButton.Triggers>
 
-                                </ToggleButton>
-                            </Grid>
-                            <ListView x:Name="LV"
+                        </ToggleButton>
+                    </Grid>
+                    <ListView x:Name="LV"
                               Background="Transparent"
                               BorderBrush="Transparent"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               >
 
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type ListViewItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                                    <Border x:Name="Bd"
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <Border x:Name="Bd"
                                                     Height="50"
                                                     BorderBrush="{TemplateBinding BorderBrush}"
                                                     BorderThickness="{TemplateBinding BorderThickness}"
                                                     Background="{TemplateBinding Background}"
                                                     Padding="{TemplateBinding Padding}"
                                                     SnapsToDevicePixels="True">
-                                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                                    </Border>
+                                            </Border>
 
-                                                    <ControlTemplate.Triggers>
-                                                        <MultiTrigger>
-                                                            <MultiTrigger.Conditions>
-                                                                <Condition Property="IsMouseOver" Value="True"/>
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter Property="Background"
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Background"
                                                             TargetName="Bd"
                                                             Value="#404D5B"/>
-                                                            <Setter Property="BorderBrush"
+                                                    <Setter Property="BorderBrush"
                                                             TargetName="Bd"
                                                             Value="#404D5B"/>
-                                                        </MultiTrigger>
-                                                    </ControlTemplate.Triggers>
+                                                </MultiTrigger>
+                                            </ControlTemplate.Triggers>
 
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
 
-                                <!--Home-->
+                        <!--Home-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem HorizontalAlignment="Left"
                                       Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_home"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_home"
                                          Content="Главная страница"
                                          Style="{StaticResource hb_style}"/>
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel Orientation="Horizontal"
+                            <StackPanel Orientation="Horizontal"
                                         Width="240" MouseDown="StackPanel_MouseDown">
 
-                                        <Image Source="ImageButton/home.png"
+                                <Image Source="ImageButton/home.png"
                                        Stretch="Fill"
                                        Width="30"
                                        Height="30"
                                        Margin="11 0 0 0"/>
-                                        <TextBlock Text="Главная Страница"
+                                <TextBlock Text="Главная Страница"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
+                        </ListViewItem>
 
-                                <!--service-->
+                        <!--service-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem HorizontalAlignment="Left"
                                       Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_service"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_service"
                                          Content="Сервисы"
                                          Style="{StaticResource tt_style}"/>
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel x:Name="Service" Orientation="Horizontal"
+                            <StackPanel x:Name="Service" Orientation="Horizontal"
                                         Width="230" MouseDown="Service_MouseDown">
 
-                                        <Image Source="ImageButton/yslygi.png"
+                                <Image Source="ImageButton/yslygi.png"
                                                Stretch="Fill"
                                                Width="30"
                                                Height="30"
                                                Margin="11 0 0 0"/>
-                                        <TextBlock Text="Услуги"
+                                <TextBlock Text="Услуги"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
+                        </ListViewItem>
 
-                                <!--booking-->
+                        <!--booking-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem HorizontalAlignment="Left"
                                       Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_booking"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_booking"
                                          Content="Бронирование"
                                          Style="{StaticResource hb_style}"
                                          />
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel Orientation="Horizontal"
+                            <StackPanel Orientation="Horizontal"
                                         Width="260" MouseDown="StackPanel_MouseDown_1">
 
-                                        <Image Source="ImageButton/bronirovanoe.png"
+                                <Image Source="ImageButton/bronirovanoe.png"
                                                Stretch="Fill"
                                                Width="30"
                                                Height="30"
                                                Margin="11 0 0 0"/>
-                                        <TextBlock Text="Бронирование"
+                                <TextBlock Text="Бронирование"
                                            Margin="25 0 0 0"
                                            
                                            Style="{StaticResource font_style}" Width="186"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
+                        </ListViewItem>
 
-                                <!--Client-->
+                        <!--Client-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem HorizontalAlignment="Left"
                                       Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_suppliers"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_suppliers"
                                          Content="Клиент"
                                          Style="{StaticResource tt_style}"/>
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel Orientation="Horizontal"
+                            <StackPanel Orientation="Horizontal"
                                         Width="230" MouseDown="StackPanel_MouseDown_2">
 
-                                        <Image Source="ImageButton/client.png"
+                                <Image Source="ImageButton/client.png"
                                                Stretch="Fill"
                                                Width="30"
                                                Height="30"
                                                Margin="11 0 0 0"/>
-                                        <TextBlock Text="Клиент"
+                                <TextBlock Text="Клиент"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
+                        </ListViewItem>
 
-                                <!--supplier-->
+                        <!--supplier-->
 
-                                <ListViewItem Name="lvSupplier" HorizontalAlignment="Left"
+                        <ListViewItem Name="lvSupplier" HorizontalAlignment="Left"
                                         Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_client"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_client"
                                          Content="Сотрудники"
                                          Style="{StaticResource tt_style}"/>
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel Orientation="Horizontal"
+                            <StackPanel Orientation="Horizontal"
                                         Width="230" MouseDown="StackPanel_MouseDown_3">
 
-                                        <Image Source="ImageButton/sotryd.png"
+                                <Image Source="ImageButton/sotryd.png"
                                        Stretch="Fill"
                                        Width="30"
                                        Height="30"
                                        Margin="11 0 0 0"/>
-                                        <TextBlock Text="Сотрудники"
+                                <TextBlock Text="Сотрудники"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
-                                <!--House-->
+                        </ListViewItem>
+                        <!--House-->
 
-                                <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem HorizontalAlignment="Left"
                                     Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
-                                    <!--Tooltip-->
+                            <!--Tooltip-->
 
-                                    <ListViewItem.ToolTip>
-                                        <ToolTip x:Name="tt_house"
+                            <ListViewItem.ToolTip>
+                                <ToolTip x:Name="tt_house"
                                          Content="Дома"
                                          Style="{StaticResource tt_style}"/>
-                                    </ListViewItem.ToolTip>
+                            </ListViewItem.ToolTip>
 
-                                    <StackPanel Orientation="Horizontal"
+                            <StackPanel Orientation="Horizontal"
                                         Width="230" MouseDown="StackPanel_MouseDown_4">
 
-                                        <Image Source="ImageButton/affordableHomes.png"
+                                <Image Source="ImageButton/affordableHomes.png"
                                        Stretch="Fill"
                                        Width="30"
                                        Height="30"
                                        Margin="11 0 0 0"/>
-                                        <TextBlock Text="Дома"
+                                <TextBlock Text="Дома"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
-                                    </StackPanel>
+                            </StackPanel>
 
-                                </ListViewItem>
+                        </ListViewItem>
 
-                            </ListView>
+                    </ListView>
 
-                            <!--listview with menu list items-->
+                    <!--listview with menu list items-->
 
-                        </StackPanel>
+                </StackPanel>
 
-                    </Grid>
-
-                </Grid>
             </Grid>
-        
+
+        </Grid>
+    </Grid>
+
 </Window>
