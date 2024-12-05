@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-        Title="Prosmotr" Height="480" Width="800" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
+        Title="Prosmotr" Height="600" Width="800" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
         ResizeMode="NoResize"
         Topmost="false"
         
@@ -288,7 +288,7 @@
         <!--Background-->
         <Grid Background="#EAEAEA">
             <Grid x:Name="clients">
-                <ListView ItemsSource="{Binding Clients}" Margin="80 100 10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Clients}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -323,7 +323,7 @@
                 </ListView>
             </Grid>
             <Grid x:Name="homes">
-                    <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -358,7 +358,7 @@
                     </ListView>
                 </Grid>
                     <Grid x:Name="employee">
-                        <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -393,7 +393,7 @@
                         </ListView>
                     </Grid>
                     <Grid x:Name="bookings">
-                        <ListView ItemsSource="{Binding Bookings}" Margin="80 100 10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ListView ItemsSource="{Binding Bookings}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -441,7 +441,7 @@
                         </ListView>
                     </Grid>
                     <Grid x:Name="service">
-                        <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -492,7 +492,12 @@
                         </TextBlock.Style>
                     </TextBlock>
                     <!--Sortable-->
-                    <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
+
+            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 15"></Button>
+            <TextBlock FontSize="20" Width="40" Height="40" VerticalAlignment="Bottom" Margin="80 , 0, 0, 10"/>
+            <Button Content="Назад" Width="100" VerticalAlignment="Bottom" Height="30" Margin="0, 0, 150, 15"></Button>
+
+            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"
                          Foreground="Black"
                          IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"
@@ -518,23 +523,33 @@
                Stretch="Uniform"
                Width="30"
                Height="30"
-               Margin="714,50,56,400" MouseDown="Image_MouseDown_1"/>
+               VerticalAlignment="Top"
+HorizontalAlignment="Right"
+ Margin="0,50,56,0" MouseDown="Image_MouseDown_1"/>
             <Image x:Name="addEmployee" Source="ImageButton/addSotryd.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
-                    Margin="714,50,56,400" MouseDown="addEmployee_MouseDown" />
+                    VerticalAlignment="Top"
+HorizontalAlignment="Right"
+ Margin="0,50,56,0" MouseDown="addEmployee_MouseDown" />
             <Image x:Name="addService" Source="ImageButton/addService.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
-                    Margin="714,50,56,400" MouseDown="addService_MouseDown" />
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Right"
+                    Margin="0,50,56,0" MouseDown="addService_MouseDown" />
             <Image x:Name="addHouse" Source="ImageButton/addHouse.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
-                    Margin="714,50,56,400" MouseDown="addHouse_MouseDown"  />
-            <Button x:Name="Add_Booking" Width="30" Height="30" Margin="760,50,10,400" Click="Button_Click_2" BorderBrush="{x:Null}">
+                    VerticalAlignment="Top"
+HorizontalAlignment="Right"
+ Margin="0,50,56,0" MouseDown="addHouse_MouseDown"  />
+            <Button x:Name="Add_Booking" Width="30" Height="30" VerticalAlignment="Top"
+HorizontalAlignment="Right"
+ Margin="0,50,10,0" Click="Button_Click_2" BorderBrush="{x:Null}">
                 <Button.Background>
                     <ImageBrush ImageSource="/addBrone.png"/>
                 </Button.Background>

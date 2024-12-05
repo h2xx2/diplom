@@ -93,30 +93,52 @@ namespace Kyrsovoi
         }
         private void GenerateCaptcha()
         {
+            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
             _captchaText = new string(Enumerable.Range(0, 4)
-                .Select(_ => (char)new Random().Next('A', 'Z' + 1))
+                .Select(_ => characters[random.Next(characters.Length)])
                 .ToArray());
 
             Bitmap bitmap = new Bitmap(120, 50);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 g.Clear(System.Drawing.Color.White);
-                Random rnd = new Random();
+
                 for (int i = 0; i < _captchaText.Length; i++)
                 {
-                    g.DrawString(_captchaText[i].ToString(),
-                        new Font("Arial", 20),
-                        System.Drawing.Brushes.Black,
-                        new PointF(20 * i + rnd.Next(5), rnd.Next(5)));
+                    // Генерация случайного положения, угла и цвета символов
+                    float x = 20 * i + random.Next(-5, 5);
+                    float y = random.Next(5, 20);
+                    float angle = random.Next(-30, 30);
+
+                    // Настраиваем шрифт
+                    using (Font font = new Font(new System.Drawing.FontFamily("Arial"), random.Next(18, 24), System.Drawing.FontStyle.Bold))
+                    {
+                        // Настройка цвета символа
+                        using (System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(
+                                   random.Next(50, 200), random.Next(0, 255), random.Next(0, 255), random.Next(0, 255))))
+                        {
+                            // Вращение символа
+                            g.TranslateTransform(x, y);
+                            g.RotateTransform(angle);
+                            g.DrawString(_captchaText[i].ToString(), font, brush, 0, 0);
+                            g.ResetTransform();
+                        }
+                    }
                 }
-                for (int i = 0; i < 5; i++) // Шум
+
+                // Добавляем шум
+                for (int i = 0; i < 5; i++)
                 {
-                    g.DrawLine(Pens.Black,
-                        rnd.Next(0, 120), rnd.Next(0, 50),
-                        rnd.Next(0, 120), rnd.Next(0, 50));
+                    using (System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(
+                               random.Next(50, 200), random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)), random.Next(1, 3)))
+                    {
+                        g.DrawLine(pen, random.Next(0, 120), random.Next(0, 50), random.Next(0, 120), random.Next(0, 50));
+                    }
                 }
             }
 
+            // Конвертация изображения в WPF-совместимый формат
             using (MemoryStream stream = new MemoryStream())
             {
                 bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
@@ -168,49 +190,54 @@ namespace Kyrsovoi
                                             Class1.fioEmploes = dt.Rows[0].ItemArray.GetValue(1).ToString() + " " + dt.Rows[0].ItemArray.GetValue(2).ToString();
                                             hashbd = dt.Rows[0].ItemArray.GetValue(8).ToString();
                                             string role = dt.Rows[0].ItemArray.GetValue(9).ToString();
-
-                                            if (hashPassword == hashbd)
+                                            if (_captchaText == tb3.Text || error == 0)
                                             {
-                                                if (role != "Администратор")
+                                                if (hashPassword == hashbd)
                                                 {
-                                                    Class1.role = 1;
-                                                    Prosmotr main = new Prosmotr();
-                                                    main.ShowDialog();
-                                                    Close();
+                                                    if (role != "Администратор")
+                                                    {
+                                                        Class1.role = 1;
+                                                        Prosmotr main = new Prosmotr();
+                                                        main.ShowDialog();
+                                                        Close();
+                                                    }
+                                                    else
+                                                    {
+                                                        Class1.role = 0;
+                                                        Prosmotr main = new Prosmotr();
+                                                        main.ShowDialog();
+                                                        Close();
+                                                    }
+
                                                 }
                                                 else
                                                 {
-                                                    Class1.role = 0;
-                                                    Prosmotr main = new Prosmotr();
-                                                    main.ShowDialog();
-                                                    Close();
-                                                }
+                                                    MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
+                                                    error++;
+                                                    error1 = Class1.k;
+                                                    if (error >= 1 || error1 >= 1)
+                                                    {
+                                                        tb1.Clear();
+                                                        tb2.Clear();
+                                                        if (Math.Round(this.Width) == 350)
+                                                        {
+                                                            FillFuncBig();
+                                                        }
 
+                                                        GenerateCaptcha();
+
+                                                    }
+                                                }
                                             }
                                             else
                                             {
-                                                MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
-                                                error++;
-                                                error1 = Class1.k;
-                                                if (error > 1 || error1 > 1)
-                                                {
-                                                    tb1.Clear();
-                                                    tb2.Clear();
-
-                                                }
+                                                MessageBox.Show("Captha не ведена", "Ошибка авторизации");
+                                                GenerateCaptcha();
                                             }
                                         }
                                         catch (IndexOutOfRangeException)
                                         {
-                                            MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
-                                            error++;
-                                            error1 = Class1.k;
-                                            if (error > 1 || error1 > 1)
-                                            {
-                                                tb1.Clear();
-                                                tb2.Clear();
-
-                                            }
+                                            MessageBox.Show("Индекс вне границ массива", "Ошибка");
                                         }
                                     }
                                     catch(MySqlException) {
@@ -234,11 +261,15 @@ namespace Kyrsovoi
                 MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
                 error++;
                 error1 = Class1.k;
-                if (error > 1 || error1 > 1)
+                if (error >= 1 || error1 >= 1)
                 {
                     tb1.Clear();
                     tb2.Clear();
-
+                    if (Math.Round(this.Width) == 350)
+                    {
+                        FillFuncBig();
+                    }
+                    GenerateCaptcha();
                 }
             }
         }
@@ -252,13 +283,7 @@ namespace Kyrsovoi
             double currentHeight = 350;
             double targetHeight = 700; // Конечная высота
             // Запускаем анимацию высоты и ширины
-            AnimateListViewHeight(this, currentHeight, targetHeight, 10);
-        }
-        void FillFuncSmall()
-        {
-            double currentHeight = 700;
-            double targetHeight = 350; // Конечная высота
-            AnimateListViewHeight(this, currentHeight, targetHeight, 1);
+            AnimateListViewHeight(this, currentHeight, targetHeight, 0.5);
         }
         private void AnimateListViewHeight(Window grid, double fromWidth, double toHeight, double durationSeconds)
         {
@@ -273,6 +298,16 @@ namespace Kyrsovoi
 
             // Применяем анимацию к свойству высоты
             grid.BeginAnimation(WidthProperty, heightAnimation);
+        }
+
+        private void CaptchaImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            GenerateCaptcha();
+        }
+
+        private void Smena_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            GenerateCaptcha();
         }
     }
 }

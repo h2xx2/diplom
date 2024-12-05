@@ -106,7 +106,7 @@
                 </Image>
             </StackPanel>
         </Grid>
-        <Button Style="{DynamicResource RoundedButton}" Content="   Войти   " HorizontalAlignment="Center" Margin="0,269,0,0"  VerticalAlignment="Top" FontSize="22" Background="#A7A7A7" FontWeight="UltraLight" Width="144" Height="39" Foreground="#FFFCFCFC" Click="Button_Click"/>
+        <Button Name="bt1" Style="{DynamicResource RoundedButton}" Content="   Войти   " HorizontalAlignment="Center" Margin="0,269,0,0"  VerticalAlignment="Top" FontSize="22" Background="#A7A7A7" FontWeight="UltraLight" Width="144" Height="39" Foreground="#FFFCFCFC" Click="Button_Click"/>
         <TextBox x:Name="tb1" HorizontalAlignment="Left" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
                  FontSize="20"
                  Background="#66D9D9D9"
@@ -139,26 +139,16 @@
 
         </TextBlock>
         <Label Content="Авторизация" HorizontalAlignment="Center" Margin="0,34,0,0" VerticalAlignment="Top"  FontSize="36" Foreground="White"/>
-        <TextBox x:Name="tb3" HorizontalAlignment="Left" Margin="400,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
+        <TextBox x:Name="tb3" HorizontalAlignment="Left" Margin="420,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
          FontSize="20"
          Background="#66D9D9D9"
          Foreground="White"
          MaxLength="30" PreviewTextInput="tb1_PreviewTextInput"
          />
-        <TextBlock IsHitTestVisible="False" FontSize="20" Text="Логин" Margin="65,131,50,147" Panel.ZIndex="10"
-           Foreground="#FFEAEAEA">
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Visibility" Value="Collapsed"></Setter>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text, ElementName=tb3}" Value="">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-        <Image Name="CaptchaImage" Height="80" Margin="400, 0,40,100"/>
+        
+        <Border BorderBrush="Black" BorderThickness="4">
+        <Image Name="CaptchaImage" Width="230" Height="80" Margin="410, 0,40,100" MouseLeftButtonDown="CaptchaImage_MouseLeftButtonDown"/>
+        </Border>
     </Grid>
     
 </Window>
