@@ -482,7 +482,6 @@ namespace Kyrsovoi
 
         private void cb2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             string column = String.Empty;
             if (raspred == 0)
             {
