@@ -494,7 +494,9 @@
                     <!--Sortable-->
 
             <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 15"></Button>
-            <TextBlock FontSize="20" Width="40" Height="40" VerticalAlignment="Bottom" Margin="80 , 0, 0, 10"/>
+
+            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="10" VerticalAlignment="Bottom" Height="40"/>
+            <TextBlock FontSize="20" Width="40" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="80 , 0, 60, 10"/>
             <Button Content="Назад" Width="100" VerticalAlignment="Bottom" Height="30" Margin="0, 0, 150, 15"></Button>
 
             <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"

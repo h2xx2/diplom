@@ -902,5 +902,30 @@ namespace Kyrsovoi
         {
             e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[а-яА-Я]+$");
         }
+        private void GeneratePageButtons()
+        {
+            // Очищаем старые кнопки
+            PageButtonsPanel.Children.Clear();
+
+            // Генерируем кнопки для всех страниц
+            for (int i = 1; i <= _totalPages; i++)
+            {
+                Button pageButton = new Button
+                {
+                    Content = i.ToString(),
+                    Margin = new Thickness(5),
+                    Width = 30,
+                    Height = 30,
+                    Tag = i // Сохраняем номер страницы в свойстве Tag
+                };
+
+                // Событие клика на кнопку
+                pageButton.Click += PageButton_Click;
+
+                // Добавляем кнопку в панель
+                PageButtonsPanel.Children.Add(pageButton);
+            }
+        }
+
     }
 }

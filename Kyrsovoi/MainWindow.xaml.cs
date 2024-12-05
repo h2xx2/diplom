@@ -198,15 +198,16 @@ namespace Kyrsovoi
                                                     {
                                                         Class1.role = 1;
                                                         Prosmotr main = new Prosmotr();
+                                                        this.Close();
                                                         main.ShowDialog();
-                                                        Close();
                                                     }
                                                     else
                                                     {
                                                         Class1.role = 0;
                                                         Prosmotr main = new Prosmotr();
+                                                        this.Close();
                                                         main.ShowDialog();
-                                                        Close();
+                                                        
                                                     }
 
                                                 }
