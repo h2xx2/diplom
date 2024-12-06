@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-        Title="Prosmotr" Height="630" Width="900" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
+        Title="Prosmotr" Height="630" Width="850" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
         ResizeMode="NoResize"
         Topmost="false"
         
@@ -292,7 +292,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <!-- Колонка для текста -->
@@ -327,7 +327,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="2*" />
@@ -362,7 +362,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -395,24 +395,38 @@
                 <ListView Name="list" ItemsSource="{Binding Bookings}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Background" Value="White" />
                             <!-- Цвет по умолчанию -->
+                            <Setter Property="Background" Value="WhiteSmoke" />
+                            <Setter Property="Foreground" Value="Black" />
+
                             <Style.Triggers>
                                 <!-- Подтвержденный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="подтвержденный">
-                                    <Setter Property="Background" Value="LightGreen" />
+                                    <Setter Property="Background" Value="#D0E8D0" />
+                                    <!-- Светло-зеленый с серым подтоном -->
+                                    <Setter Property="Foreground" Value="#2F4F4F" />
+                                    <!-- Темно-серый текст -->
                                 </DataTrigger>
+
                                 <!-- Завершенный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="завершенный">
-                                    <Setter Property="Background" Value="LightBlue" />
+                                    <Setter Property="Background" Value="#D0DFF0" />
+                                    <!-- Светло-голубой с серым подтоном -->
+                                    <Setter Property="Foreground" Value="#2F4F4F" />
                                 </DataTrigger>
+
                                 <!-- Забронированный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="забронированный">
-                                    <Setter Property="Background" Value="Khaki" />
+                                    <Setter Property="Background" Value="#F0E5D0" />
+                                    <!-- Бежевый с легким подтоном -->
+                                    <Setter Property="Foreground" Value="#2F4F4F" />
                                 </DataTrigger>
+
                                 <!-- Отмененный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="отмененный">
-                                    <Setter Property="Background" Value="LightCoral" />
+                                    <Setter Property="Background" Value="#F0D0D0" />
+                                    <!-- Светло-красный с серым подтоном -->
+                                    <Setter Property="Foreground" Value="#2F4F4F" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -421,7 +435,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки, текста и подписей -->
-                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -469,7 +483,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <!-- Колонка для текста -->
                                         <ColumnDefinition Width="*" />
@@ -522,14 +536,25 @@
             <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50"/>
             <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 55" Click="Button_Click_7"></Button>
 
-            <TextBlock Background="LightGreen" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10"/>
-            <TextBlock Background="LightBlue" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10"/>
-            <TextBlock Background="Khaki" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10"/>
-            <TextBlock Background="LightCoral" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10"/>
-            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10"/>
-            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10"/>
-            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10"/>
-            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10"/>
+            
+            <TextBlock Background="#D0E8D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10">
+                    <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
+            </TextBlock>
+
+            <TextBlock Background="#D0DFF0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10">
+                    <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
+            </TextBlock>
+            <TextBlock Background="#F0E5D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10">
+                <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
+            </TextBlock>
+            <TextBlock Background="#F0D0D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10">
+                <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
+            </TextBlock>
+            
+            <TextBlock Text="- Подвержденный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="160,0,10,10"/>
+            <TextBlock Text="- Завершенный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="360,0,10,10"/>
+            <TextBlock Text="- Забронированный" Width="120" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="560,0,10,10"/>
+            <TextBlock Text="- Отменный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="760,0,10,10"/>
 
             <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"

@@ -36,6 +36,10 @@ namespace Kyrsovoi
         public Prosmotr()
         {
             InitializeComponent();
+            addHouse.Visibility = Visibility.Collapsed;
+            addService.Visibility = Visibility.Collapsed;
+            addEmployee.Visibility = Visibility.Collapsed;
+            addUser.Visibility = Visibility.Collapsed;
             DataContext = this;
             com = query;
             FillDataGrid(_currentPage, com);
