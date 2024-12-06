@@ -354,8 +354,6 @@ namespace Kyrsovoi
                             photo = bitmap,
                         });
                     }
-
-
                 }
                 reader.Close();
             }
