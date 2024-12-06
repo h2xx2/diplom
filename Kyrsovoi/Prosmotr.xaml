@@ -400,7 +400,7 @@
                             <Style.Triggers>
                                 <!-- Подтвержденный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="подтвержденный">
-                                    <Setter Property="Background" Value="LightGreen" />
+                                    <Setter Property="Background" Value="" />
                                 </DataTrigger>
                                 <!-- Завершенный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="завершенный">
@@ -447,8 +447,8 @@
 
 
                                     <!-- Текстовые элементы (данные) -->
-                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
-                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding ProtectedGuests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding ProtectedEmployee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
                                     <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
                                     <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
 

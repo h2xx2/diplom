@@ -89,7 +89,40 @@ namespace Kyrsovoi
             public string total_price { get; set; }
             public string booking_status { get; set; }
             public string created_at { get; set; }
-            
+            public string ProtectedGuests
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(guests))
+                        return string.Empty;
+
+                    // Разделяем имя и фамилию
+                    var parts = guests.Split(' ');
+
+                    if (parts.Length < 2)
+                        return guests; // Если фамилия отсутствует
+
+                    // Возвращаем имя и первую букву фамилии
+                    return $"{parts[0]} {parts[1][0]}.";
+                }
+            }
+            public string ProtectedEmployee
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(employee))
+                        return string.Empty;
+
+                    // Разделяем имя и фамилию
+                    var parts = employee.Split(' ');
+
+                    if (parts.Length < 2)
+                        return employee; // Если фамилия отсутствует
+
+                    // Возвращаем имя и первую букву фамилии
+                    return $"{parts[0]} {parts[1][0]}.";
+                }
+            }
         }
 
         
