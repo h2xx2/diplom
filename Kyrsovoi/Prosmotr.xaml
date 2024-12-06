@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-        Title="Prosmotr" Height="600" Width="800" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
+        Title="Prosmotr" Height="630" Width="840" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
         ResizeMode="NoResize"
         Topmost="false"
         
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" Loaded="Window_Loaded">
     <Window.Resources>
-
         <!--Toggle Button style-->
 
         <ImageBrush x:Key="tb_mouse_over"
@@ -288,7 +287,7 @@
         <!--Background-->
         <Grid Background="#EAEAEA">
             <Grid x:Name="clients">
-                <ListView ItemsSource="{Binding Clients}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Clients}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -323,7 +322,7 @@
                 </ListView>
             </Grid>
             <Grid x:Name="homes">
-                <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Homes}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -358,7 +357,7 @@
                 </ListView>
             </Grid>
             <Grid x:Name="employee">
-                <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Employees}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -393,35 +392,35 @@
                 </ListView>
             </Grid>
             <Grid x:Name="bookings">
-                <ListView Name="list" ItemsSource="{Binding Bookings}" Margin="80,100,10,60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView Name="list" ItemsSource="{Binding Bookings}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="White" />
+                            <!-- Цвет по умолчанию -->
+                            <Style.Triggers>
+                                <!-- Подтвержденный -->
+                                <DataTrigger Binding="{Binding booking_status}" Value="подтвержденный">
+                                    <Setter Property="Background" Value="LightGreen" />
+                                </DataTrigger>
+                                <!-- Завершенный -->
+                                <DataTrigger Binding="{Binding booking_status}" Value="завершенный">
+                                    <Setter Property="Background" Value="LightBlue" />
+                                </DataTrigger>
+                                <!-- Забронированный -->
+                                <DataTrigger Binding="{Binding booking_status}" Value="забронированный">
+                                    <Setter Property="Background" Value="Khaki" />
+                                </DataTrigger>
+                                <!-- Отмененный -->
+                                <DataTrigger Binding="{Binding booking_status}" Value="отмененный">
+                                    <Setter Property="Background" Value="LightCoral" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="White" />
-                                        <Style.Triggers>
-                                            <!-- Условие для красного цвета -->
-                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Red}">
-                                                <Setter Property="Background" Value="LightCoral" />
-                                            </DataTrigger>
-                                            <!-- Условие для жёлтого цвета -->
-                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Yellow}">
-                                                <Setter Property="Background" Value="LightYellow" />
-                                            </DataTrigger>
-                                            <!-- Условие для зелёного цвета -->
-                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.LightGreen}">
-                                                <Setter Property="Background" Value="LightGreen" />
-                                            </DataTrigger>
-                                            <!-- Условие для серого цвета (ошибка) -->
-                                            <DataTrigger Binding="{Binding RowColor}" Value="{x:Static Brushes.Gray}">
-                                                <Setter Property="Background" Value="LightGray" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <!-- Ваше содержимое строки -->
+                                <!-- Используем Grid для управления расположением кнопки, текста и подписей -->
                                 <Grid ShowGridLines="False" Width="640" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -429,25 +428,35 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="110" />
+                                        <!-- Колонка для кнопки -->
                                     </Grid.ColumnDefinitions>
+
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25" />
+                                        <!-- Ряд для текста данных -->
                                         <RowDefinition Height="Auto" />
+                                        <!-- Ряд для кнопки -->
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10,0" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10,0" />
-                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10,0" />
-                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10,0" />
+                                    <!-- Подписи для данных -->
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Гости: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Сотрудники: " FontWeight="Bold" FontSize="14" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Цена: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Дата создания: " FontStyle="Italic" FontSize="12" Foreground="Gray" Margin="10 0"/>
 
-                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10,0" />
-                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10,0" />
-                                    <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10,0" />
-                                    <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10,0" />
 
+
+                                    <!-- Текстовые элементы (данные) -->
+                                    <TextBlock Text="{Binding guests}" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding employee}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="10 0"/>
+                                    <TextBlock Text="{Binding total_price}" Grid.Row="1" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
+                                    <TextBlock Text="{Binding created_at}" Grid.Row="1" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="10 0"/>
+
+
+                                    <!-- Кнопка во второй колонке -->
                                     <Button Grid.Row="2" Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
-                        FontSize="16" Background="#525252" FontWeight="UltraLight"
-                        Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10,0" Tag="{Binding}" />
+                                FontSize="16" Background="#525252" FontWeight="UltraLight"
+                                Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Click="Button_Click" Tag="{Binding}"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -455,7 +464,7 @@
                 </ListView>
             </Grid>
             <Grid x:Name="service">
-                <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
@@ -507,11 +516,20 @@
             </TextBlock>
             <!--Sortable-->
 
-            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 15" Click="Button_Click_6"></Button>
+            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 55" Click="Button_Click_6"></Button>
 
-            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="200 20 0 10" VerticalAlignment="Bottom" Height="40"/>
-            <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10"/>
-            <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 15" Click="Button_Click_7"></Button>
+            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="200 20 0 50" VerticalAlignment="Bottom" Height="40"/>
+            <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50"/>
+            <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 55" Click="Button_Click_7"></Button>
+
+            <TextBlock Background="LightGreen" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10"/>
+            <TextBlock Background="LightBlue" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10"/>
+            <TextBlock Background="Khaki" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10"/>
+            <TextBlock Background="LightCoral" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10"/>
+            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10"/>
+            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10"/>
+            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10"/>
+            <TextBlock Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10"/>
 
             <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"

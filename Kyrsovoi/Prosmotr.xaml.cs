@@ -89,34 +89,7 @@ namespace Kyrsovoi
             public string total_price { get; set; }
             public string booking_status { get; set; }
             public string created_at { get; set; }
-            public DateTime? Сheck_in_date
-            {
-                get
-                {
-                    if (DateTime.TryParseExact(check_in_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
-                        return date;
-                    return null; // Если формат даты неверный
-                }
-            }
-
-            // Свойство для цвета строки
-            public Brush RowColor
-            {
-                get
-                {
-                    if (Сheck_in_date.HasValue)
-                    {
-                        var daysDifference = (DateTime.Now - Сheck_in_date.Value).Days;
-
-                        if (daysDifference < 0)
-                            return Brushes.LightGreen; // Будущее
-                        if (daysDifference <= 3)
-                            return Brushes.Yellow; // Менее 3 дней
-                        return Brushes.Red; // Просрочено
-                    }
-                    return Brushes.Gray; // Если дата отсутствует
-                }
-            }
+            
         }
 
         
@@ -163,7 +136,7 @@ namespace Kyrsovoi
         public ObservableCollection<Home> Homes { get; set; } = new ObservableCollection<Home>();
         public ObservableCollection<Employee> Employees { get; set; } = new ObservableCollection<Employee>();
         string connectionString = Class1.connection;
-
+        
         public void FillDataGrid(int _currentPage,string com)
         {
 
@@ -172,7 +145,6 @@ namespace Kyrsovoi
                 CalculateTotalPages();
                 UpdatePageInfo();     
                 GeneratePageButtons();
-
                 int offset = (_currentPage - 1) * _pageSize;
                 MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
                 connection.Open();
