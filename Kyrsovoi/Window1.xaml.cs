@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -14,6 +16,8 @@ namespace Kyrsovoi
     /// </summary>
     public partial class Window1 : Window
     {
+        private Timer _idleTimer;
+        private int _idleTimeout; // Время ожидания (секунды)
         private string _captchaText;
         private int _failedAttempts;
         private DispatcherTimer _blockTimer;
@@ -23,6 +27,47 @@ namespace Kyrsovoi
             InitializeComponent(); GenerateCaptcha();
             _blockTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
             _blockTimer.Tick += UnblockLogin;
+            if (!int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out _idleTimeout))
+            {
+                _idleTimeout = 30; // Значение по умолчанию
+            }
+
+            // Настройка таймера
+            _idleTimer = new Timer(_idleTimeout * 1000); // Перевод в миллисекунды
+            _idleTimer.Elapsed += OnIdleTimeout;
+            _idleTimer.Start();
+
+            // Обработчики событий для отслеживания активности
+            this.MouseMove += ResetIdleTimer;
+            this.KeyDown += ResetIdleTimer;
+        }
+
+        private void ResetIdleTimer(object sender, EventArgs e)
+        {
+            // Сбрасываем таймер при активности пользователя
+            _idleTimer.Stop();
+            _idleTimer.Start();
+        }
+
+        private void OnIdleTimeout(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Остановка таймера
+                _idleTimer.Stop();
+
+                // Перенаправление на форму авторизации
+                var loginWindow = new MainWindow(); // Предполагается, что LoginWindow — это форма авторизации
+                loginWindow.Show();
+                this.Close(); // Закрываем текущую форму
+            });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            // Очистка ресурсов при закрытии
+            _idleTimer?.Dispose();
+            base.OnClosed(e);
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {

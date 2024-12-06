@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,6 +29,8 @@ namespace Kyrsovoi
     /// </summary>
     public partial class addHouse : Window
     {
+        private Timer _idleTimer;
+        private int _idleTimeout; // Время ожидания (секунды)
         private string oldName = "";
         private string oldType = "";
         private string oldCapacity = "";
@@ -38,7 +42,48 @@ namespace Kyrsovoi
         public addHouse()
         {
             InitializeComponent();
-            Smena.IsEnabled = false; 
+            Smena.IsEnabled = false;
+            if (!int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out _idleTimeout))
+            {
+                _idleTimeout = 30; // Значение по умолчанию
+            }
+
+            // Настройка таймера
+            _idleTimer = new Timer(_idleTimeout * 1000); // Перевод в миллисекунды
+            _idleTimer.Elapsed += OnIdleTimeout;
+            _idleTimer.Start();
+
+            // Обработчики событий для отслеживания активности
+            this.MouseMove += ResetIdleTimer;
+            this.KeyDown += ResetIdleTimer;
+        }
+
+        private void ResetIdleTimer(object sender, EventArgs e)
+        {
+            // Сбрасываем таймер при активности пользователя
+            _idleTimer.Stop();
+            _idleTimer.Start();
+        }
+
+        private void OnIdleTimeout(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Остановка таймера
+                _idleTimer.Stop();
+
+                // Перенаправление на форму авторизации
+                var loginWindow = new MainWindow(); // Предполагается, что LoginWindow — это форма авторизации
+                loginWindow.Show();
+                this.Close(); // Закрываем текущую форму
+            });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            // Очистка ресурсов при закрытии
+            _idleTimer?.Dispose();
+            base.OnClosed(e);
         }
         string connectionString = Class1.connection;
         string id = "";

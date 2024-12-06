@@ -21,6 +21,8 @@ using System.Data;
 using System.Globalization;
 using System.Timers;
 using System.Configuration;
+using System.Windows.Media.Animation;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Kyrsovoi
 {
@@ -476,7 +478,20 @@ namespace Kyrsovoi
             tb1.Text = "";
 
         }
+        private void AnimateListViewHeight(Grid listView, double fromHeight, double toHeight, double durationSeconds)
+        {
+            // Создаем анимацию для высоты
+            DoubleAnimation heightAnimation = new DoubleAnimation
+            {
+                From = fromHeight,
+                To = toHeight,
+                Duration = new Duration(TimeSpan.FromSeconds(durationSeconds)),
+                EasingFunction = new QuadraticEase() // Для плавного эффекта
+            };
 
+            // Применяем анимацию к свойству высоты
+            listView.BeginAnimation(HeightProperty, heightAnimation);
+        }
         private void StackPanel_MouseDown_2(object sender, MouseButtonEventArgs e)
         {
             addHouse.Visibility = Visibility.Collapsed;
@@ -1094,6 +1109,43 @@ namespace Kyrsovoi
                 FillDataGrid(_currentPage, com);
                 UpdatePageInfo();
             }
+        }
+        int count = 0;
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            count++;
+            if (count %2 == 1) 
+            {
+                string idleTimeout = ConfigurationManager.AppSettings["IdleTimeout"];
+                cbSleep.Text = idleTimeout;
+                AnimateListViewHeight(gridSleep, 0, 100, 0.5);
+            }
+            else{
+                AnimateListViewHeight(gridSleep, 100, 0, 0.5);
+                UpdateAppConfig("IdleTimeout", cbSleep.Text);
+            }
+            
+        }
+        void UpdateAppConfig(string key, string value)
+        {
+            // Загружаем текущую конфигурацию
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            // Обновляем или добавляем ключ
+            if (config.AppSettings.Settings[key] != null)
+            {
+                config.AppSettings.Settings[key].Value = value;
+            }
+            else
+            {
+                config.AppSettings.Settings.Add(key, value);
+            }
+
+            // Сохраняем изменения
+            config.Save(ConfigurationSaveMode.Modified);
+
+            // Перезагружаем настройки
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }
