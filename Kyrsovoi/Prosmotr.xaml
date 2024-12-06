@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-        Title="Prosmotr" Height="630" Width="840" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
+        Title="Prosmotr" Height="630" Width="900" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
         ResizeMode="NoResize"
         Topmost="false"
         
@@ -400,7 +400,7 @@
                             <Style.Triggers>
                                 <!-- Подтвержденный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="подтвержденный">
-                                    <Setter Property="Background" Value="" />
+                                    <Setter Property="Background" Value="LightGreen" />
                                 </DataTrigger>
                                 <!-- Завершенный -->
                                 <DataTrigger Binding="{Binding booking_status}" Value="завершенный">

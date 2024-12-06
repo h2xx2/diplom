@@ -19,6 +19,8 @@ using System.Runtime.InteropServices;
 using System.Data.Common;
 using System.Data;
 using System.Globalization;
+using System.Timers;
+using System.Configuration;
 
 namespace Kyrsovoi
 {
@@ -27,6 +29,8 @@ namespace Kyrsovoi
     /// </summary>
     public partial class Prosmotr : System.Windows.Window
     {
+        private Timer _idleTimer;
+        private int _idleTimeout; // Время ожидания (секунды)
         public Prosmotr()
         {
             InitializeComponent();
@@ -44,7 +48,51 @@ namespace Kyrsovoi
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+
+            if (!int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out _idleTimeout))
+            {
+                _idleTimeout = 30; // Значение по умолчанию
+            }
+
+            // Настройка таймера
+            _idleTimer = new Timer(_idleTimeout * 1000); // Перевод в миллисекунды
+            _idleTimer.Elapsed += OnIdleTimeout;
+            _idleTimer.Start();
+
+            // Обработчики событий для отслеживания активности
+            this.MouseMove += ResetIdleTimer;
+            this.KeyDown += ResetIdleTimer;
         }
+
+        private void ResetIdleTimer(object sender, EventArgs e)
+        {
+            // Сбрасываем таймер при активности пользователя
+            _idleTimer.Stop();
+            _idleTimer.Start();
+        }
+
+        private void OnIdleTimeout(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Остановка таймера
+                _idleTimer.Stop();
+
+                // Перенаправление на форму авторизации
+                var loginWindow = new MainWindow(); // Предполагается, что LoginWindow — это форма авторизации
+                loginWindow.Show();
+                this.Close(); // Закрываем текущую форму
+            });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            // Очистка ресурсов при закрытии
+            _idleTimer?.Dispose();
+            base.OnClosed(e);
+        }
+    
         public class Client {
             public string name { get; set; }
             public string surname { get; set; }
@@ -133,7 +181,6 @@ namespace Kyrsovoi
             public string description { get; set; }
             public string price { get; set; }
         }
-        string filePath = "";
         string query = @"SELECT 
                         b.booking_id,
                         glampingunits.unit_name,

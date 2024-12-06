@@ -35,11 +35,8 @@ namespace Kyrsovoi
         public MainWindow()
         {
             InitializeComponent();
-            _blockTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
         }
         private string _captchaText;
-        private int _failedAttempts;
-        private DispatcherTimer _blockTimer;
         private bool _isBlocked;
         int error = 0;
         int error1 = 0;

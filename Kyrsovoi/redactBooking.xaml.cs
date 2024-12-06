@@ -38,7 +38,6 @@ namespace Kyrsovoi
 
 
         }
-        int daysDifference = 0;
         private decimal totalServiceCost = 0;
         private string oldGuest = "";
         
