@@ -248,7 +248,6 @@ namespace Kyrsovoi
                         if (raspred == 1)
                         {
                             bookings.Visibility = Visibility.Collapsed;
-                            service.Visibility = Visibility.Collapsed;
                             clients.Visibility = Visibility.Visible;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Collapsed;
@@ -267,7 +266,6 @@ namespace Kyrsovoi
                         if (raspred == 0)
                         {
                             clients.Visibility = Visibility.Collapsed;
-                            service.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Visible;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Collapsed;
@@ -284,27 +282,11 @@ namespace Kyrsovoi
                                 created_at = reader["created_at"].ToString(),
                             });
                         }
-                        if (raspred == 2)
-                        {
-                            clients.Visibility = Visibility.Collapsed;
-                            bookings.Visibility = Visibility.Collapsed;
-                            service.Visibility = Visibility.Visible;
-                            employee.Visibility = Visibility.Collapsed;
-                            homes.Visibility = Visibility.Collapsed;
-                            Servic.Add(new Services
-                            {
-                                id_service = reader["service_id"].ToString(),
-                                service_name = reader["service_name"].ToString(),
-                                description = reader["description"].ToString(),
-                                price = reader["price"].ToString(),
-
-                            });
-                        }
+                       
                         if (raspred == 3)
                         {
                             clients.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Collapsed;
-                            service.Visibility = Visibility.Collapsed;
                             employee.Visibility = Visibility.Visible;
                             homes.Visibility = Visibility.Collapsed;
                             Class1.employee_id = Convert.ToInt32(reader["employee_id"]);
@@ -328,7 +310,6 @@ namespace Kyrsovoi
                         {
                             clients.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Collapsed;
-                            service.Visibility = Visibility.Collapsed;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Visible;
                             string fileName = ".\\home\\" + reader["photo"]?.ToString();
@@ -388,14 +369,12 @@ namespace Kyrsovoi
             if (Tg_Btn.IsChecked == true)
             {
                 tt_home.Visibility = Visibility.Collapsed;
-                tt_service.Visibility = Visibility.Collapsed;
                 tt_suppliers.Visibility = Visibility.Collapsed;
                 tt_booking.Visibility = Visibility.Collapsed;
             }
             else
             {
                 tt_home.Visibility = Visibility.Visible;
-                tt_service.Visibility = Visibility.Visible;
                 tt_suppliers.Visibility = Visibility.Visible;
                 tt_booking.Visibility = Visibility.Visible;
             }
@@ -415,7 +394,8 @@ namespace Kyrsovoi
             {
                 addService.Visibility = Visibility.Visible;
             }
-            
+            panel.Visibility = Visibility.Collapsed;
+            time_rab.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Visible;
             addHouse.Visibility = Visibility.Collapsed;   
             tb1.Visibility = Visibility.Visible;
@@ -443,6 +423,8 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
+            panel.Visibility = Visibility.Visible;
+            time_rab.Visibility = Visibility.Visible;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Visible;
             addService.Visibility = Visibility.Collapsed;
@@ -503,13 +485,19 @@ namespace Kyrsovoi
         }
         private void StackPanel_MouseDown_2(object sender, MouseButtonEventArgs e)
         {
+            if (Class1.role == 1)
+            {
+                addUser.Visibility = Visibility.Visible;
+            }
+            panel.Visibility = Visibility.Collapsed;
+            time_rab.Visibility = Visibility.Collapsed;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Visible;
             addService.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Visible;
             addEmployee.Visibility = Visibility.Collapsed;
             Add_Booking.Visibility = Visibility.Collapsed;
-            addUser.Visibility = Visibility.Visible;    
+            addUser.Visibility = Visibility.Collapsed;    
             cb2.Width = 270;
             cb2.Margin = new Thickness(370, 50, 0,0);
             tb1.Width = 270;
@@ -718,6 +706,8 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown_3(object sender, MouseButtonEventArgs e)
         {
+            panel.Visibility = Visibility.Collapsed;
+            time_rab.Visibility = Visibility.Collapsed;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Collapsed;
             addService.Visibility = Visibility.Collapsed;
@@ -743,7 +733,8 @@ namespace Kyrsovoi
             {
                 addHouse.Visibility = Visibility.Visible;
             }
-            
+            panel.Visibility = Visibility.Collapsed;
+            time_rab.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Collapsed;
             addService.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Collapsed;
@@ -767,6 +758,7 @@ namespace Kyrsovoi
         {
             if (Class1.role == 1)
             {
+                Class1.add = 1;
                 redactBooking redactBooking = new redactBooking();
                 redactBooking.Show();
             }
@@ -950,7 +942,7 @@ namespace Kyrsovoi
             Button button = sender as Button;
 
             // Получаем данные строки через Tag кнопки
-            var booking = button?.Tag as Booking; // Замените Client на ваш класс данных
+            var booking = button?.Tag as Booking;
 
             if (booking != null)
             {
@@ -974,8 +966,7 @@ namespace Kyrsovoi
                 {
                     button.Visibility = Visibility.Visible;
                 }
-                addHouse.Visibility = Visibility.Visible;
-                addService.Visibility = Visibility.Visible;
+                prosmotr_Client.Visibility = Visibility.Visible;
                 imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("ImageButton\\report.png"), UriKind.RelativeOrAbsolute));
                 Add_Booking.Background = imageBrush;
             }
@@ -987,6 +978,7 @@ namespace Kyrsovoi
                 {
                     button.Visibility = Visibility.Collapsed;
                 }
+                prosmotr_Client.Visibility = Visibility.Collapsed;
                 addHouse.Visibility = Visibility.Collapsed;
                 addService.Visibility = Visibility.Collapsed;
                 imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("ImageButton\\addBrone.png"), UriKind.RelativeOrAbsolute));
@@ -1143,6 +1135,10 @@ namespace Kyrsovoi
             else{
                 AnimateListViewHeight(gridSleep, 100, 0, 0.5);
                 UpdateAppConfig("IdleTimeout", cbSleep.Text);
+                if (cbSleep.Text == "Выкл")
+                {
+                    UpdateAppConfig("IdleTimeout", "10000000");
+                }
             }
             
         }

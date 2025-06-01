@@ -477,34 +477,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
-            <Grid x:Name="service">
-                <ListView ItemsSource="{Binding Servic}" Margin="80 100 10 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
-                                <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <!-- Колонка для текста -->
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="110" />
-                                    </Grid.ColumnDefinitions>
 
-                                    <!-- Текстовые элементы в первой колонке -->
-                                    <TextBlock Text="{Binding service_name}"  Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
-                                    <TextBlock Text="{Binding description}"  Grid.Column="1" MaxWidth="250" TextWrapping="Wrap" FontSize="16" Margin="0 0 10 0"/>
-                                    <TextBlock Text="{Binding price}"  Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0" TextAlignment="Center" />
-                                    <Button Grid.Column="3" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                            FontSize="16" Background="#525252" FontWeight="UltraLight"
-                                            Width="90" Height="25" Foreground="#FFFCFCFC" Margin="10 0" Tag="{Binding}" Click="Button_Click_5"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
 
             <!--search-->
             <TextBox x:Name="tb1" HorizontalAlignment="Left"  Margin="80,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
@@ -536,25 +509,27 @@
             <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50"/>
             <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 55" Click="Button_Click_7"></Button>
 
-            
-            <TextBlock Background="#D0E8D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10">
+            <Grid x:Name="panel" Visibility="Collapsed">
+                <TextBlock Background="#D0E8D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,10,10">
                     <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
-            </TextBlock>
+                </TextBlock>
 
-            <TextBlock Background="#D0DFF0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10">
+                <TextBlock Background="#D0DFF0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="300,0,10,10">
                     <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
-            </TextBlock>
-            <TextBlock Background="#F0E5D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10">
+                </TextBlock>
+                <TextBlock Background="#F0E5D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="500,0,10,10">
                 <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
-            </TextBlock>
-            <TextBlock Background="#F0D0D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10">
+                </TextBlock>
+                <TextBlock Background="#F0D0D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="700,0,10,10">
                 <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
-            </TextBlock>
-            
-            <TextBlock Text="- Подвержденный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="160,0,10,10"/>
-            <TextBlock Text="- Завершенный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="360,0,10,10"/>
-            <TextBlock Text="- Забронированный" Width="120" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="560,0,10,10"/>
-            <TextBlock Text="- Отменный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="760,0,10,10"/>
+                </TextBlock>
+                <TextBlock Text="- Подвержденный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="160,0,10,10"/>
+                <TextBlock Text="- Завершенный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="360,0,10,10"/>
+                <TextBlock Text="- Забронированный" Width="120" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="560,0,10,10"/>
+                <TextBlock Text="- Отменный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="760,0,10,10"/>
+            </Grid>
+
+
 
             <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" Width="210" Height="30" Panel.ZIndex="10"
                          FontSize="20"
@@ -584,50 +559,55 @@
                Height="30"
                VerticalAlignment="Top"
 HorizontalAlignment="Right"
- Margin="0,50,56,0" MouseDown="Image_MouseDown_1"/>
+ Margin="0,50,56,0" MouseDown="Image_MouseDown_1" Visibility="Collapsed"/>
             <Image x:Name="addEmployee" Source="ImageButton/addSotryd.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
                     VerticalAlignment="Top"
 HorizontalAlignment="Right"
- Margin="0,50,56,0" MouseDown="addEmployee_MouseDown" />
+ Margin="0,50,56,0" MouseDown="addEmployee_MouseDown" Visibility="Collapsed"/>
             <Image x:Name="addService" Source="ImageButton/addService.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Right"
-                    Margin="0,50,56,0" MouseDown="addService_MouseDown" />
+                    Margin="0,50,56,0" MouseDown="addService_MouseDown" Visibility="Collapsed"/>
             <Image x:Name="addHouse" Source="ImageButton/addHouse.png"
                     Stretch="Uniform"
                     Width="30"
                     Height="30"
                     VerticalAlignment="Top"
 HorizontalAlignment="Right"
- Margin="0,50,56,0" MouseDown="addHouse_MouseDown"  />
+ Margin="0,50,56,0" MouseDown="addHouse_MouseDown"  Visibility="Collapsed" />
             <Button x:Name="Add_Booking" Width="30" Height="30" VerticalAlignment="Top"
 HorizontalAlignment="Right"
  Margin="0,50,10,0" Click="Button_Click_2" BorderBrush="{x:Null}">
-                
-                    <Button.Background>
+
+                <Button.Background>
                     <ImageBrush ImageSource="/addBrone.png"/>
                 </Button.Background>
             </Button>
-            <Button Width="30" Height="30" VerticalAlignment="Top"
+            <Button x:Name="time_rab" Width="30" Height="30" VerticalAlignment="Top"
 HorizontalAlignment="Right"
- Margin="0,50,55,0"  BorderBrush="{x:Null}" Click="Button_Click_8"/>
+ Margin="0,50,55,0"  BorderBrush="{x:Null}" Click="Button_Click_8">
+                <Button.Background>
+                    <ImageBrush ImageSource="./ImageButton/time.png"/>
+                </Button.Background>
+            </Button>
             <Grid Name="gridSleep" Background="White" Width="300" Height="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 80 55 0">
-                    <Border BorderBrush="Black" BorderThickness="1">
+                <Border BorderBrush="Black" BorderThickness="1">
                     <TextBlock Text="Время бездействия" HorizontalAlignment="Center" Margin="0 10" FontSize="20"/>
-                    
-                    
-                    </Border>
+
+
+                </Border>
                 <ComboBox Name="cbSleep" Template="{DynamicResource ComboBoxTemplate1}" Background="Transparent" Height="30" Margin="15 40 15 0">
                     <ComboBoxItem Content="15"/>
                     <ComboBoxItem Content="30"/>
                     <ComboBoxItem Content="45"/>
                     <ComboBoxItem Content="60"/>
+                    <ComboBoxItem Content="Выкл"/>
                 </ComboBox>
             </Grid>
             <!--Toolbar-->
@@ -824,33 +804,7 @@ HorizontalAlignment="Right"
 
                         </ListViewItem>
 
-                        <!--service-->
 
-                        <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
-
-                            <!--Tooltip-->
-
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_service"
-                                         Content="Сервисы"
-                                         Style="{StaticResource tt_style}"/>
-                            </ListViewItem.ToolTip>
-
-                            <StackPanel x:Name="Service" Orientation="Horizontal"
-                                        Width="230" MouseDown="Service_MouseDown">
-
-                                <Image Source="ImageButton/yslygi.png"
-                                               Stretch="Fill"
-                                               Width="30"
-                                               Height="30"
-                                               Margin="11 0 0 0"/>
-                                <TextBlock Text="Услуги"
-                                           Margin="25 0 0 0"
-                                           Style="{StaticResource font_style}"/>
-                            </StackPanel>
-
-                        </ListViewItem>
 
                         <!--booking-->
 
@@ -884,7 +838,7 @@ HorizontalAlignment="Right"
 
                         <!--Client-->
 
-                        <ListViewItem HorizontalAlignment="Left"
+                        <ListViewItem x:Name="prosmotr_Client" HorizontalAlignment="Left"
                                       Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
 
                             <!--Tooltip-->
