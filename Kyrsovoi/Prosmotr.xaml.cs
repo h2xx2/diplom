@@ -228,134 +228,141 @@ namespace Kyrsovoi
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                CalculateTotalPages();
-                UpdatePageInfo();     
-                GeneratePageButtons();
-                int offset = (_currentPage - 1) * _pageSize;
-                MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
-                connection.Open();
-                MySqlDataReader reader = command.ExecuteReader();
-
-                Clients.Clear(); // Очистка коллекции перед загрузкой данных
-                Bookings.Clear();
-                Servic.Clear();
-                Homes.Clear();
-                Employees.Clear();
-                while (reader.Read())
+                try
                 {
-                    if (raspred == 1)
-                    {
-                        bookings.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Collapsed;
-                        clients.Visibility = Visibility.Visible;
-                        employee.Visibility = Visibility.Collapsed;
-                        homes.Visibility = Visibility.Collapsed;
+                    CalculateTotalPages();
+                    UpdatePageInfo();
+                    GeneratePageButtons();
+                    int offset = (_currentPage - 1) * _pageSize;
+                    MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
+                    connection.Open();
+                    MySqlDataReader reader = command.ExecuteReader();
 
-                        Clients.Add(new Client
-                        {
-                            name = reader["first_name"].ToString(),
-                            surname = reader["last_name"].ToString(),
-                            email = reader["email"].ToString(),
-                            number = reader["phone"].ToString(),
-                            dateRegistration = reader["registration_date"].ToString(),
-                            passport = reader["passport_number"].ToString(),
-                            dateOfBirthday = reader["date_of_birth"].ToString(),
-                        });
-                    }
-                    if (raspred == 0)
+                    Clients.Clear(); // Очистка коллекции перед загрузкой данных
+                    Bookings.Clear();
+                    Servic.Clear();
+                    Homes.Clear();
+                    Employees.Clear();
+                    while (reader.Read())
                     {
-                        clients.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Collapsed;
-                        bookings.Visibility = Visibility.Visible;
-                        employee.Visibility = Visibility.Collapsed;
-                        homes.Visibility = Visibility.Collapsed;
-                        Bookings.Add(new Booking
+                        if (raspred == 1)
                         {
-                            id_booking = reader["booking_id"].ToString(),
-                            guests = reader["guest"].ToString(),
-                            employee = reader["employee"].ToString(),
-                            unit = reader["unit_name"].ToString(),
-                            check_in_date = reader["check_in_date"].ToString(),
-                            check_out_date = reader["check_out_date"].ToString(),
-                            total_price = reader["total_price"].ToString(),
-                            booking_status = reader["booking_status"].ToString(),
-                            created_at = reader["created_at"].ToString(),
-                        });
-                    }
-                    if (raspred == 2)
-                    {
-                        clients.Visibility = Visibility.Collapsed;
-                        bookings.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Visible;
-                        employee.Visibility = Visibility.Collapsed;
-                        homes.Visibility = Visibility.Collapsed;
-                        Servic.Add(new Services
-                        {
-                            id_service = reader["service_id"].ToString(),
-                            service_name = reader["service_name"].ToString(),
-                            description = reader["description"].ToString(),
-                            price = reader["price"].ToString(),
+                            bookings.Visibility = Visibility.Collapsed;
+                            service.Visibility = Visibility.Collapsed;
+                            clients.Visibility = Visibility.Visible;
+                            employee.Visibility = Visibility.Collapsed;
+                            homes.Visibility = Visibility.Collapsed;
 
-                        });
-                    }
-                    if (raspred == 3)
-                    {
-                        clients.Visibility = Visibility.Collapsed;
-                        bookings.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Collapsed;
-                        employee.Visibility = Visibility.Visible;
-                        homes.Visibility = Visibility.Collapsed;
-                        Class1.employee_id = Convert.ToInt32(reader["employee_id"]);
-                        Employees.Add(new Employee
-                        {
-
-                            first_name = reader["first_name"].ToString(),
-                            last_name = reader["last_name"].ToString(),
-                            position = reader["position"].ToString(),
-                            hire_date = reader["hire_date"].ToString(),
-                            phone = reader["phone"].ToString(),
-                            email = reader["email"].ToString(),
-                            login = reader["login"].ToString(),
-                            password = reader["password"].ToString(),
-                            role = reader["role"].ToString(),
-
-                        });
-                        
-                    }
-                    if (raspred == 4)
-                    {
-                        clients.Visibility = Visibility.Collapsed;
-                        bookings.Visibility = Visibility.Collapsed;
-                        service.Visibility = Visibility.Collapsed;
-                        employee.Visibility = Visibility.Collapsed;
-                        homes.Visibility = Visibility.Visible;
-                        string fileName = ".\\home\\" + reader["photo"]?.ToString();
-                        string filepath = Path.GetFullPath(fileName); 
-
-                        // Загрузка изображения
-                        BitmapImage bitmap = new BitmapImage();
-                        if (!string.IsNullOrEmpty(filepath))
-                        {
-                            bitmap.BeginInit();
-                            bitmap.UriSource = new Uri(filepath, UriKind.Absolute);
-                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmap.EndInit();
+                            Clients.Add(new Client
+                            {
+                                name = reader["first_name"].ToString(),
+                                surname = reader["last_name"].ToString(),
+                                email = reader["email"].ToString(),
+                                number = reader["phone"].ToString(),
+                                dateRegistration = reader["registration_date"].ToString(),
+                                passport = reader["passport_number"].ToString(),
+                                dateOfBirthday = reader["date_of_birth"].ToString(),
+                            });
                         }
-                        
-                        // Добавление данных
-                        Homes.Add(new Home
+                        if (raspred == 0)
                         {
-                            unit_id = reader["unit_id"].ToString(),
-                            unit_name = reader["unit_name"].ToString(),
-                            unit_type = reader["unit_type"].ToString(),
-                            capacity = reader["capacity"].ToString(),
-                            price_per_night = reader["price_per_night"].ToString(),
-                            description = reader["description"].ToString(),
-                            photo = bitmap,
-                        });
+                            clients.Visibility = Visibility.Collapsed;
+                            service.Visibility = Visibility.Collapsed;
+                            bookings.Visibility = Visibility.Visible;
+                            employee.Visibility = Visibility.Collapsed;
+                            homes.Visibility = Visibility.Collapsed;
+                            Bookings.Add(new Booking
+                            {
+                                id_booking = reader["booking_id"].ToString(),
+                                guests = reader["guest"].ToString(),
+                                employee = reader["employee"].ToString(),
+                                unit = reader["unit_name"].ToString(),
+                                check_in_date = reader["check_in_date"].ToString(),
+                                check_out_date = reader["check_out_date"].ToString(),
+                                total_price = reader["total_price"].ToString(),
+                                booking_status = reader["booking_status"].ToString(),
+                                created_at = reader["created_at"].ToString(),
+                            });
+                        }
+                        if (raspred == 2)
+                        {
+                            clients.Visibility = Visibility.Collapsed;
+                            bookings.Visibility = Visibility.Collapsed;
+                            service.Visibility = Visibility.Visible;
+                            employee.Visibility = Visibility.Collapsed;
+                            homes.Visibility = Visibility.Collapsed;
+                            Servic.Add(new Services
+                            {
+                                id_service = reader["service_id"].ToString(),
+                                service_name = reader["service_name"].ToString(),
+                                description = reader["description"].ToString(),
+                                price = reader["price"].ToString(),
+
+                            });
+                        }
+                        if (raspred == 3)
+                        {
+                            clients.Visibility = Visibility.Collapsed;
+                            bookings.Visibility = Visibility.Collapsed;
+                            service.Visibility = Visibility.Collapsed;
+                            employee.Visibility = Visibility.Visible;
+                            homes.Visibility = Visibility.Collapsed;
+                            Class1.employee_id = Convert.ToInt32(reader["employee_id"]);
+                            Employees.Add(new Employee
+                            {
+
+                                first_name = reader["first_name"].ToString(),
+                                last_name = reader["last_name"].ToString(),
+                                position = reader["position"].ToString(),
+                                hire_date = reader["hire_date"].ToString(),
+                                phone = reader["phone"].ToString(),
+                                email = reader["email"].ToString(),
+                                login = reader["login"].ToString(),
+                                password = reader["password"].ToString(),
+                                role = reader["role"].ToString(),
+
+                            });
+
+                        }
+                        if (raspred == 4)
+                        {
+                            clients.Visibility = Visibility.Collapsed;
+                            bookings.Visibility = Visibility.Collapsed;
+                            service.Visibility = Visibility.Collapsed;
+                            employee.Visibility = Visibility.Collapsed;
+                            homes.Visibility = Visibility.Visible;
+                            string fileName = ".\\home\\" + reader["photo"]?.ToString();
+                            string filepath = Path.GetFullPath(fileName);
+
+                            // Загрузка изображения
+                            BitmapImage bitmap = new BitmapImage();
+                            if (!string.IsNullOrEmpty(filepath))
+                            {
+                                bitmap.BeginInit();
+                                bitmap.UriSource = new Uri(filepath, UriKind.Absolute);
+                                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                                bitmap.EndInit();
+                            }
+
+                            // Добавление данных
+                            Homes.Add(new Home
+                            {
+                                unit_id = reader["unit_id"].ToString(),
+                                unit_name = reader["unit_name"].ToString(),
+                                unit_type = reader["unit_type"].ToString(),
+                                capacity = reader["capacity"].ToString(),
+                                price_per_night = reader["price_per_night"].ToString(),
+                                description = reader["description"].ToString(),
+                                photo = bitmap,
+                            });
+                        }
                     }
+                    reader.Close();
                 }
-                reader.Close();
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ошибка в подключение к базе данных");
+                }
             }
         }
        
@@ -969,7 +976,7 @@ namespace Kyrsovoi
                 }
                 addHouse.Visibility = Visibility.Visible;
                 addService.Visibility = Visibility.Visible;
-                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("report.png"), UriKind.RelativeOrAbsolute));
+                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("ImageButton\\report.png"), UriKind.RelativeOrAbsolute));
                 Add_Booking.Background = imageBrush;
             }
             else
@@ -982,7 +989,7 @@ namespace Kyrsovoi
                 }
                 addHouse.Visibility = Visibility.Collapsed;
                 addService.Visibility = Visibility.Collapsed;
-                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("addBrone.png"), UriKind.RelativeOrAbsolute));
+                imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("ImageButton\\addBrone.png"), UriKind.RelativeOrAbsolute));
                 Add_Booking.Background = imageBrush;
             }
         }
@@ -1022,10 +1029,8 @@ namespace Kyrsovoi
         }
         private void GeneratePageButtons()
         {
-            // Очищаем старые кнопки
             PageButtonsPanel.Children.Clear();
 
-            // Генерируем кнопки для всех страниц
             for (int i = 1; i <= _totalPages; i++)
             {
                 Button pageButton = new Button
@@ -1034,23 +1039,34 @@ namespace Kyrsovoi
                     Margin = new Thickness(5),
                     Width = 30,
                     Height = 30,
-                    Tag = i // Сохраняем номер страницы в свойстве Tag
+                    Tag = i
                 };
 
-                // Событие клика на кнопку
+                // Событие клика
                 pageButton.Click += PageButton_Click;
 
-                // Добавляем кнопку в панель
+                // Выделение активной страницы
+                if (i == _currentPage)
+                {
+                    pageButton.Background = Brushes.LightBlue;
+                }
+                else
+                {
+                    pageButton.Background = Brushes.White;
+                }
+
                 PageButtonsPanel.Children.Add(pageButton);
             }
         }
+
         private void PageButton_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем номер страницы из Tag кнопки
             if (sender is Button button && int.TryParse(button.Tag.ToString(), out int pageNumber))
             {
-                _currentPage = pageNumber; // Обновляем текущую страницу
-                FillDataGrid(_currentPage, com); // Загружаем данные для выбранной страницы
+                _currentPage = pageNumber;
+                FillDataGrid(_currentPage, com);
+                UpdatePageInfo();
+                GeneratePageButtons(); // добавь эту строку
             }
         }
         private void UpdatePageInfo()
@@ -1100,6 +1116,7 @@ namespace Kyrsovoi
                 _currentPage++;
                 FillDataGrid(_currentPage, com);
                 UpdatePageInfo();
+                GeneratePageButtons(); // обновление цвета кнопок
             }
         }
 
@@ -1110,6 +1127,7 @@ namespace Kyrsovoi
                 _currentPage--;
                 FillDataGrid(_currentPage, com);
                 UpdatePageInfo();
+                GeneratePageButtons(); // обновление цвета кнопок
             }
         }
         int count = 0;

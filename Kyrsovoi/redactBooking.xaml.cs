@@ -38,7 +38,6 @@ namespace Kyrsovoi
         {
             InitializeComponent();
             EmployeeID.Text = Class1.fioEmploes;
-            listService.ItemsSource = ServiceModels;
             listUnit.ItemsSource = Houses;
 
             if (!int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out _idleTimeout))
@@ -708,8 +707,12 @@ namespace Kyrsovoi
                         if (startDate <= endDate)
                         {
                             int daysDifference = (endDate - startDate).Days;
-                            cost = daysDifference * intValue + Convert.ToInt32(totalServiceCost);
-                            savecost = cost;
+                            cost = daysDifference * intValue;
+
+                            if (daysDifference > 10)
+                            {
+                                cost = (int)(cost * 0.9); // применяем 10% скидку
+                            }
                             TotalPrice.Text = cost.ToString();
                         }
                     }
@@ -888,16 +891,11 @@ namespace Kyrsovoi
         
         private void ID_GotFocus_1(object sender, RoutedEventArgs e)
         {
-            Collapsed.IsEnabled = true;
-            List<int> selectedIds = GetSelectedServiceIdsFromBooking(Convert.ToInt32(Class1.booking_id));
-            FillDataServiceWithSelection(selectedIds);
-            AnimateListViewHeight(listService, 0, 200, 0.5);
+
         }
         private void UpdateServiceText()
         {
-            Service.Text = string.Join(" ", ServiceModels
-        .Where(service => service.IsSelected)
-        .Select(service => service.service_name));
+
 
         }
 
@@ -910,7 +908,6 @@ namespace Kyrsovoi
                 string.IsNullOrEmpty(CheckInDate.Text) ||
                 string.IsNullOrEmpty(CheckOutDate.Text) ||
                 string.IsNullOrEmpty(UnitID.Text) ||
-                string.IsNullOrEmpty(Service.Text) ||
                 string.IsNullOrEmpty(TotalPrice.Text) ||
                 string.IsNullOrEmpty(StatusBooking.Text)
                )
@@ -925,7 +922,6 @@ namespace Kyrsovoi
                 string.IsNullOrEmpty(CheckInDate.Text) ||
                 string.IsNullOrEmpty(CheckOutDate.Text) ||
                 string.IsNullOrEmpty(UnitID.Text) ||
-                string.IsNullOrEmpty(Service.Text) ||
                 string.IsNullOrEmpty(TotalPrice.Text) ||
                 string.IsNullOrEmpty(StatusBooking.Text)
                )
@@ -935,15 +931,14 @@ namespace Kyrsovoi
                 return true;
             }
         }
-        private bool IsTextChanged(string guest, string unit, string services, string datein, string dateout, string status, string totalprice)
+        private bool IsTextChanged(string guest, string unit, string datein, string dateout, string status, string totalprice)
         {
             // Пример: Если одно из значений изменилось
-            if (guest != oldGuest || unit != oldUnit || services != service || datein != dateIn || dateout != dateOut || status != bookingstatus || totalprice != totalPrice)
+            if (guest != oldGuest || unit != oldUnit || datein != dateIn || dateout != dateOut || status != bookingstatus || totalprice != totalPrice)
             {
                 // Обновляем старые значения
                 oldGuest = guest;
                 oldUnit = unit;
-                service = services;
                 dateIn = datein;
                 dateOut = dateout;
                 bookingstatus = status;
@@ -966,7 +961,7 @@ namespace Kyrsovoi
             }
             if (AreFieldsFilled())
             {
-                if (IsTextChanged(GuestID.Text, UnitID.Text, Service.Text, CheckInDate.Text, CheckOutDate.Text, StatusBooking.Text, TotalPrice.Text))
+                if (IsTextChanged(GuestID.Text, UnitID.Text, CheckInDate.Text, CheckOutDate.Text, StatusBooking.Text, TotalPrice.Text))
                 {
                     if (Class1.add != 1)
                     {
@@ -1020,7 +1015,7 @@ namespace Kyrsovoi
                                     {
                                         MessageBox.Show("Ошибка при добавление данных.");
                                         Class1.add = 0;
-                                        IsTextChanged("", "", "", "", "", "", "");
+                                        IsTextChanged("", "", "", "", "", "");
                                     }
                                 }
                                 else
@@ -1098,7 +1093,7 @@ namespace Kyrsovoi
                     textBox.IsEnabled = !isReadOnly;
                 }
             }
-            foreach (Control control in new[] { UnitID, Service })
+            foreach (Control control in new[] { UnitID })
             {
                 if (control is TextBox textBox)
                 {
@@ -1248,8 +1243,7 @@ namespace Kyrsovoi
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            AnimateListViewHeight(listService, 200, 0, 0.5);
-            CollabsedHome.IsEnabled = false;
+
         }
     }
 }

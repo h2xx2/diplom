@@ -102,10 +102,13 @@ namespace Kyrsovoi
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     if (rdr.Read())
                     {
-                        string imagePath = "C:\\Users\\dshma\\OneDrive\\Рабочий стол\\Курсовой проект\\Kyrsovoi\\Kyrsovoi\\bin\\Debug\\home\\" + rdr["photo"].ToString(); // Извлекаем путь или имя файла
+                        string relativePath = System.IO.Path.Combine("home", rdr["photo"].ToString());
+                        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                        string imagePath = System.IO.Path.Combine(baseDir, relativePath);
+
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
+                        bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
                         bitmap.EndInit();
                         id = rdr["unit_id"].ToString();

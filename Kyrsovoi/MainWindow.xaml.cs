@@ -236,6 +236,20 @@ namespace Kyrsovoi
                                         catch (IndexOutOfRangeException)
                                         {
                                             MessageBox.Show("Индекс вне границ массива", "Ошибка");
+                                            error++;
+                                            error1 = Class1.k;
+                                            if (error >= 1 || error1 >= 1)
+                                            {
+                                                tb1.Clear();
+                                                tb2.Clear();
+                                                if (Math.Round(this.Width) == 350)
+                                                {
+                                                    FillFuncBig();
+                                                }
+
+                                                GenerateCaptcha();
+
+                                            }
                                         }
                                     }
                                     catch(MySqlException) {
@@ -249,7 +263,7 @@ namespace Kyrsovoi
                 }
                 else
                 {
-                    Vostan vostan = new Vostan();
+                    systemadmin vostan = new systemadmin();
                     this.Close();
                     vostan.ShowDialog();
                 }

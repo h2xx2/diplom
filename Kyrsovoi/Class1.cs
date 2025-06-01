@@ -12,7 +12,7 @@ namespace Kyrsovoi
         public static int k = 0;
         public static string numberPhone = "";
         public static string numberPhoneEmploye = "";
-        public static string connection = $"host=localhost;uid=root;pwd=root;database=glamping;";
+        public static string connection = $"host={Properties.Settings.Default.host};uid={Properties.Settings.Default.user};pwd={Properties.Settings.Default.passwordDB};database={Properties.Settings.Default.database};";
         public static string saveQuery = "";
         public static int add = 0;
         public static string fioEmploes = "fio";

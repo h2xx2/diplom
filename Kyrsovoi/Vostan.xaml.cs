@@ -82,8 +82,25 @@ namespace Kyrsovoi
         {
             try
             {
-                // Открываем SQL файл для чтения
-                string filepath = System.IO.Path.GetFullPath("glap.sql");
+                // Создаем диалоговое окно для выбора файла
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Filter = "SQL Files (*.sql)|*.sql", // Ограничиваем выбор только SQL-файлами
+                    Title = "Выберите SQL-файл для восстановления базы данных",
+                    InitialDirectory = System.IO.Path.GetFullPath("."), // Начальная директория — текущая папка проекта
+                    Multiselect = false // Запрещаем выбор нескольких файлов
+                };
+
+                // Показываем диалоговое окно и проверяем, выбран ли файл
+                bool? dialogResult = openFileDialog.ShowDialog();
+                if (dialogResult != true)
+                {
+                    // Если пользователь отменил выбор файла, выходим из метода
+                    return;
+                }
+
+                // Получаем путь к выбранному файлу
+                string filepath = openFileDialog.FileName;
                 string sqlScript = File.ReadAllText(filepath);
 
                 // Подтверждение выполнения
@@ -119,7 +136,7 @@ namespace Kyrsovoi
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при восстановлении базы данных: {ex.Message}");
+                MessageBox.Show($"Ошибка при восстановлении базы данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

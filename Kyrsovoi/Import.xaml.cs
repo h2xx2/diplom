@@ -79,6 +79,12 @@ namespace Kyrsovoi
                 {
                     // Чтение первой строки (заголовков CSV файла)
                     string headerLine = reader.ReadLine();
+                    if (string.IsNullOrEmpty(headerLine))
+                    {
+                        MessageBox.Show("CSV-файл пустой или не содержит заголовков.");
+                        return;
+                    }
+
                     string[] csvHeaders = headerLine.Split(';');
 
                     // Проверяем количество колонок в выбранной таблице
@@ -89,6 +95,14 @@ namespace Kyrsovoi
                         return;
                     }
 
+                    // Получаем имя первой колонки (предполагается, что это ID)
+                    string idColumnName = GetIdColumnName(tableName);
+                    if (string.IsNullOrEmpty(idColumnName))
+                    {
+                        MessageBox.Show("Не удалось определить имя столбца ID в таблице.");
+                        return;
+                    }
+
                     // Открытие соединения с базой данных
                     using (MySqlConnection conn = new MySqlConnection(conString))
                     {
@@ -96,6 +110,9 @@ namespace Kyrsovoi
 
                         // Чтение строк данных из CSV
                         string line;
+                        int addedRecords = 0;
+                        int skippedRecords = 0;
+
                         while ((line = reader.ReadLine()) != null)
                         {
                             string[] values = line.Split(';');
@@ -106,25 +123,61 @@ namespace Kyrsovoi
                                 continue;
                             }
 
+                            // Предполагаем, что ID — это первое значение в строке
+                            string idValue = values[0];
+
+                            // Проверяем, существует ли запись с таким ID
+                            string checkQuery = $"SELECT COUNT(*) FROM `{tableName}` WHERE `{idColumnName}` = @id";
+                            using (MySqlCommand checkCommand = new MySqlCommand(checkQuery, conn))
+                            {
+                                checkCommand.Parameters.AddWithValue("@id", idValue);
+                                long count = (long)checkCommand.ExecuteScalar();
+
+                                if (count > 0)
+                                {
+                                    // Если запись с таким ID уже существует, пропускаем
+                                    skippedRecords++;
+                                    continue;
+                                }
+                            }
+
                             // Преобразование значений по типам данных
                             string[] formattedValues = values.Select(v => FormatValue(v)).ToArray();
 
                             // Создание SQL запроса для вставки данных
-                            string query = $"INSERT INTO `{tableName}` VALUES ({string.Join(",", formattedValues)})";
+                            string insertQuery = $"INSERT INTO `{tableName}` VALUES ({string.Join(",", formattedValues)})";
 
-                            MySqlCommand command = new MySqlCommand(query, conn);
-                            command.ExecuteNonQuery();
+                            using (MySqlCommand command = new MySqlCommand(insertQuery, conn))
+                            {
+                                command.ExecuteNonQuery();
+                                addedRecords++;
+                            }
                         }
 
-                        MessageBox.Show("Импорт данных успешно завершён.");
+                        MessageBox.Show($"Импорт завершён.\nДобавлено записей: {addedRecords}\nПропущено записей: {skippedRecords}", "Результат импорта", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}");
+                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private string GetIdColumnName(string tableName)
+        {
+            using (MySqlConnection conn = new MySqlConnection(conString))
+            {
+                conn.Open();
+                string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @tableName AND TABLE_SCHEMA = @database AND COLUMN_KEY = 'PRI' LIMIT 1";
+                using (MySqlCommand command = new MySqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@tableName", tableName);
+                    command.Parameters.AddWithValue("@database", Properties.Settings.Default.database);
+                    return command.ExecuteScalar()?.ToString();
+                }
+            }
+        }
+
 
         // Метод для форматирования значений в зависимости от типа данных
         private string FormatValue(string value)

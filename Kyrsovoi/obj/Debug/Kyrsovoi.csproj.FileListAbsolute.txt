@@ -74,3 +74,45 @@ C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Vost
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.baml
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.g.cs
 C:\Users\dshma\OneDrive\Рабочий стол\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe.config
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.pdb
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Microsoft.Office.Interop.Word.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Memory.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Buffers.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.ResolveComReference.cache
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Import.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\App.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.cache
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.lref
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\addHouse.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Import.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\MainWindow.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Prosmotr.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactBooking.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactEmployee.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.g.resources
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.Properties.Resources.resources
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.GenerateResource.cache
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.Up2Date
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.exe
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.pdb
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\systemadmin.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\systemadmin.baml
