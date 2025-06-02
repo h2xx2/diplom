@@ -86,7 +86,6 @@ C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.g.cs
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.g.cs
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\systemadmin.g.cs
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.g.cs
-C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.g.cs
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\App.g.cs
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.cache
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.lref
@@ -108,7 +107,6 @@ C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactKlient.baml
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\redactService.baml
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\systemadmin.baml
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Vostan.baml
-C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Window1.baml
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.g.resources
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.Properties.Resources.resources
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.GenerateResource.cache

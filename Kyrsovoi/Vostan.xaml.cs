@@ -146,5 +146,18 @@ namespace Kyrsovoi
             this.Close();
             import.ShowDialog();    
         }
+
+        private void Min_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void krest_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            systemadmin mainWindow = new systemadmin();
+            this.Hide();
+            mainWindow.ShowDialog();
+            this.Close();
+        }
     }
 }

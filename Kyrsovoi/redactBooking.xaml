@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Kyrsovoi"
+        xmlns:local="clr-namespace:Kyrsovoi" 
         mc:Ignorable="d"
-        Height="730" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
+        Height="700" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="headline">
             <Setter Property="Margin" Value="0 0 0 0"/>
@@ -138,7 +138,7 @@
                         </StackPanel>
 
                     </StackPanel>
-                    
+
                     <StackPanel Name="SpEmpoy">
                         <TextBlock Text="Сотрудник" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
                         <StackPanel Orientation="Horizontal">
@@ -161,7 +161,7 @@
                             <Button Name="CollabsedHome"  Style="{DynamicResource ButtonStyle1}" Content="Скрыть" Width="70" Height="24" Background="DarkSeaGreen" IsEnabled="False" Margin="20,0" Click="Button_Click_1"/>
                         </StackPanel>
                         <StackPanel>
-                            <Button Name="unitButton" Template="{DynamicResource ButtonTemplate1}" Margin="0,10,0,5" Width="350" Height="25"/>
+                            <Button Name="unitButton" Template="{DynamicResource ButtonTemplate1}" Margin="0,10,0,5" Width="350" Height="25" />
 
                         </StackPanel>
                         <ListView ItemsSource="{Binding Houses}" Name="listUnit" Margin="0 10 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="0" SelectionChanged="listUnit_SelectionChanged">
@@ -190,23 +190,27 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </StackPanel>
-                    
-                    <TextBlock Text="Итоговая цена" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
-                    <TextBox Name="TotalPrice" Text="{Binding Total_price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="0,0,0,10"/>
 
-                    <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Text="Итоговая цена" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
+                    <TextBox Name="TotalPrice" Text="{Binding Total_price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="0,0,0,10" TextChanged="TotalPrice_TextChanged"/>
+                    <TextBlock Text="Предоплата" Style="{StaticResource headline}" FontWeight="Bold"/>
+                    <TextBox x:Name="Payment_cost" Width="200" TextChanged="Payment_TextChanged"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="*Минимум 30% для бронирования*" FontSize="11" Margin="111 0 7 0" Foreground="Red"/>
+                        <TextBlock x:Name="sales" Text="" FontSize="11" Margin=" 0" Foreground="Red" Panel.ZIndex="999"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold"/>
                     <ComboBox x:Name="StatusBooking" Text="{Binding Booking_status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
-                             Foreground="Black"
+                             DisplayMemberPath="Status"
+                                SelectedValuePath="Id"
+                              Foreground="Black"
                              IsReadOnly="True" SelectionChanged="cb1_SelectionChanged">
-                        <ComboBoxItem Content="подтвержденный"/>
-                        <ComboBoxItem Content="завершенный"/>
-                        <ComboBoxItem Content="забронированный"/>
-                        <ComboBoxItem Content="отмененный"/>
                     </ComboBox>
                 </StackPanel>
             </Border>
             <!-- Кнопки управления -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+            <StackPanel x:Name="panel_bron" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
                 <Button Name="button" Style="{DynamicResource ButtonStyle1}" Content="Редактировать" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
                 <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click"/>
             </StackPanel>

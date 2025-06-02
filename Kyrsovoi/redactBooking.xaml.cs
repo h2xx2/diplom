@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -39,12 +40,16 @@ namespace Kyrsovoi
             InitializeComponent();
             EmployeeID.Text = Class1.fioEmploes;
             listUnit.ItemsSource = Houses;
-
+            
             if (!int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out _idleTimeout))
             {
                 _idleTimeout = 30; // Значение по умолчанию
             }
-
+            if (Class1.add == 1)
+            {
+                FillComboBox();
+                delete.Visibility = Visibility.Collapsed;
+            }
             // Настройка таймера
             _idleTimer = new Timer(_idleTimeout * 1000); // Перевод в миллисекунды
             _idleTimer.Elapsed += OnIdleTimeout;
@@ -82,24 +87,21 @@ namespace Kyrsovoi
             _idleTimer?.Dispose();
             base.OnClosed(e);
         }
-        private decimal totalServiceCost = 0;
         private string oldGuest = "";
         
         private string oldUnit = "";
         private string dateIn = "";
         private string dateOut = "";
-        private string service = "";
 
         private string bookingstatus = "";
         private string price = "";
         public DateTime? MinDate { get; set; }
-        private List<int> selectedServiceIds = new List<int>();
         string connectionString = Class1.connection;
-        int count = 0;
         string phoneNumber = "";
         int id_guest = 0;
         int id_unit = 0;
         string totalPrice = "";
+        string payment = "";
         int cost = 0;
         int savecost = 0;
         private bool isSelecting = false;
@@ -113,30 +115,7 @@ namespace Kyrsovoi
             WHERE bookings.unit_id = glampingunits.unit_id
               AND (@StartDate < bookings.check_in_date AND @EndDate > bookings.check_out_date)
         )";
-        public class ServiceModel : INotifyPropertyChanged
-        {
-            public int service_id { get; set; }
-            public string service_name { get; set; }
-            public string description { get; set; }
-            public string price { get; set; }
-
-            public bool _isSelected;
-            public bool IsSelected
-            {
-                get => _isSelected;
-                set
-                {
-                    _isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                }
-            }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            protected virtual void OnPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        
         string com = "";
         public class House
         {
@@ -146,9 +125,13 @@ namespace Kyrsovoi
             public string price { get; set; }
             public string description { get; set; }
         }
+        public class BookingStatus
+        {
+            public int Id { get; set; }
+            public string Status { get; set; }
+        }
         public ObservableCollection<House> Houses { get; set; } = new ObservableCollection<House>();
         public ObservableCollection<Booking> Book { get; set; } = new ObservableCollection<Booking>();
-        public ObservableCollection<ServiceModel> ServiceModels { get; set; } = new ObservableCollection<ServiceModel>();
         public void FillDataGrid(string com, string startDate, string endDate)
         {
 
@@ -196,26 +179,25 @@ namespace Kyrsovoi
                                 glampingunits.unit_id,
                                 CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
                                 glampingunits.unit_name,
-                                GROUP_CONCAT(services.service_name SEPARATOR ' ') AS services,
                                 b.check_in_date, 
                                 b.check_out_date, 
                                 b.total_price, 
-                                b.booking_status, 
+                                b.booking_status as 'idstatus',
+                                booking_status.booking_status, 
+                                b.upfront_payment,
                                 b.created_at
                             FROM 
                                 glamping.bookings b
                             LEFT JOIN 
                                 guests ON guests.guest_id = b.guest_id
                             LEFT JOIN 
-                                bookingservices ON bookingservices.booking_id = b.booking_id
-                            LEFT JOIN 
-                                services ON services.service_id = bookingservices.service_id 
-                            LEFT JOIN 
                                 glampingunits ON glampingunits.unit_id = b.unit_id 
                             LEFT JOIN 
                                 employees ON employees.employee_id = b.employees_id
+                            LEFT JOIN 
+                                booking_status ON booking_status.idbooking_status = b.booking_status
                             WHERE 
-                                b.booking_id = " + Class1.booking_id + @" and bookingservices.`status` = 'Активный'
+                                b.booking_id = " + Class1.booking_id + @"
                             GROUP BY 
                                 b.booking_id;
                             ";
@@ -239,8 +221,6 @@ namespace Kyrsovoi
                         oldGuest = booking.Guest_id;
                         booking.Unit_id = rdr["unit_name"].ToString();
                         oldUnit = booking.Unit_id;
-                        booking.Service_name = rdr["services"].ToString();
-                        service = booking.Service_name;
                         if (Class1.add ==1)
                         {
                             booking.Employees_id = rdr["employee"].ToString();
@@ -255,8 +235,10 @@ namespace Kyrsovoi
                         dateOut = date.ToString("MM.dd.yyyy");
                         booking.Total_price = rdr["total_price"].ToString();
                         totalPrice = booking.Total_price;
+                        Payment_cost.Text = rdr["upfront_payment"].ToString(); 
                         booking.Booking_status = rdr["booking_status"].ToString();
-                        bookingstatus = booking.Booking_status;
+                        bookingstatus = rdr["idstatus"].ToString();
+                        FillComboBoxRedact();
                     }
                 }
                 catch (Exception ex)
@@ -279,6 +261,7 @@ namespace Kyrsovoi
             private DateTime? _check_in_date;
             private DateTime? _check_out_date;
             private string _total_price;
+            private string _upfront_payment;
             private string _booking_status;
 
             // Реализация интерфейса INotifyPropertyChanged
@@ -297,15 +280,6 @@ namespace Kyrsovoi
                 {
                     _booking_id = value;
                     OnPropertyChanged(nameof(Booking_id));
-                }
-            }
-            public string Service_name
-            {
-                get => _service_name;
-                set
-                {
-                    _service_name = value;
-                    OnPropertyChanged(nameof(Service_name));
                 }
             }
 
@@ -364,6 +338,15 @@ namespace Kyrsovoi
                 {
                     _total_price = value;
                     OnPropertyChanged(nameof(Total_price));
+                }
+            }
+            public string Upfront_payment
+            {
+                get => _upfront_payment;
+                set
+                {
+                    _upfront_payment = value;
+                    OnPropertyChanged(nameof(Upfront_payment));
                 }
             }
             public string Booking_status
@@ -531,6 +514,88 @@ namespace Kyrsovoi
                 }
             }
         }
+
+        private void FillComboBox()
+        {
+            string query = "SELECT * FROM glamping.booking_status;";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        DataTable table = new DataTable();
+                        MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                        mySqlDataAdapter.Fill(table);
+
+                        // Преобразуем DataTable в список объектов
+                        var bookingStatuses = new List<BookingStatus>();
+                        foreach (DataRow row in table.Rows)
+                        {
+                            bookingStatuses.Add(new BookingStatus
+                            {
+                                Id = Convert.ToInt32(row["idbooking_status"]), // Предполагаем, что есть колонка id
+                                Status = row["booking_status"].ToString()
+                            });
+                        }
+
+                        // Привязываем коллекцию к ComboBox
+                        StatusBooking.ItemsSource = bookingStatuses;
+                        StatusBooking.DisplayMemberPath = "Status"; // Поле для отображения
+                        StatusBooking.SelectedValuePath = "Id";     // Поле для значения
+                        StatusBooking.SelectedValue = 1;            // Устанавливаем значение по Id
+                      
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}");
+                }
+            }
+        }
+        private void FillComboBoxRedact()
+        {
+            string query = "SELECT * FROM glamping.booking_status;";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        DataTable table = new DataTable();
+                        MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                        mySqlDataAdapter.Fill(table);
+
+                        // Преобразуем DataTable в список объектов
+                        var bookingStatuses = new List<BookingStatus>();
+                        foreach (DataRow row in table.Rows)
+                        {
+                            bookingStatuses.Add(new BookingStatus
+                            {
+                                Id = Convert.ToInt32(row["idbooking_status"]), // Предполагаем, что есть колонка id
+                                Status = row["booking_status"].ToString()
+                            });
+                        }
+
+                        // Привязываем коллекцию к ComboBox
+                        StatusBooking.ItemsSource = bookingStatuses;
+                        StatusBooking.DisplayMemberPath = "Status"; // Поле для отображения
+                        StatusBooking.SelectedValuePath = "Id";     // Поле для значения
+                        StatusBooking.SelectedValue = bookingstatus;            // Устанавливаем значение по Id
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}");
+                }
+            }
+        }
+
         private void AnimateListViewHeight(ListView listView, double fromHeight, double toHeight, double durationSeconds)
         {
             // Создаем анимацию для высоты
@@ -655,34 +720,7 @@ namespace Kyrsovoi
             FillDataGrid(com, checkIn, checkOut);
         }
 
-        private void UpdateTotalCost()
-        {
-            try
-            {
-                // Суммируем стоимость выбранных услуг, проверяя значение price
-                totalServiceCost = ServiceModels
-                    .Where(service => service.IsSelected)
-                    .Sum(service =>
-                    {
-                        if (decimal.TryParse(service.price, out var servicePrice))
-                            return servicePrice; // Если цена корректна, добавляем её
-                        else
-                            return 0; // Если некорректна, добавляем 0
-                    });
-
-
-
-                // Пересчитываем итоговую стоимость с учетом выбранных услуг
-                cost = (int)(savecost + totalServiceCost);
-
-                // Форматируем и отображаем итоговую цену
-                TotalPrice.Text = cost.ToString("0.00");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при расчёте стоимости: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        
         private void listUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView list = sender as ListView;
@@ -815,90 +853,6 @@ namespace Kyrsovoi
             }
         }
 
-        private void listService_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-        private List<int> GetSelectedServiceIdsFromBooking(int bookingId)
-        {
-            List<int> ids = new List<int>();
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    string query = "SELECT service_id FROM bookingservices WHERE booking_id = @booking_id AND status = 'Активный'";
-                    MySqlCommand command = new MySqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@booking_id", bookingId);
-
-                    connection.Open();
-                    MySqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        ids.Add(Convert.ToInt32(reader["service_id"]));
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при загрузке выбранных услуг: {ex.Message}");
-                }
-            }
-
-            return ids;
-        }
-        private List<int> temporarySelectedServiceIds = new List<int>();
-        private void FillDataServiceWithSelection(List<int> selectedIds)
-        {
-            ServiceModels.Clear(); // Очистка перед загрузкой
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    string query = "SELECT service_id, service_name, description, price FROM services";
-                    MySqlCommand command = new MySqlCommand(query, connection);
-
-                    connection.Open();
-                    MySqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        int serviceId = Convert.ToInt32(reader["service_id"]);
-                        var service = new ServiceModel
-                        {
-                            service_id = serviceId,
-                            service_name = reader["service_name"].ToString(),
-                            description = reader["description"].ToString(),
-                            price = reader["price"].ToString(),
-                            // Помечаем как выбранную, если ID есть в списке selectedIds
-                            IsSelected = selectedIds.Contains(serviceId) || temporarySelectedServiceIds.Contains(serviceId)
-                        };
-
-                        ServiceModels.Add(service);
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при загрузке услуг: {ex.Message}");
-                }
-            }
-        }
-        
-        private void ID_GotFocus_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void UpdateServiceText()
-        {
-
-
-        }
-
         private bool AreFieldsFilled()
         {
             if (Class1.add == 1)
@@ -909,6 +863,7 @@ namespace Kyrsovoi
                 string.IsNullOrEmpty(CheckOutDate.Text) ||
                 string.IsNullOrEmpty(UnitID.Text) ||
                 string.IsNullOrEmpty(TotalPrice.Text) ||
+                string.IsNullOrEmpty(Payment_cost.Text) ||
                 string.IsNullOrEmpty(StatusBooking.Text)
                )
                 {
@@ -923,6 +878,7 @@ namespace Kyrsovoi
                 string.IsNullOrEmpty(CheckOutDate.Text) ||
                 string.IsNullOrEmpty(UnitID.Text) ||
                 string.IsNullOrEmpty(TotalPrice.Text) ||
+                string.IsNullOrEmpty(Payment_cost.Text) ||
                 string.IsNullOrEmpty(StatusBooking.Text)
                )
                 {
@@ -934,7 +890,7 @@ namespace Kyrsovoi
         private bool IsTextChanged(string guest, string unit, string datein, string dateout, string status, string totalprice)
         {
             // Пример: Если одно из значений изменилось
-            if (guest != oldGuest || unit != oldUnit || datein != dateIn || dateout != dateOut || status != bookingstatus || totalprice != totalPrice)
+            if (guest != oldGuest || unit != oldUnit || datein != dateIn || dateout != dateOut || status != bookingstatus || totalprice != totalPrice || totalprice != totalPrice)
             {
                 // Обновляем старые значения
                 oldGuest = guest;
@@ -997,7 +953,7 @@ namespace Kyrsovoi
                             command.Parameters.AddWithValue("@check_in_date", dbs);
                             command.Parameters.AddWithValue("@check_out_date", dbs1);
                             command.Parameters.AddWithValue("@total_price", TotalPrice.Text);
-                            command.Parameters.AddWithValue("@booking_status", StatusBooking.Text);
+                            command.Parameters.AddWithValue("@booking_status", StatusBooking.SelectedValue);
                             command.Parameters.AddWithValue("@created_at", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                             // Выполняем запрос
                             try
@@ -1008,7 +964,6 @@ namespace Kyrsovoi
                                     // Проверяем количество измененных строк
                                     if (result != null)
                                     {
-                                        SaveServiceBooking(result);
                                         MessageBox.Show("Данные успешно добавлены.");
                                     }
                                     else
@@ -1036,47 +991,7 @@ namespace Kyrsovoi
                 MessageBox.Show("Не все поля заполнены");
             }
         }
-        private void SaveServiceBooking(object idBooking)
-        {
-
-            const int batchSize = 1000; // Размер партии
-            List<string> batch = new List<string>();
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-
-                foreach (var id in selectedServiceIds)
-                {
-                    batch.Add($"({idBooking}, {id}, 1, 'Активный')");
-
-                    if (batch.Count >= batchSize) // Пакетная вставка
-                    {
-                        ExecuteBatchInsert(connection, batch);
-                        batch.Clear();
-                    }
-                }
-
-                if (batch.Count > 0)
-                {
-                    ExecuteBatchInsert(connection, batch);
-                }
-            }
-        }
-        private void DeleteOldServices(object idBooking)
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "DELETE FROM bookingservices WHERE booking_id = @booking_id";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@booking_id", idBooking);
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
+        
         private void SetFieldsReadOnly(bool isReadOnly)
         {
             foreach (Control control in new[] { GuestID,  })
@@ -1103,16 +1018,7 @@ namespace Kyrsovoi
             unitButton.IsEnabled = !isReadOnly;
             StatusBooking.IsEnabled = !isReadOnly;
         }
-        private void ExecuteBatchInsert(MySqlConnection connection, List<string> batch)
-        {
-            DeleteOldServices(Class1.booking_id);
-            string query = "INSERT INTO bookingservices(booking_id, service_id, quantity, status) VALUES " + string.Join(", ", batch) + ";";
-
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.ExecuteNonQuery();
-            }
-        }
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1124,8 +1030,10 @@ namespace Kyrsovoi
                 SetFieldsReadOnly(true);
                 FillTextBox(); // Теперь DataContext точно не null
                 SpEmpoy.Visibility = Visibility.Collapsed;
-                
-
+                if (Class1.role == 0)
+                {
+                    panel_bron.Visibility = Visibility.Collapsed;
+                }
 
             }
             else
@@ -1135,53 +1043,6 @@ namespace Kyrsovoi
                 SetFieldsReadOnly(false);
                 button.Content = "Сохранить";
                 SpEmpoy.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            if (checkBox != null)
-            {
-                // Получаем соответствующую услугу
-                var service = checkBox.DataContext as ServiceModel;
-                if (service != null)
-                {
-                    // Если услуга еще не была выбрана, добавляем её
-                    if (!selectedServiceIds.Contains(service.service_id))
-                    {
-                        selectedServiceIds.Add(service.service_id);
-                        service.IsSelected = true; // Помечаем как выбранную
-                    }
-
-                    // Обновляем текст и пересчитываем стоимость
-                    UpdateServiceText();
-                    UpdateTotalCost();
-                }
-            }
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            // Приводим sender к CheckBox
-            CheckBox checkBox = sender as CheckBox;
-            if (checkBox != null)
-            {
-                // Получаем соответствующую услугу
-                var service = checkBox.DataContext as ServiceModel;
-                if (service != null)
-                {
-                    // Если услуга была выбрана, убираем её
-                    if (selectedServiceIds.Contains(service.service_id))
-                    {
-                        selectedServiceIds.Remove(service.service_id);
-                        service.IsSelected = false; // Снимаем пометку
-                    }
-
-                    // Обновляем текст и пересчитываем стоимость
-                    UpdateServiceText();
-                    UpdateTotalCost();
-                }
             }
         }
 
@@ -1243,7 +1104,35 @@ namespace Kyrsovoi
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            FillFuncSmall();
+        }
 
+        private void Payment_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                int totalcost = Convert.ToInt32(TotalPrice.Text);
+                if (totalcost * 0.3 <= Convert.ToInt32(Payment_cost.Text))
+                {
+                    StatusBooking.SelectedValue = 2;
+                }
+                else {
+                    StatusBooking.SelectedValue = 1;
+                }
+
+            }
+            catch { }
+            
+        }
+
+        private void TotalPrice_TextChanged(object sender, TextChangedEventArgs e)
+        {
+         
+
+            double result = Convert.ToDouble(totalPrice) * 0.3;
+
+            // с точкой (300.00)
+            sales.Text = "- " + result.ToString("F2", CultureInfo.InvariantCulture) + " рублей";
         }
     }
 }
