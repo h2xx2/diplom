@@ -24,6 +24,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
 
 namespace Kyrsovoi
 {
@@ -54,6 +55,66 @@ namespace Kyrsovoi
 
         private void krest_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            try
+            {
+                // Путь для сохранения резервной копии внутри проекта
+                string backupDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backups");
+                if (!Directory.Exists(backupDir))
+                {
+                    Directory.CreateDirectory(backupDir);
+                }
+
+                // Автоматическое имя файла с датой и временем
+                string backupFileName = $"glamping_backup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.sql";
+                string backupPath = System.IO.Path.Combine(backupDir, backupFileName);
+
+                // Используем параметры из строки подключения или настроек
+                string host = Properties.Settings.Default.host;
+                string database = Properties.Settings.Default.database;
+                string user = Properties.Settings.Default.user;
+                string password = Properties.Settings.Default.passwordDB;
+
+                // Относительный путь к mysqldump
+                string mysqldumpPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "mysqldump.exe");
+                if (!File.Exists(mysqldumpPath))
+                {
+                    throw new FileNotFoundException($"Файл mysqldump.exe не найден по пути: {mysqldumpPath}. Убедитесь, что файл добавлен в папку Tools проекта.");
+                }
+
+                // Формирование аргументов для mysqldump
+                string arguments = $"--host={host} --user={user} --password={password} --databases {database} --result-file=\"{backupPath}\"";
+
+                // Настройка процесса
+                ProcessStartInfo processInfo = new ProcessStartInfo
+                {
+                    FileName = mysqldumpPath,
+                    Arguments = arguments,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                // Запуск процесса
+                using (Process process = new Process { StartInfo = processInfo })
+                {
+                    process.Start();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    if (process.ExitCode == 0)
+                    {
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Ошибка: {error}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             this.Close();
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi" 
         mc:Ignorable="d"
-        Height="700" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
+        Height="760" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="headline">
             <Setter Property="Margin" Value="0 0 0 0"/>
@@ -197,15 +197,20 @@
                     <TextBox x:Name="Payment_cost" Width="200" TextChanged="Payment_TextChanged"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="*Минимум 30% для бронирования*" FontSize="11" Margin="111 0 7 0" Foreground="Red"/>
-                        <TextBlock x:Name="sales" Text="" FontSize="11" Margin=" 0" Foreground="Red" Panel.ZIndex="999"/>
                     </StackPanel>
-
+                    <TextBlock Text="Статус оплаты" Style="{StaticResource headline}" FontWeight="Bold"/>
+                    <ComboBox x:Name="Status_pay" Text="{Binding PayStatus, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
+         DisplayMemberPath="Status"
+            SelectedValuePath="Id"
+          Foreground="Black"
+         IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"  SelectedIndex="0" SelectedValue="1">
+                    </ComboBox>
                     <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold"/>
                     <ComboBox x:Name="StatusBooking" Text="{Binding Booking_status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
                              DisplayMemberPath="Status"
                                 SelectedValuePath="Id"
                               Foreground="Black"
-                             IsReadOnly="True" SelectionChanged="cb1_SelectionChanged">
+                             IsReadOnly="True" SelectionChanged="cb1_SelectionChanged" SelectedIndex="1" SelectedValue="2">
                     </ComboBox>
                 </StackPanel>
             </Border>

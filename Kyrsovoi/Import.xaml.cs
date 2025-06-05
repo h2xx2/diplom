@@ -30,33 +30,19 @@ namespace Kyrsovoi
         }
         public static string filePath = "";
         public static string conString = Class1.connection;
+        private StringBuilder importLog = new StringBuilder();
         private void Min_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            this.WindowState = WindowState.Minimized;
 
         }
 
         private void krest_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            this.Close();
+            Vostan mainWindow = new Vostan();
+            this.Hide();
             mainWindow.ShowDialog();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = "csv files (*.csv)|*.csv",
-                Title = "Выберите csv файл",
-                Multiselect = false
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                 filePath = openFileDialog.FileName;
-            }
-            tb.Text = filePath;
+            this.Close();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -67,17 +53,22 @@ namespace Kyrsovoi
                 return;
             }
 
-
+            importLog.Clear();
             ImportCsvDataToTable(filePath, cb.Text);
+
+            // Показываем лог после завершения импорта
+            if (importLog.Length > 0)
+            {
+                MessageBox.Show($"Лог импорта:\n{importLog.ToString()}", "Лог", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         private void ImportCsvDataToTable(string csvFilePath, string tableName)
         {
             try
             {
-                // Открываем CSV файл для чтения
-                using (StreamReader reader = new StreamReader(csvFilePath, Encoding.Default))
+                using (StreamReader reader = new StreamReader(csvFilePath, Encoding.UTF8))
                 {
-                    // Чтение первой строки (заголовков CSV файла)
+                    // Читаем заголовки
                     string headerLine = reader.ReadLine();
                     if (string.IsNullOrEmpty(headerLine))
                     {
@@ -85,76 +76,84 @@ namespace Kyrsovoi
                         return;
                     }
 
-                    string[] csvHeaders = headerLine.Split(';');
+                    string[] csvHeaders = headerLine.Split(';').Select(h => h.Trim('"')).ToArray();
+                    csvHeaders = csvHeaders.Skip(1).ToArray(); // Игнорируем первый столбец (id)
 
-                    // Проверяем количество колонок в выбранной таблице
-                    int tableColumnCount = GetTableColumnCount(tableName);
-                    if (csvHeaders.Length != tableColumnCount)
+                    // Получаем колонки таблицы
+                    var tableColumns = GetTableColumns(tableName);
+                    var insertColumns = tableColumns.Where(c => !c.IsAutoIncrement).Select(c => c.ColumnName).ToList();
+
+                    // Проверяем, что все заголовки CSV существуют в таблице
+                    foreach (var header in csvHeaders)
                     {
-                        MessageBox.Show($"Количество колонок в CSV ({csvHeaders.Length}) не совпадает с количеством колонок в таблице ({tableColumnCount}).");
-                        return;
+                        if (!insertColumns.Contains(header))
+                        {
+                            MessageBox.Show($"В таблице '{tableName}' нет столбца '{header}' из CSV.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
                     }
 
-                    // Получаем имя первой колонки (предполагается, что это ID)
-                    string idColumnName = GetIdColumnName(tableName);
-                    if (string.IsNullOrEmpty(idColumnName))
-                    {
-                        MessageBox.Show("Не удалось определить имя столбца ID в таблице.");
-                        return;
-                    }
+                    // Определяем уникальные колонки для проверки дубликатов
+                    var uniqueColumns = GetUniqueColumns(tableName);
 
-                    // Открытие соединения с базой данных
                     using (MySqlConnection conn = new MySqlConnection(conString))
                     {
                         conn.Open();
 
-                        // Чтение строк данных из CSV
                         string line;
-                        int addedRecords = 0;
-                        int skippedRecords = 0;
+                        int addedRecords = 0, skippedRecords = 0;
 
                         while ((line = reader.ReadLine()) != null)
                         {
-                            string[] values = line.Split(';');
+                            if (string.IsNullOrWhiteSpace(line)) continue;
 
-                            if (values.Length != tableColumnCount)
+                            string[] values = line.Split(';').Select(v => v.Trim('"')).ToArray();
+                            values = values.Skip(1).ToArray();
+
+                            if (values.Length != csvHeaders.Length)
                             {
-                                MessageBox.Show($"Ошибка: строка данных имеет несоответствующее количество колонок. Ожидалось {tableColumnCount}, но найдено {values.Length}.");
+                                MessageBox.Show($"Ошибка: строка имеет {values.Length} колонок вместо {csvHeaders.Length}. Пропущено.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                skippedRecords++;
                                 continue;
                             }
 
-                            // Предполагаем, что ID — это первое значение в строке
-                            string idValue = values[0];
-
-                            // Проверяем, существует ли запись с таким ID
-                            string checkQuery = $"SELECT COUNT(*) FROM `{tableName}` WHERE `{idColumnName}` = @id";
-                            using (MySqlCommand checkCommand = new MySqlCommand(checkQuery, conn))
+                            // Сопоставляем заголовки и значения
+                            var columnValues = new Dictionary<string, string>();
+                            for (int i = 0; i < csvHeaders.Length; i++)
                             {
-                                checkCommand.Parameters.AddWithValue("@id", idValue);
-                                long count = (long)checkCommand.ExecuteScalar();
-
-                                if (count > 0)
-                                {
-                                    // Если запись с таким ID уже существует, пропускаем
-                                    skippedRecords++;
-                                    continue;
-                                }
+                                columnValues[csvHeaders[i]] = FormatValueForMySQL(values[i]);
                             }
 
-                            // Преобразование значений по типам данных
-                            string[] formattedValues = values.Select(v => FormatValue(v)).ToArray();
-
-                            // Создание SQL запроса для вставки данных
-                            string insertQuery = $"INSERT INTO `{tableName}` VALUES ({string.Join(",", formattedValues)})";
-
-                            using (MySqlCommand command = new MySqlCommand(insertQuery, conn))
+                            // Проверка дубликата
+                            bool isDuplicate = CheckForDuplicate(conn, tableName, uniqueColumns, columnValues);
+                            if (isDuplicate)
                             {
-                                command.ExecuteNonQuery();
-                                addedRecords++;
+                                skippedRecords++;
+                                continue;
+                            }
+
+                            // Готовим запрос
+                            var columnsForInsert = columnValues.Keys.ToList();
+                            var valuesForInsert = columnValues.Values.ToList();
+
+                            string insertQuery = $"INSERT INTO `{tableName}` (`{string.Join("`,`", columnsForInsert)}`) VALUES ({string.Join(",", valuesForInsert)})";
+
+                            using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
+                            {
+                                try
+                                {
+                                    cmd.ExecuteNonQuery();
+                                    addedRecords++;
+                                }
+                                catch (MySqlException ex)
+                                {
+                                    MessageBox.Show($"Ошибка вставки: {ex.Message}\nSQL: {insertQuery}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    skippedRecords++;
+                                }
                             }
                         }
 
-                        MessageBox.Show($"Импорт завершён.\nДобавлено записей: {addedRecords}\nПропущено записей: {skippedRecords}", "Результат импорта", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"Импорт завершён.\nДобавлено: {addedRecords}\nПропущено: {skippedRecords}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
@@ -163,62 +162,137 @@ namespace Kyrsovoi
                 MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private string GetIdColumnName(string tableName)
+
+        // Метод для получения структуры таблицы
+        private List<(string ColumnName, bool IsAutoIncrement)> GetTableColumns(string tableName)
         {
+            var columns = new List<(string, bool)>();
             using (MySqlConnection conn = new MySqlConnection(conString))
             {
-                conn.Open();
-                string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @tableName AND TABLE_SCHEMA = @database AND COLUMN_KEY = 'PRI' LIMIT 1";
-                using (MySqlCommand command = new MySqlCommand(query, conn))
-                {
-                    command.Parameters.AddWithValue("@tableName", tableName);
-                    command.Parameters.AddWithValue("@database", Properties.Settings.Default.database);
-                    return command.ExecuteScalar()?.ToString();
-                }
-            }
-        }
-
-
-        // Метод для форматирования значений в зависимости от типа данных
-        private string FormatValue(string value)
-        {
-            // Проверка на null или пустое значение
-            if (string.IsNullOrWhiteSpace(value))
-                return "NULL";
-
-            // Проверка, является ли значение числом
-            if (double.TryParse(value, out _))
-                return value; // Числа оставляем без изменений
-
-            // Проверка, является ли значение датой
-            if (DateTime.TryParse(value, out DateTime dateTime))
-                return $"'{dateTime:yyyy-MM-dd HH:mm:ss}'"; // Приводим дату к формату для SQL
-
-            // Все остальное считаем строкой и заключаем в кавычки
-            return $"{value.Replace("'", "''")}"; // Экранируем одинарные кавычки в строке
-        }
-
-        // Функция для получения количества колонок в таблице
-        private int GetTableColumnCount(string tableName)
-        {
-            int columnCount = 0;
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(conString))
+                try
                 {
                     conn.Open();
-                    string query = $"SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'glamping' AND TABLE_NAME = '{tableName}'";
-                    MySqlCommand command = new MySqlCommand(query, conn);
-                    columnCount = Convert.ToInt32(command.ExecuteScalar());
+                    string query = $"SELECT COLUMN_NAME, EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @tableName AND TABLE_SCHEMA = @database";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@tableName", tableName);
+                        cmd.Parameters.AddWithValue("@database", Properties.Settings.Default.database);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string name = reader.GetString("COLUMN_NAME");
+                                string extra = reader.GetString("EXTRA");
+                                bool isAutoIncrement = extra.Contains("auto_increment");
+                                columns.Add((name, isAutoIncrement));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка получения структуры таблицы: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при получении структуры таблицы: {ex.Message}");
-            }
+            return columns;
+        }
 
-            return columnCount;
+        // Метод для определения уникальных столбцов для проверки дубликатов
+        private List<string> GetUniqueColumns(string tableName)
+        {
+            switch (tableName.ToLower())
+            {
+                case "booking_status":
+                    return new List<string> { "booking_status" };
+                case "bookings":
+                    return new List<string> { "guest_id", "unit_id", "check_in_date", "check_out_date" };
+                case "employees":
+                    return new List<string> { "email" };
+                case "glampingunits":
+                    return new List<string> { "unit_name", "unit_type" };
+                case "guests":
+                    return new List<string> { "email" };
+                case "pay_status":
+                    return new List<string> { "pay_statuscol" };
+                default:
+                    return new List<string>();
+            }
+        }
+
+        // Метод для проверки дубликатов
+        private bool CheckForDuplicate(MySqlConnection conn, string tableName, List<string> uniqueColumns, Dictionary<string, string> columnValues)
+        {
+            if (uniqueColumns == null || uniqueColumns.Count == 0)
+                return false;
+
+            var conditions = new List<string>();
+            using (MySqlCommand command = new MySqlCommand())
+            {
+                command.Connection = conn;
+
+                foreach (var col in uniqueColumns)
+                {
+                    if (!columnValues.ContainsKey(col)) continue;
+
+                    string paramName = $"@{col}";
+                    string val = columnValues[col];
+
+                    if (val.Equals("NULL", StringComparison.OrdinalIgnoreCase))
+                        conditions.Add($"`{col}` IS NULL");
+                    else
+                    {
+                        conditions.Add($"`{col}` = {paramName}");
+                        val = val.Trim('\''); // Убираем кавычки, если они есть
+                        command.Parameters.AddWithValue(paramName, val);
+                    }
+                }
+
+                if (conditions.Count == 0)
+                    return false;
+
+                string checkQuery = $"SELECT COUNT(*) FROM `{tableName}` WHERE {string.Join(" AND ", conditions)}";
+                command.CommandText = checkQuery;
+
+                long count = (long)command.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        // Метод для форматирования значений
+        private string FormatValueForMySQL(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || value.ToLower() == "null")
+                return "NULL";
+
+            // Заменяем запятую на точку для MySQL
+            string replaced = value.Replace(",", ".");
+
+            // Если это число (decimal)
+            if (decimal.TryParse(replaced, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal number))
+                return replaced; // Без кавычек (MySQL воспримет как число)
+
+            // Если это дата
+            if (DateTime.TryParse(value, out DateTime date))
+                return $"'{date:yyyy-MM-dd HH:mm:ss}'";
+
+            // Всё остальное — строка, экранируем
+            return $"'{value.Replace("'", "''")}'";
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "csv files (*.csv)|*.csv",
+                Title = "Выберите csv файл",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                filePath = openFileDialog.FileName;
+            }
+            tb.Text = filePath;
         }
     }
 }

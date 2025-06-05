@@ -92,7 +92,6 @@ C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_MarkupCompile.lref
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe.config
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.exe
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Kyrsovoi.pdb
-C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\Microsoft.Office.Interop.Word.dll
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Memory.dll
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Threading.Tasks.Extensions.dll
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\System.Numerics.Vectors.dll
@@ -114,3 +113,13 @@ C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.CoreCompileInp
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.csproj.Up2Date
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.exe
 C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi.pdb
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Interop.Microsoft.Office.Core.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Interop.Microsoft.Office.Interop.Word.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Interop.VBIDE.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\excel-ot.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\excel-ot.baml
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\bin\Debug\tools\mysqldump.exe
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\Kyrsovoi_Content.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\export.g.cs
+C:\Users\User\Desktop\Kyrsovoi\Kyrsovoi\obj\Debug\export.baml

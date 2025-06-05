@@ -1,0 +1,73 @@
+﻿<Window x:Class="Kyrsovoi.excel_ot"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kyrsovoi"
+        mc:Ignorable="d"
+        Title="Prosmotr" Height="290" Width="372" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
+ResizeMode="NoResize"
+Topmost="false" OpacityMask="Black"  Background="#9AA09C">
+
+    <!--toolbar-->
+    <Grid>
+        <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown" >
+            <TextBlock x:Name="tbtext" Text="Отчет excel" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
+                <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
+                 Value="true">
+                                    <Setter Property="Source" Value="source/grey.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                    <Image.Effect>
+                        <BlurEffect Radius="0.5"/>
+                    </Image.Effect>
+                </Image>
+                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="source/krest.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
+                            Value="true">
+                                    <Setter Property="Source" Value="source/krest2.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                    <Image.Effect>
+                        <BlurEffect Radius="1"/>
+                    </Image.Effect>
+                </Image>
+            </StackPanel>
+        </Grid>
+        <Grid Margin="0,0,0,51">
+            <Border Background="LightGray" CornerRadius="10" Margin="20,60,20,-21">
+
+                <!-- Основное содержимое -->
+                <StackPanel Margin="20,20,20,0">
+                    <!-- Поля для редактирования записи -->
+
+
+                    <TextBlock Text="Дата начала" FontWeight="Bold" Margin="0,5"/>
+
+                    <DatePicker Name="CheckInDate" Text="{Binding Check_in_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" SelectedDateChanged="CheckInDate_SelectedDateChanged"/>
+
+                    <TextBlock Text="Дата конца" FontWeight="Bold" Margin="0,5"/>
+                    <DatePicker Name="CheckOutDate" Text="{Binding Check_out_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10"  SelectedDateChanged="CheckOutDate_SelectedDateChanged"/>
+                </StackPanel>
+            </Border>
+            <!-- Кнопки управления -->
+            <Button Name="button" Content="Создать" Width="100" Height="30" Margin="136,209,136,0" Background="DarkSeaGreen" Click="button_Click"/>
+
+        </Grid>
+    </Grid>
+</Window>

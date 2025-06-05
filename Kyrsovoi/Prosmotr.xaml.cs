@@ -13,8 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using MySql.Data.MySqlClient;
 using System.IO;
-using Word = Microsoft.Office.Interop.Word;
-using Microsoft.Office.Interop.Word;
 using System.Runtime.InteropServices;
 using System.Data.Common;
 using System.Data;
@@ -23,6 +21,8 @@ using System.Timers;
 using System.Configuration;
 using System.Windows.Media.Animation;
 using System.Diagnostics.Eventing.Reader;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Navigation;
 
 namespace Kyrsovoi
 {
@@ -272,6 +272,7 @@ namespace Kyrsovoi
                             bookings.Visibility = Visibility.Visible;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Collapsed;
+                            panel.Visibility = Visibility.Visible;
                             Bookings.Add(new Booking
                             {
                                 id_booking = reader["booking_id"].ToString(),
@@ -691,6 +692,7 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 Class1.add = 1;
                 redactKlient redactKlient = new redactKlient();
                 redactKlient.Focus();
@@ -753,124 +755,28 @@ namespace Kyrsovoi
         {
             if (Class1.role == 1)
             {
+                _idleTimer.Stop();
                 Class1.add = 1;
                 redactBooking redactBooking = new redactBooking();
-                redactBooking.Show();
+                this.Hide();
+                redactBooking.ShowDialog();
+                this.Close();
             }
             else
             {
-                // Группировка бронирований по unit
-                var revenueReport = Bookings
-                    .GroupBy(b => b.unit)
-                    .Select(group => (dynamic)new
-                    {
-                        Unit = group.Key,
-                        RentalCount = group.Count(),
-                        TotalRevenue = group.Sum(b => decimal.Parse(b.total_price))
-                    })
-                    .ToList();
+                _idleTimer.Stop();
+                excel_ot excel_Ot = new excel_ot();
+                this.Hide();
+                excel_Ot.ShowDialog();
+                this.Close();
 
-                // Генерация отчёта
-                GenerateOfficialWordReport(revenueReport);
             }
         }
-        static void GenerateOfficialWordReport(List<dynamic> report)
-        {
-            // Создаем приложение Word
-            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
-            Document document = wordApp.Documents.Add();
-
-            try
-            {
-                // Вставляем логотип (при необходимости замените путь)
-                string logoPath = Path.GetFullPath("Logo.png"); // Замените на путь к вашему логотипу
-                if (System.IO.File.Exists(logoPath))
-                {
-                    Range logoRange = document.Range(0, 0);
-                    Shape logoShape = document.Shapes.AddPicture(logoPath, false, true, 0, 0, 100, 50);
-                    logoShape.WrapFormat.Type = WdWrapType.wdWrapTopBottom;
-                }
-
-                // Заголовок отчёта
-                Word.Paragraph titleParagraph = document.Content.Paragraphs.Add();
-                titleParagraph.Range.Text = "Официальный Отчёт по Выручке";
-                titleParagraph.Range.Font.Size = 20;
-                titleParagraph.Range.Font.Bold = 1;
-                titleParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-                titleParagraph.Range.InsertParagraphAfter();
-
-                // Подзаголовок
-                Word.Paragraph subtitleParagraph = document.Content.Paragraphs.Add();
-                subtitleParagraph.Range.Text = $"Дата формирования отчёта: {DateTime.Now:dd.MM.yyyy}";
-                subtitleParagraph.Range.Font.Size = 12;
-                subtitleParagraph.Range.Font.Italic = 1;
-                subtitleParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-                subtitleParagraph.Range.InsertParagraphAfter();
-
-                // Пустая строка перед таблицей
-                document.Content.Paragraphs.Add();
-
-                // Таблица отчёта
-                Word.Table table = document.Tables.Add(document.Content.Paragraphs.Add().Range, report.Count + 1, 3);
-                table.Borders.Enable = 1; // Включаем границы
-                table.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-                table.Range.Font.Size = 12;
-
-                // Заголовки столбцов
-                table.Cell(1, 1).Range.Text = "Дом";
-                table.Cell(1, 2).Range.Text = "Количество аренд";
-                table.Cell(1, 3).Range.Text = "Общая выручка";
-
-                table.Rows[1].Range.Font.Bold = 1; // Выделяем заголовки жирным
-                table.Rows[1].Shading.BackgroundPatternColor = WdColor.wdColorGray20; // Задаём фон заголовков
-
-                // Заполнение таблицы данными
-                for (int i = 0; i < report.Count; i++)
-                {
-                    table.Cell(i + 2, 1).Range.Text = report[i].Unit;
-                    table.Cell(i + 2, 2).Range.Text = report[i].RentalCount.ToString();
-                    table.Cell(i + 2, 3).Range.Text = $"{report[i].TotalRevenue:C}"; // Форматируем как валюту
-                }
-
-                // Итоговая строка
-                decimal totalRevenue = 0m;
-                foreach (var item in report) totalRevenue += item.TotalRevenue;
-
-                Row totalRow = table.Rows.Add();
-                totalRow.Cells[1].Range.Text = "ИТОГО";
-                totalRow.Cells[2].Merge(totalRow.Cells[3]); // Объединяем последние две ячейки
-                totalRow.Cells[2].Range.Text = $"{totalRevenue:C}";
-                totalRow.Range.Font.Bold = 1;
-
-                // Сохранение документа
-                string filePath = @"C:\Users\dshma\OneDrive\Рабочий стол\Курсовой проект\Kyrsovoi\Kyrsovoi\bin\Debug\homeОфициальный_Отчёт.docx";
-                document.SaveAs2(filePath);
-
-                Console.WriteLine($"Отчёт успешно сохранён: {filePath}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
-            finally
-            {
-                // Закрываем документ и приложение Word
-                if (document != null)
-                {
-                    document.Close();
-                    Marshal.ReleaseComObject(document);
-                }
-
-                if (wordApp != null)
-                {
-                    wordApp.Quit();
-                    Marshal.ReleaseComObject(wordApp);
-                }
-            }
-        }
+        
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            _idleTimer.Stop();
             Button button = sender as Button;
 
             // Получаем данные строки через Tag кнопки
@@ -919,6 +825,7 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 Class1.add = 1;
                 addHouse addHouse = new addHouse();
                 addHouse.Focus();
@@ -943,10 +850,12 @@ namespace Kyrsovoi
             {
                 Class1.booking_id = booking.id_booking;
             }
+            _idleTimer.Stop();
             redactBooking redactBooking = new redactBooking();
-            redactBooking.Focus();
+            this.Hide();
 
-            redactBooking.Show();
+            redactBooking.ShowDialog();
+            this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -992,6 +901,7 @@ namespace Kyrsovoi
             {
                 Class1.id_service = Convert.ToInt32(service.id_service);
             }
+            _idleTimer.Stop();
             redactService redactService = new redactService();
             redactService.Focus();
 
@@ -1002,6 +912,7 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 Class1.add = 1;
                 redactService redactService = new redactService();
                 redactService.Focus();

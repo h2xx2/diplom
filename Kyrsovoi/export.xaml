@@ -1,0 +1,84 @@
+﻿<Window x:Class="Kyrsovoi.export"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kyrsovoi"
+        mc:Ignorable="d"
+         Height="250" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
+    <Grid>
+        <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
+            <TextBlock x:Name="tbtext" Text="Экспорт данных" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
+                <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
+                 Value="true">
+                                    <Setter Property="Source" Value="source/grey.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                    <Image.Effect>
+                        <BlurEffect Radius="0.5"/>
+                    </Image.Effect>
+                </Image>
+                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="source/krest.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
+                            Value="true">
+                                    <Setter Property="Source" Value="source/krest2.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                    <Image.Effect>
+                        <BlurEffect Radius="1"/>
+                    </Image.Effect>
+                </Image>
+            </StackPanel>
+        </Grid>
+        <Grid Margin="20,50, 20, 10" >
+            <Border Background="LightGray" CornerRadius="10">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,20">
+                            <Grid.ColumnDefinitions>
+                                <!-- Колонка для текста -->
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Выберите место сохранения" FontSize="15" Grid.Column="0" Grid.Row="0" Margin="10,10,70,20" Grid.RowSpan="2"/>
+                            <TextBox Name="tb" IsReadOnly="True" Grid.Column="0" Grid.Row="1" Margin="10 0 0 0"/>
+                            <Image Grid.Column="1" Grid.Row="1"  Name="Smena" Source="ImageButton/papka.png" VerticalAlignment="Center" Margin="9,0,17,0" Height="30" Stretch="Fill" MouseDown="Image_MouseDown"/>
+
+                        </Grid>
+
+                    </StackPanel>
+                    <ComboBox Name="cb" Width="200" Margin="0 0 0 10">
+                        <ComboBoxItem Content="bookings"/>
+                        <ComboBoxItem Content="employees"/>
+                        <ComboBoxItem Content="glampingunits"/>
+                        <ComboBoxItem Content="guests"/>
+                        <ComboBoxItem Content="booking_status"/>
+                        <ComboBoxItem Content="pay_status"/>
+                        <ComboBoxItem Content="Все таблицы"/>
+                    </ComboBox>
+                    <Button Content="Экспорт" Width="200" Height="25" Click="Button_Click_1"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

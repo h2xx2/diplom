@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-             Height="230" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
+             Height="350" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
     <Grid>
         <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
-            <TextBlock x:Name="tbtext" Text="Импортирование данных" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
+            <TextBlock x:Name="tbtext" Text="Управление данными" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
                 <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown" >
@@ -50,7 +50,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,20">
-                            
+
 
                             <TextBlock TextAlignment="Center" Text="Восстановление структуры" FontSize="15" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0"/>
 
@@ -59,6 +59,8 @@
                     </StackPanel>
                     <Button Content="Восстановить" Width="200" Height="30" FontSize="17" Click="Button_Click_1"/>
                     <Button Content="Импортирование" Width="200" Height="30" FontSize="17" Margin="0 20" Click="Button_Click"/>
+                    <Button x:Name="rezerv" Content="Резервное копирование" Width="200" Height="30" FontSize="17" Click="Button_Click_2"/>
+                    <Button Content="Экспорт данных" Width="200" Height="30" FontSize="17" Margin="0 20" Click="Button_Click_3"/>
                 </StackPanel>
             </Border>
         </Grid>

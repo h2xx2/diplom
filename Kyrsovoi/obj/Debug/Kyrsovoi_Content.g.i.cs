@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("imageholder.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("tools/mysqldump.exe")]
 
 
