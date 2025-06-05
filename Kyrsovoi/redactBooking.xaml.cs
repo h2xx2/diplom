@@ -1150,6 +1150,7 @@ namespace Kyrsovoi
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            CheckInDate.DisplayDateStart = DateTime.Now.Date;
             delete.Visibility = Visibility.Visible;
             if (Class1.add != 1)
             {

@@ -214,7 +214,7 @@ namespace Kyrsovoi
         string dopCom2 = string.Empty;
         string saveQuery = string.Empty;
         string status = "";
-
+        string table = "bookings";
         int _pageSize = 10;
         int _totalPages = 0;
         int _currentPage = 1;
@@ -225,30 +225,31 @@ namespace Kyrsovoi
         public ObservableCollection<Home> Homes { get; set; } = new ObservableCollection<Home>();
         public ObservableCollection<Employee> Employees { get; set; } = new ObservableCollection<Employee>();
         string connectionString = Class1.connection;
-        
-        public void FillDataGrid(int _currentPage,string com)
-        {
 
+        public void FillDataGrid(int _currentPage, string com)
+        {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    CalculateTotalPages();
+                    CalculateTotalPages(); // Пересчитываем общее количество страниц
                     UpdatePageInfo();
                     GeneratePageButtons();
+
                     int offset = (_currentPage - 1) * _pageSize;
                     MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
 
-                    Clients.Clear(); // Очистка коллекции перед загрузкой данных
+                    Clients.Clear();
                     Bookings.Clear();
                     Servic.Clear();
                     Homes.Clear();
                     Employees.Clear();
+
                     while (reader.Read())
                     {
-                        if (raspred == 1)
+                        if (raspred == 1) // guests
                         {
                             bookings.Visibility = Visibility.Collapsed;
                             clients.Visibility = Visibility.Visible;
@@ -266,13 +267,14 @@ namespace Kyrsovoi
                                 dateOfBirthday = reader["date_of_birth"].ToString(),
                             });
                         }
-                        if (raspred == 0)
+                        else if (raspred == 0) // bookings
                         {
                             clients.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Visible;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Collapsed;
                             panel.Visibility = Visibility.Visible;
+
                             Bookings.Add(new Booking
                             {
                                 id_booking = reader["booking_id"].ToString(),
@@ -286,8 +288,7 @@ namespace Kyrsovoi
                                 created_at = reader["created_at"].ToString(),
                             });
                         }
-                       
-                        if (raspred == 3)
+                        else if (raspred == 3) // employees
                         {
                             clients.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Collapsed;
@@ -296,7 +297,6 @@ namespace Kyrsovoi
                             Class1.employee_id = Convert.ToInt32(reader["employee_id"]);
                             Employees.Add(new Employee
                             {
-
                                 first_name = reader["first_name"].ToString(),
                                 last_name = reader["last_name"].ToString(),
                                 position = reader["position"].ToString(),
@@ -306,20 +306,18 @@ namespace Kyrsovoi
                                 login = reader["login"].ToString(),
                                 password = reader["password"].ToString(),
                                 role = reader["role"].ToString(),
-
                             });
-
                         }
-                        if (raspred == 4)
+                        else if (raspred == 4) // glampingunits
                         {
                             clients.Visibility = Visibility.Collapsed;
                             bookings.Visibility = Visibility.Collapsed;
                             employee.Visibility = Visibility.Collapsed;
                             homes.Visibility = Visibility.Visible;
+
                             string fileName = ".\\home\\" + reader["photo"]?.ToString();
                             string filepath = Path.GetFullPath(fileName);
 
-                            // Загрузка изображения
                             BitmapImage bitmap = new BitmapImage();
                             if (!string.IsNullOrEmpty(filepath))
                             {
@@ -329,7 +327,6 @@ namespace Kyrsovoi
                                 bitmap.EndInit();
                             }
 
-                            // Добавление данных
                             Homes.Add(new Home
                             {
                                 unit_id = reader["unit_id"].ToString(),
@@ -350,7 +347,7 @@ namespace Kyrsovoi
                 }
             }
         }
-       
+
 
 
         private void Min_MouseDown(object sender, MouseButtonEventArgs e)
@@ -362,6 +359,7 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 MainWindow mainWindow = new MainWindow();
                 this.Close();
                 mainWindow.Show();
@@ -386,6 +384,7 @@ namespace Kyrsovoi
 
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            _idleTimer.Stop();
             Class1.saveQuery = com;
             MainWindow mainWindow = new MainWindow();
             this.Close();
@@ -413,31 +412,33 @@ namespace Kyrsovoi
             cb2.Margin = new Thickness(550, 50, 0, 0);
             tb1.Width = 210;
             tbNameForm.Text = "Бронирование";
+            table = "bookings";
             query = @"SELECT 
-                        b.booking_id,
-                        glampingunits.unit_name,
-                        CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
-                        CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
-                        b.check_in_date, 
-                        b.check_out_date, 
-                        b.total_price, 
-                        booking_status.booking_status, 
-                        b.created_at
-                    FROM 
-                        glamping.bookings b
-                    LEFT JOIN 
-                        guests ON guests.guest_id = b.booking_id
-					LEFT JOIN 
-                        glampingunits ON glampingunits.unit_id = b.unit_id
-                    LEFT JOIN 
-                        employees ON employees.employee_id = b.booking_id
-					LEFT JOIN 
-                        booking_status ON booking_status.idbooking_status = b.booking_status";
+                b.booking_id,
+                glampingunits.unit_name,
+                CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
+                CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
+                b.check_in_date, 
+                b.check_out_date, 
+                b.total_price, 
+                booking_status.booking_status, 
+                b.created_at
+            FROM 
+                glamping.bookings b
+            LEFT JOIN 
+                guests ON guests.guest_id = b.booking_id
+            LEFT JOIN 
+                glampingunits ON glampingunits.unit_id = b.unit_id
+            LEFT JOIN 
+                employees ON employees.employee_id = b.booking_id
+            LEFT JOIN 
+                booking_status ON booking_status.idbooking_status = b.booking_status";
             raspred = 0;
-            com = query;
+            com = query; // Инициализируем com без условий
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
+            _currentPage = 1;
             FillDataGrid(_currentPage, com);
             cb1.Visibility = Visibility.Visible;
             cb2.SelectedIndex = 2;
@@ -477,12 +478,14 @@ namespace Kyrsovoi
             cb2.Margin = new Thickness(370, 50, 0,0);
             tb1.Width = 270;
             tbNameForm.Text = "Клиент";
+            table = "guests";
             query = "SELECT first_name, last_name, email, phone, date_of_birth, passport_number, registration_date FROM guests";
             raspred = 1;
             com = query;
             dopCom0 = "";
             dopCom1 = "";
             dopCom2 = "";
+            _currentPage = 1;
             FillDataGrid(_currentPage, com); cb2.SelectedIndex = 4;
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Visible;
@@ -492,113 +495,104 @@ namespace Kyrsovoi
 
         private void tb1_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (tb1.Text != "")
+            {
+                placeholder.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                placeholder.Visibility = Visibility.Visible;
+            }
             com = "";
             if (raspred == 0)
             {
-                
-                dopCom0 = $" WHERE CONCAT(guests.first_name, \" \", guests.last_name) like '%{tb1.Text}%'";
+                dopCom0 = $"CONCAT(guests.first_name, \" \", guests.last_name) LIKE '%{tb1.Text}%'";
             }
             if (raspred == 1)
             {
-                dopCom0 = $" where first_name like '{tb1.Text}%' or last_name like '{tb1.Text}%'";
+                dopCom0 = $"first_name LIKE '{tb1.Text}%' OR last_name LIKE '{tb1.Text}%'";
             }
             if (raspred == 2)
             {
-                dopCom0 = $" where service_name like '%{tb1.Text}%'";
+                dopCom0 = $"service_name LIKE '%{tb1.Text}%'";
             }
-            if (dopCom2 != "" && dopCom0 != "")
+            if (!string.IsNullOrEmpty(dopCom2) && !string.IsNullOrEmpty(dopCom0))
             {
-                dopCom2 = $" b.booking_status = {status}";
-                com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
+                dopCom2 = $"b.booking_status = {status}";
+                com = query + " WHERE " + dopCom0 + " AND " + dopCom2 + dopCom1;
                 FillDataGrid(_currentPage, com);
             }
-            if(dopCom2 == "")
+            else if (string.IsNullOrEmpty(dopCom2))
             {
-                com = query + dopCom0 + dopCom1;
+                com = query + (string.IsNullOrEmpty(dopCom0) ? "" : " WHERE " + dopCom0) + dopCom1;
                 FillDataGrid(_currentPage, com);
             }
-            
+
         }
 
         private void cb2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string column = String.Empty;
-            if (raspred == 0)
-            {
-                column = "guest";
-            }
-            if (raspred == 1)
-            {
-                column = "first_name";
-            }
-            if (raspred == 2)
-            {
-                column = "service_name";
-            }
-            if (cb2.SelectedIndex == 0)
-            {
+            if (raspred == 0) column = "guest";
+            if (raspred == 1) column = "first_name";
+            if (raspred == 2) column = "service_name";
 
-                dopCom1 = $" ORDER BY {column}";
-            }
-            if (cb2.SelectedIndex == 1)
+            if (cb2.SelectedIndex == 0) dopCom1 = $" ORDER BY {column}";
+            else if (cb2.SelectedIndex == 1) dopCom1 = $" ORDER BY {column} DESC";
+            else if (cb2.SelectedIndex == 2) dopCom1 = "";
+
+            if (!string.IsNullOrEmpty(dopCom0) && !string.IsNullOrEmpty(dopCom2))
             {
-                dopCom1 = $" ORDER BY {column} DESC";
-            }
-            if (cb2.SelectedIndex == 2)
-            {
-                dopCom1 = "";
-                if (dopCom0 != "" && dopCom2 != "")
-                {
-                    dopCom2 = $" b.booking_status = {status}";
-                    com = query + dopCom0 + " AND " + dopCom2;
-                    FillDataGrid(_currentPage, com);
-                }
-                if (dopCom0 == "" && dopCom2 == "")
-                {
-                    com = query;
-                    FillDataGrid(_currentPage, com);
-                }
-                if (dopCom0 != "" && dopCom2 == "")
-                {
-                    com = query + dopCom0;
-                    FillDataGrid(_currentPage, com);
-                }
-                if (dopCom0 == "" && dopCom2 != "")
-                {
-                    dopCom2 = $" b.booking_status = {status}";
-                    com = query + " WHERE " + dopCom2;
-                    FillDataGrid(_currentPage, com);
-                }
-            }
-            if (dopCom0 != "" && dopCom2 !="")
-            {
-                dopCom2 = $" b.booking_status = {status}";
-                com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
+                dopCom2 = $"b.booking_status = {status}";
+                com = query + " WHERE " + dopCom0 + " AND " + dopCom2 + dopCom1;
                 FillDataGrid(_currentPage, com);
             }
-            if (dopCom0 == ""|| dopCom2 == "")
+            else if (string.IsNullOrEmpty(dopCom0) || string.IsNullOrEmpty(dopCom2))
             {
                 if (cb2.SelectedIndex != 2)
                 {
-
-                    if (dopCom0 == "" && dopCom2 != "")
+                    if (string.IsNullOrEmpty(dopCom0) && !string.IsNullOrEmpty(dopCom2))
                     {
-                        dopCom2 = $" b.booking_status = {status}";
+                        dopCom2 = $"b.booking_status = {status}";
                         com = query + " WHERE " + dopCom2 + dopCom1;
                         FillDataGrid(_currentPage, com);
                     }
-                    if (dopCom0 == "" && dopCom2 == "")
+                    else if (string.IsNullOrEmpty(dopCom2) && !string.IsNullOrEmpty(dopCom0))
+                    {
+                        com = query + " WHERE " + dopCom0 + dopCom1;
+                        FillDataGrid(_currentPage, com);
+                    }
+                    else if (string.IsNullOrEmpty(dopCom0) && string.IsNullOrEmpty(dopCom2))
                     {
                         com = query + dopCom1;
                         FillDataGrid(_currentPage, com);
                     }
-                    if (dopCom2 == "" && dopCom0 != "")
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(dopCom0) && !string.IsNullOrEmpty(dopCom2))
                     {
-                        com = query + dopCom0 + dopCom1;
+                        dopCom2 = $"b.booking_status = {status}";
+                        com = query + " WHERE " + dopCom0 + " AND " + dopCom2;
+                        FillDataGrid(_currentPage, com);
+                    }
+                    else if (!string.IsNullOrEmpty(dopCom0) && string.IsNullOrEmpty(dopCom2))
+                    {
+                        com = query + " WHERE " + dopCom0;
+                        FillDataGrid(_currentPage, com);
+                    }
+                    else if (string.IsNullOrEmpty(dopCom0) && !string.IsNullOrEmpty(dopCom2))
+                    {
+                        dopCom2 = $"b.booking_status = {status}";
+                        com = query + " WHERE " + dopCom2;
+                        FillDataGrid(_currentPage, com);
+                    }
+                    else
+                    {
+                        com = query;
                         FillDataGrid(_currentPage, com);
                     }
                 }
-                
             }
         }
 
@@ -611,56 +605,50 @@ namespace Kyrsovoi
                     ComboBoxItem selectedItem = (ComboBoxItem)cb1.SelectedItem;
 
                     string selectedStatus = selectedItem.Content.ToString();
-                    if (selectedStatus == "подтвержденный")
-                    {
-                        status = "1";
-                    }
                     if (selectedStatus == "завершенный")
                     {
                         status = "2";
                     }
                     if (selectedStatus == "забронированный")
                     {
-                        status = "3";
+                        status = "1";
                     }
                     if (selectedStatus == "отмененный")
                     {
-                        status = "4";
+                        status = "3";
                     }
 
-                    dopCom2 = $" b.booking_status = {status}";
+                    dopCom2 = $"b.booking_status = {status}";
 
                     if (cb1.SelectedIndex == 4)
                     {
                         dopCom2 = "";
-                        com = query + dopCom0 + dopCom1;
+                        com = query + (string.IsNullOrEmpty(dopCom0) ? "" : " WHERE " + dopCom0) + dopCom1;
                         FillDataGrid(_currentPage, com);
                     }
-                    if (dopCom0 != "" && dopCom1 != "")
+                    else if (!string.IsNullOrEmpty(dopCom0) && !string.IsNullOrEmpty(dopCom1))
                     {
-                        com = query + dopCom0 + " AND " + dopCom2 + dopCom1;
+                        com = query + " WHERE " + dopCom0 + " AND " + dopCom2 + dopCom1;
                         FillDataGrid(_currentPage, com);
                     }
-                    if (dopCom0 == "" || dopCom1 == "")
+                    else if (string.IsNullOrEmpty(dopCom0) || string.IsNullOrEmpty(dopCom1))
                     {
-                        if (cb1.SelectedIndex != 4) {
-                            if (dopCom0 == "")
+                        if (cb1.SelectedIndex != 4)
+                        {
+                            if (string.IsNullOrEmpty(dopCom0))
                             {
                                 com = query + " WHERE " + dopCom2 + dopCom1;
                                 FillDataGrid(_currentPage, com);
                             }
-
-                            if (dopCom1 == "" && dopCom2 != "" && dopCom0 != "")
+                            else if (string.IsNullOrEmpty(dopCom1) && !string.IsNullOrEmpty(dopCom0))
                             {
-                                com = query + dopCom0 + " AND " + dopCom2;
+                                com = query + " WHERE " + dopCom0 + " AND " + dopCom2;
                                 FillDataGrid(_currentPage, com);
                             }
                         }
                     }
-
                 }
             }
-
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -674,10 +662,11 @@ namespace Kyrsovoi
             {
                 Class1.numberPhone = client.number;
             }
+            _idleTimer.Stop();
             redactKlient redactKlient = new redactKlient();
-            redactKlient.Focus();
-
-            redactKlient.Show();
+            this.Hide();
+            redactKlient.ShowDialog();
+            this.Close();
         }
 
         private void ToolBar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -695,9 +684,9 @@ namespace Kyrsovoi
                 _idleTimer.Stop();
                 Class1.add = 1;
                 redactKlient redactKlient = new redactKlient();
-                redactKlient.Focus();
-
-                redactKlient.Show();
+                this.Hide();
+                redactKlient.ShowDialog();
+                this.Close();
             }
         }
 
@@ -715,6 +704,8 @@ namespace Kyrsovoi
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Collapsed;
             tbNameForm.Text = "Сотрудники";
+            table = "employees";
+            _currentPage = 1;
             query = "SELECT employee_id, first_name,last_name,position, hire_date, phone, email, login,password, role FROM employees";
             raspred = 3;
             com = query;
@@ -742,6 +733,8 @@ namespace Kyrsovoi
             cb1.Visibility = Visibility.Collapsed;
             cb2.Visibility = Visibility.Collapsed;
             tbNameForm.Text = "Дома";
+            table = "glampingunits";
+            _currentPage = 1;
             query = "SELECT unit_id, unit_name,unit_type, capacity, price_per_night, description, photo FROM glampingunits";
             raspred = 4;
             com = query;
@@ -787,25 +780,27 @@ namespace Kyrsovoi
                 Class1.numberPhoneEmploye = emloye.phone;
             }
             redactEmployee redactEmployee = new redactEmployee();
-            redactEmployee.Focus();
-
-            redactEmployee.Show();
+            this.Hide();
+            redactEmployee.ShowDialog();
+            this.Close();
         }
 
         private void addEmployee_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 Class1.add = 1;
                 redactEmployee redactEmployee = new redactEmployee();
-                redactEmployee.Focus();
-
-                redactEmployee.Show();
+                this.Hide();
+                redactEmployee.ShowDialog();
+                this.Close();
             }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            _idleTimer.Stop();
             Button button = sender as Button;
 
             // Получаем данные строки через Tag кнопки
@@ -816,9 +811,9 @@ namespace Kyrsovoi
                 Class1.unit_id = Convert.ToInt32(home.unit_id);
             }
             addHouse addHouse = new addHouse();
-            addHouse.Focus();
-
-            addHouse.Show();
+            this.Hide();
+            addHouse.ShowDialog();
+            this.Close();
         }
 
         private void addHouse_MouseDown(object sender, MouseButtonEventArgs e)
@@ -828,9 +823,9 @@ namespace Kyrsovoi
                 _idleTimer.Stop();
                 Class1.add = 1;
                 addHouse addHouse = new addHouse();
-                addHouse.Focus();
-
-                addHouse.Show();
+                this.Hide();
+                addHouse.ShowDialog();
+                this.Close();
             }
         }
 
@@ -853,7 +848,6 @@ namespace Kyrsovoi
             _idleTimer.Stop();
             redactBooking redactBooking = new redactBooking();
             this.Hide();
-
             redactBooking.ShowDialog();
             this.Close();
         }
@@ -903,9 +897,9 @@ namespace Kyrsovoi
             }
             _idleTimer.Stop();
             redactService redactService = new redactService();
-            redactService.Focus();
-
-            redactService.Show();
+            this.Hide();
+            redactService.ShowDialog();
+            this.Close();
         }
 
         private void addService_MouseDown(object sender, MouseButtonEventArgs e)
@@ -915,15 +909,16 @@ namespace Kyrsovoi
                 _idleTimer.Stop();
                 Class1.add = 1;
                 redactService redactService = new redactService();
-                redactService.Focus();
-
-                redactService.Show();
+                this.Hide();
+                redactService.ShowDialog();
+                this.Close();
             }
         }
 
         private void tb1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[а-яА-Я]+$");
+            
         }
         private void GeneratePageButtons()
         {
@@ -979,23 +974,72 @@ namespace Kyrsovoi
             {
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    string sql = "";
                     conn.Open();
-                    if (dopCom2 != "" )
+
+                    string tableName;
+                    string sql;
+                    string condition = string.Empty;
+
+                    // Определяем таблицу на основе raspred
+                    switch (raspred)
                     {
-                        dopCom2 = "booking_status = " + status;
-                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id WHERE " + dopCom2 ;
+                        case 0: // bookings
+                            tableName = "bookings";
+                            // Формируем условие без дублирования WHERE
+                            if (!string.IsNullOrEmpty(dopCom2))
+                            {
+                                dopCom2 = $"booking_status = {status}";
+                                condition = dopCom2;
+                            }
+                            if (!string.IsNullOrEmpty(dopCom0))
+                            {
+                                string cleanedDopCom0 = dopCom0.Trim(); // Убираем лишние пробелы
+                                condition = string.IsNullOrEmpty(condition)
+                                    ? cleanedDopCom0
+                                    : $"{condition} AND {cleanedDopCom0}";
+                            }
+                            sql = $"SELECT COUNT(*) FROM {tableName} JOIN guests ON bookings.guest_id = guests.guest_id";
+                            if (!string.IsNullOrEmpty(condition))
+                            {
+                                sql += $" WHERE {condition}";
+                            }
+                            break;
+
+                        case 1: // guests
+                            tableName = "guests";
+                            sql = $"SELECT COUNT(*) FROM {tableName}";
+                            if (!string.IsNullOrEmpty(dopCom0))
+                            {
+                                string cleanedDopCom0 = dopCom0.Trim();
+                                sql += $" WHERE {cleanedDopCom0}";
+                            }
+                            break;
+
+                        case 3: // employees
+                            tableName = "employees";
+                            sql = $"SELECT COUNT(*) FROM {tableName}";
+                            if (!string.IsNullOrEmpty(dopCom0))
+                            {
+                                string cleanedDopCom0 = dopCom0.Trim();
+                                sql += $" WHERE {cleanedDopCom0}";
+                            }
+                            break;
+
+                        case 4: // glampingunits
+                            tableName = "glampingunits";
+                            sql = $"SELECT COUNT(*) FROM {tableName}";
+                            if (!string.IsNullOrEmpty(dopCom0))
+                            {
+                                string cleanedDopCom0 = dopCom0.Trim();
+                                sql += $" WHERE {cleanedDopCom0}";
+                            }
+                            break;
+
+                        default:
+                            throw new Exception("Неизвестный тип таблицы (raspred).");
                     }
-                    if (dopCom2 != "" && dopCom0 != "")
-                    {
-                        dopCom2 = "booking_status = " + status;
-                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id " + dopCom0 + " AND " + dopCom2 ;
-                    }
-                    if (dopCom2 == "")
-                    {
-                        sql = " JOIN guests ON bookings.guest_id = guests.guest_id " + dopCom0;
-                    }
-                    MySqlCommand countCmd = new MySqlCommand($"SELECT COUNT(*) FROM bookings {sql}", conn);
+
+                    MySqlCommand countCmd = new MySqlCommand(sql, conn);
                     int totalItems = Convert.ToInt32(countCmd.ExecuteScalar());
                     _totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
 
@@ -1005,7 +1049,7 @@ namespace Kyrsovoi
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Ошибка при подсчете страниц: {ex.Message}");
             }
         }
 
@@ -1034,28 +1078,33 @@ namespace Kyrsovoi
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
             count++;
-            if (count %2 == 1) 
+            if (count % 2 == 1)
             {
                 string idleTimeout = ConfigurationManager.AppSettings["IdleTimeout"];
                 cbSleep.Text = idleTimeout;
                 AnimateListViewHeight(gridSleep, 0, 100, 0.5);
             }
-            else{
+            else
+            {
                 AnimateListViewHeight(gridSleep, 100, 0, 0.5);
                 UpdateAppConfig("IdleTimeout", cbSleep.Text);
                 if (cbSleep.Text == "Выкл")
                 {
                     UpdateAppConfig("IdleTimeout", "10000000");
                 }
+                // Обновляем интервал таймера
+                if (int.TryParse(ConfigurationManager.AppSettings["IdleTimeout"], out int newTimeout))
+                {
+                    _idleTimer.Stop();
+                    _idleTimer.Interval = newTimeout * 1000; // Обновляем интервал
+                    _idleTimer.Start();
+                }
             }
-            
+
         }
         void UpdateAppConfig(string key, string value)
         {
-            // Загружаем текущую конфигурацию
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-            // Обновляем или добавляем ключ
             if (config.AppSettings.Settings[key] != null)
             {
                 config.AppSettings.Settings[key].Value = value;
@@ -1064,11 +1113,7 @@ namespace Kyrsovoi
             {
                 config.AppSettings.Settings.Add(key, value);
             }
-
-            // Сохраняем изменения
             config.Save(ConfigurationSaveMode.Modified);
-
-            // Перезагружаем настройки
             ConfigurationManager.RefreshSection("appSettings");
         }
     }

@@ -143,9 +143,11 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
+                Prosmotr prosmotr = new Prosmotr();
+                this.Hide();
+                prosmotr.ShowDialog();
                 this.Close();
-                //Prosmotr prosmotr = new Prosmotr();
-                //prosmotr.DoSomething();
 
             }
         }
@@ -317,6 +319,8 @@ namespace Kyrsovoi
             Smena.IsEnabled = true;
 
             button.Content = "Сохранить";
+            delete.Visibility = Visibility.Collapsed;
+
             string query = String.Empty;
             string name = nameHouse.Text;
             string types = type.Text;
@@ -459,21 +463,54 @@ namespace Kyrsovoi
 
                     try
                     {
+                        // Определяем путь к папке home в bin/debug
+                        string baseDir = AppDomain.CurrentDomain.BaseDirectory; // Например, bin/Debug/
+                        string homeDir = System.IO.Path.Combine(baseDir, "home");
+                        if (!Directory.Exists(homeDir))
+                        {
+                            Directory.CreateDirectory(homeDir);
+                        }
+
+                        // Формируем новое имя файла с уникальным суффиксом
+                        string fileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName);
+                        string fileExtension = System.IO.Path.GetExtension(openFileDialog.SafeFileName);
+                        string newFileName = $"{fileName}_{DateTime.Now:yyyyMMdd_HHmmss}{fileExtension}";
+                        string destinationPath = System.IO.Path.Combine(homeDir, newFileName);
+
+                        // Проверяем, существует ли файл с таким именем
+                        int fileCounter = 1;
+                        while (File.Exists(destinationPath))
+                        {
+                            newFileName = $"{fileName}_{DateTime.Now:yyyyMMdd_HHmmss}_{fileCounter}{fileExtension}";
+                            destinationPath = System.IO.Path.Combine(homeDir, newFileName);
+                            fileCounter++;
+                        }
+
+                        // Копируем файл в папку home
+                        File.Copy(openFileDialog.FileName, destinationPath, false);
+
+                        // Сохраняем только имя файла (без пути home/)
+                        path = newFileName;
+
                         // Загрузка изображения
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(openFileDialog.FileName);
+                        bitmap.UriSource = new Uri(destinationPath, UriKind.Absolute);
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
                         bitmap.EndInit();
 
-                        path = openFileDialog.SafeFileName;
-
-                        // Установка изображения в другой Image
+                        // Установка изображения в Image
                         image.Source = bitmap;
+
+                        // Обновляем старое значение фото, если редактирование
+                        if (!string.IsNullOrEmpty(oldPhoto))
+                        {
+                            oldPhoto = path;
+                        }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"Ошибка при загрузке или сохранении изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

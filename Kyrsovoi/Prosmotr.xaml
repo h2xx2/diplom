@@ -532,7 +532,6 @@
                          IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"
 
                       >
-                <ComboBoxItem Content="подтвержденный"/>
                 <ComboBoxItem Content="завершенный"/>
                 <ComboBoxItem Content="забронированный"/>
                 <ComboBoxItem Content="отмененный"/>
