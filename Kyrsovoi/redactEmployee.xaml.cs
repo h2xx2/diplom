@@ -31,6 +31,11 @@ namespace Kyrsovoi
         private string oldSurname = "";
         private string oldEmail = "";
         private string oldNumber = "";
+        private string oldhiredate = "";
+        private string oldposition = "";
+        private string oldlogin = "";
+        private string oldpassword = "";
+        private string oldrole = "";
         public redactEmployee()
         {
             InitializeComponent();
@@ -105,9 +110,13 @@ namespace Kyrsovoi
                         oldNumber = employee.Phone;
                         employee.Db = rdr["hire_date"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(rdr["hire_date"]);
                         employee.Position = rdr["position"].ToString();
+                        oldposition = employee.Position;
                         employee.Login = rdr["login"].ToString();
+                        oldlogin = employee.Login;
                         employee.Password = rdr["password"].ToString();
+                        oldpassword = employee.Password;
                         employee.Role = rdr["role"].ToString();
+                        oldrole = employee.Role;
                     }
                 }
                 catch (Exception ex)
@@ -125,10 +134,11 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
+                Prosmotr prosmotr = new Prosmotr();
+                this.Hide();
+                prosmotr.ShowDialog();
                 this.Close();
-                //Prosmotr prosmotr = new Prosmotr();
-                //prosmotr.DoSomething();
-
             }
         }
 
@@ -302,6 +312,9 @@ namespace Kyrsovoi
                     textBox.IsReadOnly = isReadOnly;
                 }
             }
+            position.IsEnabled = !isReadOnly;
+            GeneratePass.IsEnabled = !isReadOnly;
+            role.IsEnabled = !isReadOnly;
         }
         private bool AreFieldsFilled()
         {
@@ -320,16 +333,20 @@ namespace Kyrsovoi
             }
             return true;
         }
-        private bool IsTextChanged(string name, string surname, string email, string number)
+        private bool IsTextChanged(string name, string surname, string email, string number, string position, string login, string password, string role)
         {
             // Пример: Если одно из значений изменилось
-            if (name != oldName || surname != oldSurname || email != oldEmail || number != oldNumber)
+            if (name != oldName || surname != oldSurname || email != oldEmail || number != oldNumber || position != oldposition || login != oldlogin || password != oldpassword || role != oldrole)
             {
                 // Обновляем старые значения
                 oldName = name;
                 oldSurname = surname;
                 oldEmail = email;
                 oldNumber = number;
+                oldposition = position;
+                oldlogin = login;
+                oldpassword = password;
+                oldrole = role;
 
                 return true;
             }
@@ -360,6 +377,7 @@ namespace Kyrsovoi
         {
             SetFieldsReadOnly(false);
             button.Content = "Сохранить";
+            delete.Visibility = Visibility.Collapsed;   
             db.IsEnabled = true;
             string query = String.Empty;
             string names = name.Text;
@@ -386,7 +404,7 @@ namespace Kyrsovoi
 
                 }
 
-                if (IsTextChanged(name.Text, surname.Text, email.Text, number.Text))
+                if (IsTextChanged(name.Text, surname.Text, email.Text, number.Text, position.Text, login.Text, password.Text, role.Text))
                 {
 
                     // Создаем подключение и команду
@@ -430,11 +448,21 @@ namespace Kyrsovoi
                             if (rowsAffected > 0 && Class1.add != 1)
                             {
                                 MessageBox.Show("Данные успешно обновлены.");
+                                _idleTimer.Stop();
+                                Prosmotr prosmotr = new Prosmotr();
+                                this.Hide();
+                                prosmotr.ShowDialog();
+                                this.Close();
                             }
                             if (Class1.add == 1)
                             {
                                 MessageBox.Show("Данные успешно добавлены.");
                                 Class1.add = 0;
+                                _idleTimer.Stop();
+                                Prosmotr prosmotr = new Prosmotr();
+                                this.Hide();
+                                prosmotr.ShowDialog();
+                                this.Close();
                             }
 
                         }
@@ -528,7 +556,7 @@ namespace Kyrsovoi
 
         private void email_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z@]+$");
+            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z0-9@.\-_]+$");
         }
 
         private void number_PreviewTextInput(object sender, TextCompositionEventArgs e)

@@ -37,7 +37,6 @@ namespace Kyrsovoi
         {
             InitializeComponent();
             addHouse.Visibility = Visibility.Collapsed;
-            addService.Visibility = Visibility.Collapsed;
             addEmployee.Visibility = Visibility.Collapsed;
             addUser.Visibility = Visibility.Collapsed;
             DataContext = this;
@@ -200,13 +199,13 @@ namespace Kyrsovoi
                     FROM 
                         glamping.bookings b
                     LEFT JOIN 
-                        guests ON guests.guest_id = b.booking_id
-					LEFT JOIN 
-                        glampingunits ON glampingunits.unit_id = b.unit_id
+                        glamping.guests ON guests.guest_id = b.guest_id
                     LEFT JOIN 
-                        employees ON employees.employee_id = b.booking_id
-					LEFT JOIN 
-                        booking_status ON booking_status.idbooking_status = b.booking_status";
+                        glamping.glampingunits ON glampingunits.unit_id = b.unit_id
+                    LEFT JOIN 
+                        glamping.employees ON employees.employee_id = b.employees_id
+                    LEFT JOIN 
+                        glamping.booking_status ON booking_status.idbooking_status = b.booking_status";
         string com = "";
         int raspred = 0;
         string dopCom0 = string.Empty;
@@ -399,7 +398,6 @@ namespace Kyrsovoi
             time_rab.Visibility = Visibility.Visible;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Visible;
-            addService.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Visible;
             addEmployee.Visibility = Visibility.Collapsed;
             addUser.Visibility = Visibility.Collapsed;
@@ -469,7 +467,6 @@ namespace Kyrsovoi
             time_rab.Visibility = Visibility.Collapsed;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Visible;
-            addService.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Visible;
             addEmployee.Visibility = Visibility.Collapsed;
             Add_Booking.Visibility = Visibility.Collapsed;
@@ -533,7 +530,7 @@ namespace Kyrsovoi
         private void cb2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string column = String.Empty;
-            if (raspred == 0) column = "guest";
+            if (raspred == 0) column = "check_in_date";
             if (raspred == 1) column = "first_name";
             if (raspred == 2) column = "service_name";
 
@@ -605,7 +602,7 @@ namespace Kyrsovoi
                     ComboBoxItem selectedItem = (ComboBoxItem)cb1.SelectedItem;
 
                     string selectedStatus = selectedItem.Content.ToString();
-                    if (selectedStatus == "завершенный")
+                    if (selectedStatus == "подтвержденный")
                     {
                         status = "2";
                     }
@@ -617,10 +614,9 @@ namespace Kyrsovoi
                     {
                         status = "3";
                     }
-
                     dopCom2 = $"b.booking_status = {status}";
 
-                    if (cb1.SelectedIndex == 4)
+                    if (selectedStatus == "Все фильтры")
                     {
                         dopCom2 = "";
                         com = query + (string.IsNullOrEmpty(dopCom0) ? "" : " WHERE " + dopCom0) + dopCom1;
@@ -696,7 +692,6 @@ namespace Kyrsovoi
             time_rab.Visibility = Visibility.Collapsed;
             addHouse.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Collapsed;
-            addService.Visibility = Visibility.Collapsed;
             addEmployee.Visibility = Visibility.Visible;
             addUser.Visibility = Visibility.Collapsed;
             Add_Booking.Visibility = Visibility.Collapsed;
@@ -724,7 +719,6 @@ namespace Kyrsovoi
             panel.Visibility = Visibility.Collapsed;
             time_rab.Visibility = Visibility.Collapsed;
             tb1.Visibility = Visibility.Collapsed;
-            addService.Visibility = Visibility.Collapsed;
             placeholder.Visibility = Visibility.Collapsed;
             addEmployee.Visibility = Visibility.Collapsed;
             addUser.Visibility = Visibility.Collapsed;
@@ -878,42 +872,12 @@ namespace Kyrsovoi
                 }
                 prosmotr_Client.Visibility = Visibility.Collapsed;
                 addHouse.Visibility = Visibility.Collapsed;
-                addService.Visibility = Visibility.Collapsed;
                 imageBrush.ImageSource = new BitmapImage(new Uri(Path.GetFullPath("ImageButton\\addBrone.png"), UriKind.RelativeOrAbsolute));
                 Add_Booking.Background = imageBrush;
             }
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-
-            // Получаем данные строки через Tag кнопки
-            var service = button?.Tag as Services; // Замените Client на ваш класс данных
-
-            if (service != null)
-            {
-                Class1.id_service = Convert.ToInt32(service.id_service);
-            }
-            _idleTimer.Stop();
-            redactService redactService = new redactService();
-            this.Hide();
-            redactService.ShowDialog();
-            this.Close();
-        }
-
-        private void addService_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                _idleTimer.Stop();
-                Class1.add = 1;
-                redactService redactService = new redactService();
-                this.Hide();
-                redactService.ShowDialog();
-                this.Close();
-            }
-        }
+        
 
         private void tb1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -1115,6 +1079,17 @@ namespace Kyrsovoi
             }
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double scaleX = e.NewSize.Width / 850.0;
+            double scaleY = e.NewSize.Height / 630.0;
+
+            double scale = Math.Min(scaleX, scaleY);
+
+            MainScaleTransform.ScaleX = scale;
+            MainScaleTransform.ScaleY = scale;
         }
     }
 }

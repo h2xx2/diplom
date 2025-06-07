@@ -223,7 +223,7 @@ namespace Kyrsovoi
             string hashbd = string.Empty;
             if (login.Length != 0)
             {
-                string conString = @"server=localhost;user=root;pwd=root;database=glamping;";
+                string conString = Class1.connection;
                 if (login != Properties.Settings.Default.login && hashbd != Properties.Settings.Default.password)
                 { 
                 using (MySqlConnection con = new MySqlConnection(conString))

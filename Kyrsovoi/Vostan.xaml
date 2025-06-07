@@ -5,19 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-             Height="350" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None">
+        Height="310" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" 
+        WindowStartupLocation="CenterScreen" Background="#9AA09C" WindowStyle="None">
+    <Window.Resources>
+        <!-- Button Style (перенесён из systemadmin.xaml) -->
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#4A5668"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5A6A7A"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#3A4658"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" >
-            <TextBlock x:Name="tbtext" Text="Управление данными" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"></TextBlock>
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" >
-                <Image Name="Min" Height="22" Width="22" Margin="0 10 " MouseDown="Min_MouseDown" >
+        <!-- Toolbar -->
+        <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown">
+            <TextBlock x:Name="tbtext" Text="Управление данными" FontSize="20" 
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Image Name="Min" Height="22" Width="22" Margin="0,10,0,0" MouseDown="Min_MouseDown">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Source" Value="source/free-icon-minimize-sign-11001780.png"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}"
-             Value="true">
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Min}" Value="true">
                                     <Setter Property="Source" Value="source/grey.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -27,13 +57,12 @@
                         <BlurEffect Radius="0.5"/>
                     </Image.Effect>
                 </Image>
-                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                <Image Name="krest" Height="13" Width="13" Margin="10,10,10,0" MouseDown="krest_MouseDown">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Source" Value="source/krest.png"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}"
-                        Value="true">
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=krest}" Value="true">
                                     <Setter Property="Source" Value="source/krest2.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -45,22 +74,21 @@
                 </Image>
             </StackPanel>
         </Grid>
-        <Grid Margin="20,50, 20, 10" >
-            <Border Background="LightGray" CornerRadius="10">
+
+        <!-- Main Content -->
+        <Grid Margin="20,50,20,10">
+            <Border Background="LightGray" CornerRadius="10" Padding="10">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,20">
-
-
-                            <TextBlock TextAlignment="Center" Text="Восстановление структуры" FontSize="15" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0"/>
-
-                        </Grid>
-
-                    </StackPanel>
-                    <Button Content="Восстановить" Width="200" Height="30" FontSize="17" Click="Button_Click_1"/>
-                    <Button Content="Импортирование" Width="200" Height="30" FontSize="17" Margin="0 20" Click="Button_Click"/>
-                    <Button x:Name="rezerv" Content="Резервное копирование" Width="200" Height="30" FontSize="17" Click="Button_Click_2"/>
-                    <Button Content="Экспорт данных" Width="200" Height="30" FontSize="17" Margin="0 20" Click="Button_Click_3"/>
+                    <TextBlock Text="Восстановление структуры" FontSize="15" 
+                               TextAlignment="Center" Margin="0,0,0,20"/>
+                    <Button x:Name="rezerv" Content="Резервное копирование" Width="200" Height="30" 
+                            Style="{StaticResource CustomButtonStyle}" Click="Button_Click_2"/>
+                    <Button Content="Восстановить" Width="200" Height="30" 
+                            Style="{StaticResource CustomButtonStyle}" Click="Button_Click_1"/>
+                    <Button Content="Импортирование" Width="200" Height="30" 
+                            Style="{StaticResource CustomButtonStyle}" Click="Button_Click"/>
+                    <Button Content="Экспорт данных" Width="200" Height="30" 
+                            Style="{StaticResource CustomButtonStyle}" Click="Button_Click_3"/>
                 </StackPanel>
             </Border>
         </Grid>

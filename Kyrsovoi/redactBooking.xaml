@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi" 
         mc:Ignorable="d"
-        Height="760" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
+        Height="820" Width="500" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="headline">
             <Setter Property="Margin" Value="0 0 0 0"/>
@@ -127,38 +127,38 @@
                 <StackPanel Margin="20,20,20,20">
                     <!-- Поля для редактирования записи -->
                     <StackPanel>
-                        <TextBlock Style="{StaticResource headline}" Text="Гость" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Style="{StaticResource headline}" Text="Гость" FontWeight="Bold" Margin="0,5" FontSize="18"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Номер телефона" Margin="10, 0" FontSize="14"/>
-                            <TextBox Name="GuestID" MaxLength="11" Text="{Binding Guest_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" LostFocus="GuestID_LostFocus" PreviewTextInput="GuestID_PreviewTextInput"/>
+                            <TextBlock Text="Номер телефона" Margin="10, 0" FontSize="16"/>
+                            <TextBox Name="GuestID" MaxLength="11" Text="{Binding Guest_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" LostFocus="GuestID_LostFocus" PreviewTextInput="GuestID_PreviewTextInput" TextBlock.FontSize="16"/>
                         </StackPanel>
                         <StackPanel x:Name="spFio" Orientation="Horizontal" Visibility="Collapsed">
-                            <TextBlock Text="Фамилия/Имя" Margin="10, 0" FontSize="14"/>
-                            <TextBox Name="Fio" Width="200" Margin="0,0,0,10" IsReadOnly="true"/>
+                            <TextBlock Text="Фамилия/Имя" Margin="10, 0" FontSize="16"/>
+                            <TextBox Name="Fio" Width="200" Margin="20,0,0,10" IsReadOnly="true" FontSize="16"/>
                         </StackPanel>
 
                     </StackPanel>
 
                     <StackPanel Name="SpEmpoy">
-                        <TextBlock Text="Сотрудник" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="Сотрудник" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Фамилия/Имя" Margin="10, 0" FontSize="14"/>
-                            <TextBox Name="EmployeeID" IsReadOnly="True" Text="{Binding Employees_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10"/>
+                            <TextBlock Text="Фамилия/Имя" Margin="10, 0, 30, 0" FontSize="16"/>
+                            <TextBox x:Name="EmployeeID" IsReadOnly="True" Text="{Binding Employees_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" TextBlock.FontSize="16"/>
                         </StackPanel>
                     </StackPanel>
-                    <TextBlock Text="Дата заезда" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Text="Дата заезда" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
 
-                    <DatePicker Name="CheckInDate" Text="{Binding Check_in_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" SelectedDateChanged="CheckInDate_SelectedDateChanged" PreviewTextInput="CheckInDate_PreviewTextInput"/>
+                    <DatePicker Name="CheckInDate" Text="{Binding Check_in_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="68,0,0,10" SelectedDateChanged="CheckInDate_SelectedDateChanged" PreviewTextInput="CheckInDate_PreviewTextInput" TextBlock.FontSize="16"/>
 
-                    <TextBlock Text="Дата выезда" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
-                    <DatePicker Name="CheckOutDate" Text="{Binding Check_out_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10"  SelectedDateChanged="CheckOutDate_SelectedDateChanged" PreviewTextInput="CheckInDate_PreviewTextInput"/>
+                    <TextBlock Text="Дата выезда" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
+                    <DatePicker Name="CheckOutDate" Text="{Binding Check_out_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="68,0,0,10"  SelectedDateChanged="CheckOutDate_SelectedDateChanged" PreviewTextInput="CheckInDate_PreviewTextInput" TextBlock.FontSize="16"/>
                     <StackPanel x:Name="spHome" IsEnabled="False">
-                        <TextBlock Text="Выбор дома" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="Выбор дома" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Название дома" Margin="10, 0" FontSize="14"/>
-                            <TextBox Name="UnitID" Text="{Binding Unit_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="0,0,0,0" GotFocus="UnitID_GotFocus_1" LostFocus="UnitID_LostFocus">
+                            <TextBlock Text="Название дома" Margin="10, 0" FontSize="16"/>
+                            <TextBox Name="UnitID" Text="{Binding Unit_id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="12,0,0,0" GotFocus="UnitID_GotFocus_1" LostFocus="UnitID_LostFocus" TextBlock.FontSize="16">
                             </TextBox>
-                            <Button Name="CollabsedHome"  Style="{DynamicResource ButtonStyle1}" Content="Скрыть" Width="70" Height="24" Background="DarkSeaGreen" IsEnabled="False" Margin="20,0" Click="Button_Click_1"/>
+                            <Button Name="CollabsedHome"  Style="{DynamicResource ButtonStyle1}" Content="Скрыть" Width="70" Height="24" Background="DarkSeaGreen" IsEnabled="False" Margin="5,0" Click="Button_Click_1"/>
                         </StackPanel>
                         <StackPanel>
                             <Button Name="unitButton" Template="{DynamicResource ButtonTemplate1}" Margin="0,10,0,5" Width="350" Height="25" />
@@ -191,26 +191,28 @@
                         </ListView>
                     </StackPanel>
 
-                    <TextBlock Text="Итоговая цена" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5"/>
-                    <TextBox Name="TotalPrice" Text="{Binding Total_price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="0,0,0,10" TextChanged="TotalPrice_TextChanged"/>
-                    <TextBlock Text="Предоплата" Style="{StaticResource headline}" FontWeight="Bold"/>
-                    <TextBox x:Name="Payment_cost" Width="200" TextChanged="Payment_TextChanged"/>
+                    <TextBlock Text="Итоговая цена" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
+                    <TextBox Name="TotalPrice" Text="{Binding Total_price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="68,0,0,10" TextChanged="TotalPrice_TextChanged" TextBlock.FontSize="16"/>
+                    <TextBlock Text="Предоплата" Style="{StaticResource headline}" FontWeight="Bold" FontSize="18"/>
+                    <TextBox x:Name="Payment_cost" Width="200" Margin="68, 0,0,0" TextChanged="Payment_TextChanged" TextBlock.FontSize="16"/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="*Минимум 30% для бронирования*" FontSize="11" Margin="111 0 7 0" Foreground="Red"/>
+                        <TextBlock Text="*Минимум 30% для бронирования*" FontSize="11" Margin="150 0 7 0" Foreground="Red"/>
                     </StackPanel>
-                    <TextBlock Text="Статус оплаты" Style="{StaticResource headline}" FontWeight="Bold"/>
+                    <TextBlock Text="Статус оплаты" Style="{StaticResource headline}" FontWeight="Bold" FontSize="18"/>
                     <ComboBox x:Name="Status_pay" Text="{Binding PayStatus, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
          DisplayMemberPath="Status"
             SelectedValuePath="Id"
           Foreground="Black"
-         IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"  SelectedIndex="0" SelectedValue="1">
+                              Margin="68, 0, 0 ,0"
+         IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"  SelectedIndex="0" SelectedValue="1" TextBlock.FontSize="16">
                     </ComboBox>
-                    <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold"/>
-                    <ComboBox x:Name="StatusBooking" Text="{Binding Booking_status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
+                    <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold" FontSize="18"/>
+                    <ComboBox x:Name="StatusBooking"  Text="{Binding Booking_status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
                              DisplayMemberPath="Status"
                                 SelectedValuePath="Id"
                               Foreground="Black"
-                             IsReadOnly="True" SelectionChanged="cb1_SelectionChanged" SelectedIndex="1" SelectedValue="2">
+                              Margin="68,5,0, 0"
+                             IsReadOnly="True" SelectionChanged="cb1_SelectionChanged" SelectedIndex="1" SelectedValue="2" TextBlock.FontSize="16">
                     </ComboBox>
                 </StackPanel>
             </Border>

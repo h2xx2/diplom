@@ -130,7 +130,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Телефон" Width="80" VerticalAlignment="Center"/>
-                        <TextBox MaxLength="11" x:Name="number" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="number_PreviewTextInput"/>
+                        <TextBox x:Name="number" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="number_PreviewTextInput"/>
                     </StackPanel>
 
                     <!--<!— Заголовок Личная информация —>-->
@@ -138,7 +138,7 @@
                     <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Дата рождения" Width="85" VerticalAlignment="Center"/>
-                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="150" Margin="5,0" PreviewTextInput="db_PreviewTextInput">
+                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="150" Margin="5,0" PreviewTextInput="db_PreviewTextInput" SelectedDateChanged="db_SelectedDateChanged">
                             
                         </DatePicker>
                     </StackPanel>

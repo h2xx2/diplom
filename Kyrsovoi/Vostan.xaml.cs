@@ -78,7 +78,10 @@ namespace Kyrsovoi
             base.OnClosed(e);
         }
         public static string filePath = "";
-        public static string connectionString = Class1.connection;
+        public static string connection = Class1.connection;
+        public static string connectionString = Class1.connectionVostan;
+
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             RestoreDatabase();
@@ -128,9 +131,6 @@ namespace Kyrsovoi
                             command.ExecuteNonQuery();
 
                             MessageBox.Show("Структура базы данных успешно восстановлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                            Import import = new Import();
-                            this.Close();
-                            import.ShowDialog();
                         }
                     }
                     catch (Exception ex)
@@ -258,6 +258,14 @@ namespace Kyrsovoi
             this.Hide();
             export.ShowDialog();
             this.Close();  
+        }
+
+        private void ToolBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
         }
     }
 }

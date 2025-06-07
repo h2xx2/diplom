@@ -6,10 +6,8 @@
         xmlns:local="clr-namespace:Kyrsovoi"
         xmlns:properties="clr-namespace:Kyrsovoi.Properties"
         mc:Ignorable="d"
-        Title="Prosmotr" Height="350" Width="580" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" IsEnabled="True"
-        ResizeMode="NoResize"
-        Topmost="false"
-        xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        Title="Настройки подключения" Height="360" Width="580" WindowStyle="None" ShowInTaskbar="False" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Topmost="False">
     <Window.Resources>
         <!-- Toggle Button style -->
         <ImageBrush x:Key="tb_mouse_over" ImageSource="ImageButton/menu.png"/>
@@ -130,7 +128,7 @@
         <!-- Toolbar -->
         <Grid x:Name="ToolBar" Background="#FFACACAC" Height="40" VerticalAlignment="Top" MouseDown="ToolBar_MouseDown">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <TextBlock x:Name="tbNameForm" Text="Системный администратор" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 150 0"/>
+                <TextBlock x:Name="tbNameForm" Text="Настройки подключения" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 150 0"/>
                 <Image Name="Min" Height="22" Width="22" Margin="0 10" MouseDown="Min_MouseDown">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
@@ -173,7 +171,7 @@
                             <DropShadowEffect BlurRadius="10" ShadowDepth="1" Direction="-90" Color="White"/>
                         </TextBlock.Effect>
                     </TextBlock>
-                    <ToggleButton x:Name="Tg_Btn" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18 -20 0 0" Height="30" Width="30" BorderThickness="0" Style="{StaticResource tb_style}" PreviewMouseLeftButtonDown="Tg_Btn_PreviewMouseLeftButtonDown">
+                    <ToggleButton x:Name="Tg_Btn" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18 -20 0 0" Height="30" Width="30" BorderThickness="0" Style="{StaticResource tb_style}" >
                         <ToggleButton.Background>
                             <ImageBrush ImageSource="/menu.png" Stretch="UniformToFill"/>
                         </ToggleButton.Background>
@@ -202,7 +200,7 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
                                         <Border x:Name="Bd" Height="50" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
-                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <MultiTrigger>
@@ -218,7 +216,7 @@
                             </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
+                    <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15" >
                         <ListViewItem.ToolTip>
                             <ToolTip x:Name="tt_home" Content="Главная страница" Style="{StaticResource hb_style}"/>
                         </ListViewItem.ToolTip>
@@ -227,7 +225,7 @@
                             <TextBlock Text="Главная Страница" Margin="25 0 0 0" Style="{StaticResource font_style}"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15" MouseEnter="ListViewItem_MouseEnter">
+                    <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15">
                         <ListViewItem.ToolTip>
                             <ToolTip x:Name="tt_service" Content="Восстановление" Style="{StaticResource tt_style}"/>
                         </ListViewItem.ToolTip>
@@ -244,6 +242,7 @@
         <Grid Margin="80,60,20,20">
             <StackPanel>
                 <TextBlock Text="Настройки подключения" FontSize="18" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock x:Name="ConnectionStatus" FontSize="14" Foreground="Red" Margin="0,0,0,10" Visibility="Collapsed"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -257,14 +256,14 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Имя хоста:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox x:Name="HostNameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=host, Mode=OneWay}"/>
+                    <TextBox x:Name="HostNameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=host, Mode=TwoWay}"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Пользователь:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox x:Name="UserTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=user, Mode=OneWay}"/>
+                    <TextBox x:Name="UserTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=user, Mode=TwoWay}"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=passwordDB, Mode=OneWay}"/>
+                    <TextBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=passwordDB, Mode=TwoWay}"/>
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="База данных:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox x:Name="DatabaseTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=database, Mode=OneWay}"/>
-                    <Button x:Name="EditSaveButton" Content="Изменить" Style="{StaticResource EditSaveButtonStyle}" Click="EditSaveButton_Click" HorizontalAlignment="Right" Grid.Column="1" Margin="0,10,196,-45" Grid.Row="4" Width="101"/>
+                    <TextBox x:Name="DatabaseTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource SettingsTextBoxStyle}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=database, Mode=TwoWay}"/>
+                    <Button x:Name="EditSaveButton" Content="Изменить" Style="{StaticResource EditSaveButtonStyle}" Click="EditSaveButton_Click" HorizontalAlignment="Right" Width="100" Grid.Column="1" Margin="0,10,190,-45" Grid.Row="4"/>
                 </Grid>
             </StackPanel>
         </Grid>

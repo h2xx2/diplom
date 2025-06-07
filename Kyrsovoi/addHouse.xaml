@@ -149,7 +149,7 @@
                                 HorizontalScrollBarVisibility="Disabled"
                                 MinHeight="50" 
                                  MaxLength="200"
-                                MinWidth="100" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="nameHouse_PreviewTextInput"/>
+                                MinWidth="100" IsReadOnly="True"  Width="150" Margin="5,0" PreviewTextInput="nameHouse_PreviewTextInput"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <StackPanel Orientation="Vertical" Margin="0 0 20 0">

@@ -191,8 +191,8 @@ namespace Kyrsovoi
                                 b.total_price, 
                                 b.booking_status as 'idstatus',
                                 booking_status.booking_status,
-                                b.pay_status as 'idstatuspay'
-                                pay_status.pay_statuscol
+                                b.pay_status as 'idstatuspay',
+                                pay_status.pay_statuscol,
                                 b.upfront_payment,
                                 b.created_at
                             FROM 
@@ -249,8 +249,8 @@ namespace Kyrsovoi
                         Payment_cost.Text = rdr["upfront_payment"].ToString(); 
                         booking.Booking_status = rdr["booking_status"].ToString();
                         bookingstatus = rdr["idstatus"].ToString();
-                        booking.Booking_status = rdr["pay_statuscol"].ToString();
-                        bookingstatus = rdr["idstatuspay"].ToString();
+                        booking.Pay_status = rdr["pay_statuscol"].ToString();
+                        statusPay = rdr["idstatuspay"].ToString();
                         FillComboBoxRedact();
                         FillComboBoxRedactPay();
                     }
@@ -490,9 +490,14 @@ namespace Kyrsovoi
                         int count = Convert.ToInt32(result);
                         if (count <= 0)
                         {
+                            MessageBox.Show("Пользователь с таким номером телефона не найден.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                            _idleTimer.Stop();
+                            Class1.phone = phoneNumber;
                             Class1.add = 1;
                             redactKlient redactKlient = new redactKlient();
-                            redactKlient.Show();
+                            this.Hide();
+                            redactKlient.ShowDialog();
+                            this.Close();
                         }
                         else
                         {
@@ -701,7 +706,12 @@ namespace Kyrsovoi
                         Status_pay.ItemsSource = bookingStatuses;
                         Status_pay.DisplayMemberPath = "Status"; // Поле для отображения
                         Status_pay.SelectedValuePath = "Id";     // Поле для значения
-                        Status_pay.SelectedValue = bookingstatus;            // Устанавливаем значение по Id
+                        Status_pay.UpdateLayout();
+                        // Принудительная синхронизация UI перед установкой SelectedValue
+                        Dispatcher.Invoke(() =>
+                        {
+                            Status_pay.SelectedValue = statusPay;
+                        });// Устанавливаем значение по Id
                     }
                 }
                 catch (Exception ex)
@@ -1122,7 +1132,7 @@ namespace Kyrsovoi
         
         private void SetFieldsReadOnly(bool isReadOnly)
         {
-            foreach (Control control in new[] { GuestID,  })
+            foreach (Control control in new[] { GuestID, Payment_cost })
             {
                 if (control is TextBox textBox)
                 {
@@ -1145,8 +1155,9 @@ namespace Kyrsovoi
             }
             unitButton.IsEnabled = !isReadOnly;
             StatusBooking.IsEnabled = !isReadOnly;
+            Status_pay.IsEnabled = !isReadOnly;
         }
-        
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1163,13 +1174,19 @@ namespace Kyrsovoi
                 {
                     panel_bron.Visibility = Visibility.Collapsed;
                 }
-
+                Status_pay.SelectedIndex = 1;
             }
             else
             {
+                
                 var booking = new Booking();
                 this.DataContext = booking;
                 SetFieldsReadOnly(false);
+                if (Class1.klient == 1)
+                {
+                    booking.Guest_id = Class1.phone;
+                    CheckCountGuest(Class1.phone);
+                }
                 button.Content = "Сохранить";
                 SpEmpoy.Visibility = Visibility.Visible;
                 FillComboBox();
@@ -1914,20 +1931,6 @@ namespace Kyrsovoi
                                     Console.WriteLine($"Ошибка при работе с Word: {ex.Message}");
                                     throw;
                                 }
-                                finally
-                                {
-
-                                    if (wordDoc != null)
-                                    {
-                                        wordDoc.Close();
-                                        System.Runtime.InteropServices.Marshal.ReleaseComObject(wordDoc);
-                                    }
-                                    if (wordApp != null)
-                                    {
-                                        wordApp.Quit();
-                                        System.Runtime.InteropServices.Marshal.ReleaseComObject(wordApp);
-                                    }
-                                }
                             }
                             else
                             {
@@ -2170,17 +2173,7 @@ left join
                         }
                         finally
                         {
-                            if (range != null) Marshal.ReleaseComObject(range);
-                            if (wordDoc != null)
-                            {
-                                wordDoc.Close();
-                                Marshal.ReleaseComObject(wordDoc);
-                            }
-                            if (wordApp != null)
-                            {
-                                wordApp.Quit();
-                                Marshal.ReleaseComObject(wordApp);
-                            }
+                            
                         }
                     }
                 }

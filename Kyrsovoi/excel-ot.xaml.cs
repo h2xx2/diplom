@@ -238,7 +238,7 @@ namespace Kyrsovoi
                 // Заголовок
                 Excel.Range titleRange = worksheet.Range["A" + currentRow, "C" + currentRow];
                 titleRange.Merge();
-                titleRange.Value = "Официальный Отчёт по Выручке";
+                titleRange.Value = "Отчёт по выручке по домам";
                 titleRange.Font.Bold = true;
                 titleRange.Font.Size = 16;
                 titleRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
@@ -295,7 +295,19 @@ namespace Kyrsovoi
                 string filePath = System.IO.Path.Combine(excelDirectory, $"RevenueReport_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx");
 
                 // Сохраняем
+                // Сохраняем
                 workbook.SaveAs(filePath);
+
+                // Открываем файл Excel после создания
+                System.Diagnostics.Process.Start(filePath);
+
+                // Завершаем работу с Excel
+                workbook.Close(false);
+                Marshal.ReleaseComObject(workbook);
+
+                excelApp.Quit();
+                Marshal.ReleaseComObject(excelApp);
+
 
                 MessageBox.Show($"Отчёт успешно сохранён: {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }

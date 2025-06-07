@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Kyrsovoi.Properties;
+using MySql.Data.MySqlClient;
 
 namespace Kyrsovoi
 {
@@ -43,16 +45,6 @@ namespace Kyrsovoi
             this.Close();
         }
 
-        private void Tg_Btn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
-        {
-            
-        }
-
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
@@ -74,29 +66,67 @@ namespace Kyrsovoi
             if (!isEditing)
             {
                 // Переключение в режим редактирования
+                isEditing = true;
+                EditSaveButton.Content = "Сохранить";
                 HostNameTextBox.IsEnabled = true;
                 UserTextBox.IsEnabled = true;
                 PasswordTextBox.IsEnabled = true;
                 DatabaseTextBox.IsEnabled = true;
-                EditSaveButton.Content = "Сохранить";
-                isEditing = true;
+                ConnectionStatus.Visibility = Visibility.Collapsed;
             }
             else
             {
-                // Сохранение настроек и возврат в режим просмотра
-                Properties.Settings.Default.host = HostNameTextBox.Text;
-                Properties.Settings.Default.user = UserTextBox.Text;
-                Properties.Settings.Default.passwordDB = PasswordTextBox.Text;
-                Properties.Settings.Default.database = DatabaseTextBox.Text;
-                Properties.Settings.Default.Save(); // Сохраняем изменения
+                // Проверка подключения и сохранение
+                string host = HostNameTextBox.Text;
+                string user = UserTextBox.Text;
+                string password = PasswordTextBox.Text;
+                string database = DatabaseTextBox.Text;
 
-                HostNameTextBox.IsEnabled = false;
-                UserTextBox.IsEnabled = false;
-                PasswordTextBox.IsEnabled = false;
-                DatabaseTextBox.IsEnabled = false;
-                EditSaveButton.Content = "Изменить";
-                isEditing = false;
+                if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(database))
+                {
+                    MessageBox.Show("Заполните все обязательные поля.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                string connectionString = $"Server={host};Database={database};Uid={user};Password={password};";
+
+                try
+                {
+                    using (var connection = new MySqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        ConnectionStatus.Text = "Подключение успешно!";
+                        ConnectionStatus.Foreground = Brushes.Green;
+                        ConnectionStatus.Visibility = Visibility.Visible;
+
+                        // Сохранение настроек
+                        Settings.Default.host = host;
+                        Settings.Default.user = user;
+                        Settings.Default.passwordDB = password;
+                        Settings.Default.database = database;
+                        Settings.Default.Save();
+
+                        // Выход из режима редактирования
+                        isEditing = false;
+                        EditSaveButton.Content = "Изменить";
+                        HostNameTextBox.IsEnabled = false;
+                        UserTextBox.IsEnabled = false;
+                        PasswordTextBox.IsEnabled = false;
+                        DatabaseTextBox.IsEnabled = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConnectionStatus.Text = $"Ошибка подключения: {ex.Message}";
+                    ConnectionStatus.Foreground = Brushes.Red;
+                    ConnectionStatus.Visibility = Visibility.Visible;
+                }
             }
+        }
+
+        private void Tg_Btn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

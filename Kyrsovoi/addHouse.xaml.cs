@@ -379,11 +379,21 @@ namespace Kyrsovoi
                             if (rowsAffected > 0 && Class1.add != 1)
                             {
                                 MessageBox.Show("Данные успешно обновлены.");
+                                _idleTimer.Stop();
+                                Prosmotr prosmotr = new Prosmotr();
+                                this.Hide();
+                                prosmotr.ShowDialog();
+                                this.Close();
                             }
                             if (Class1.add == 1)
                             {
                                 MessageBox.Show("Данные успешно добавлены.");
                                 Class1.add = 0;
+                                _idleTimer.Stop();
+                                Prosmotr prosmotr = new Prosmotr();
+                                this.Hide();
+                                prosmotr.ShowDialog();
+                                this.Close();
                             }
 
                         }

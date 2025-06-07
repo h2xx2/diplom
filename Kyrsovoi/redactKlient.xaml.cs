@@ -126,9 +126,21 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                this.Close();
-                //Prosmotr prosmotr = new Prosmotr();
-                //prosmotr.DoSomething();
+                if (Class1.add == 1)
+                {
+                    _idleTimer.Stop();
+                    redactBooking prosmotr = new redactBooking();
+                    this.Hide();
+                    prosmotr.ShowDialog();
+                    this.Close();
+                }
+                else {
+                    _idleTimer.Stop();
+                    Prosmotr prosmotr = new Prosmotr();
+                    this.Hide();
+                    prosmotr.ShowDialog();
+                    this.Close();
+                }
                 
             }
         }
@@ -357,6 +369,24 @@ namespace Kyrsovoi
                             if(Class1.add == 1)
                             {
                                 MessageBox.Show("Данные успешно добавлены.");
+                                
+                                if (Class1.add == 1)
+                                {
+                                    Class1.klient = 1;
+                                    _idleTimer.Stop();
+                                    redactBooking prosmotr = new redactBooking();
+                                    this.Hide();
+                                    prosmotr.ShowDialog();
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    _idleTimer.Stop();
+                                    Prosmotr prosmotr = new Prosmotr();
+                                    this.Hide();
+                                    prosmotr.ShowDialog();
+                                    this.Close();
+                                }
                                 Class1.add = 0;
                             }
                             else
@@ -393,9 +423,15 @@ namespace Kyrsovoi
             }
             else
             {
+                
                 var client = new Client();
                 this.DataContext = client;
                 SetFieldsReadOnly(false);
+                if (Class1.phone != "")
+                {
+                    client.Phone = Class1.phone;
+                    
+                }
                 db.IsEnabled = true;
                 button.Content = "Сохранить";
             }
@@ -408,7 +444,7 @@ namespace Kyrsovoi
 
         private void email_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z@]+$");
+            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z0-9@.\-_]+$");
         }
 
         private void number_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -419,6 +455,15 @@ namespace Kyrsovoi
         private void db_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void db_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (db.SelectedDate.HasValue && db.SelectedDate.Value > DateTime.Today)
+            {
+                MessageBox.Show("Дата рождения не может быть позже сегодняшней.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                db.SelectedDate = null;
+            }
         }
     }
 }

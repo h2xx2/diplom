@@ -13,6 +13,7 @@ namespace Kyrsovoi
         public static string numberPhone = "";
         public static string numberPhoneEmploye = "";
         public static string connection = $"host={Properties.Settings.Default.host};uid={Properties.Settings.Default.user};pwd={Properties.Settings.Default.passwordDB};database={Properties.Settings.Default.database};";
+        public static string connectionVostan = $"host={Properties.Settings.Default.host};uid={Properties.Settings.Default.user};pwd={Properties.Settings.Default.passwordDB};";
         public static string saveQuery = "";
         public static int add = 0;
         public static string fioEmploes = "fio";
@@ -22,6 +23,8 @@ namespace Kyrsovoi
         public static string booking_id = "";
         public static int role = 0;
         public static int id_service = 0;
+        public static string phone = "";
+        public static int klient = 0;
 
     }
 }
