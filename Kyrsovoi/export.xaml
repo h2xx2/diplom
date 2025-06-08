@@ -48,8 +48,17 @@
         <Grid Margin="20,50, 20, 10" >
             <Border Background="LightGray" CornerRadius="10">
                 <StackPanel>
+                    <ComboBox Name="cb" Width="200" Margin="0 30 0 0">
+                        <ComboBoxItem Content="bookings"/>
+                        <ComboBoxItem Content="employees"/>
+                        <ComboBoxItem Content="glampingunits"/>
+                        <ComboBoxItem Content="guests"/>
+                        <ComboBoxItem Content="booking_status"/>
+                        <ComboBoxItem Content="pay_status"/>
+                        <ComboBoxItem Content="Все таблицы"/>
+                    </ComboBox>
                     <StackPanel Orientation="Horizontal">
-                        <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,20">
+                        <Grid ShowGridLines="False" Width="340" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0, 0, 20">
                             <Grid.ColumnDefinitions>
                                 <!-- Колонка для текста -->
                                 <ColumnDefinition Width="5*" />
@@ -67,15 +76,7 @@
                         </Grid>
 
                     </StackPanel>
-                    <ComboBox Name="cb" Width="200" Margin="0 0 0 10">
-                        <ComboBoxItem Content="bookings"/>
-                        <ComboBoxItem Content="employees"/>
-                        <ComboBoxItem Content="glampingunits"/>
-                        <ComboBoxItem Content="guests"/>
-                        <ComboBoxItem Content="booking_status"/>
-                        <ComboBoxItem Content="pay_status"/>
-                        <ComboBoxItem Content="Все таблицы"/>
-                    </ComboBox>
+                    
                     <Button Content="Экспорт" Width="200" Height="25" Click="Button_Click_1"/>
                 </StackPanel>
             </Border>

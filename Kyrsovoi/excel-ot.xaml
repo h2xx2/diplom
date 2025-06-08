@@ -50,23 +50,24 @@ Topmost="false" OpacityMask="Black"  Background="#9AA09C">
             </StackPanel>
         </Grid>
         <Grid Margin="0,0,0,51">
-            <Border Background="LightGray" CornerRadius="10" Margin="20,60,20,-21">
+            <Border Background="LightGray" CornerRadius="10" Margin="20,60,20,-33">
 
                 <!-- Основное содержимое -->
                 <StackPanel Margin="20,20,20,0">
                     <!-- Поля для редактирования записи -->
 
 
-                    <TextBlock Text="Дата начала" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Text="Дата начала" FontWeight="Bold" Margin="0,5" FontSize="16"/>
 
-                    <DatePicker Name="CheckInDate" Text="{Binding Check_in_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" SelectedDateChanged="CheckInDate_SelectedDateChanged"/>
+                    <DatePicker Name="CheckInDate" Text="{Binding Check_in_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10" SelectedDateChanged="CheckInDate_SelectedDateChanged" TextBlock.FontSize="16"/>
 
-                    <TextBlock Text="Дата конца" FontWeight="Bold" Margin="0,5"/>
-                    <DatePicker Name="CheckOutDate" Text="{Binding Check_out_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10"  SelectedDateChanged="CheckOutDate_SelectedDateChanged"/>
+                    <TextBlock Text="Дата конца" FontWeight="Bold" Margin="0,5" FontSize="16"/>
+                    <DatePicker Name="CheckOutDate" Text="{Binding Check_out_date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" Margin="0,0,0,10"  SelectedDateChanged="CheckOutDate_SelectedDateChanged" TextBlock.FontSize="16"/>
                 </StackPanel>
             </Border>
             <!-- Кнопки управления -->
-            <Button Name="button" Content="Создать" Width="100" Height="30" Margin="136,209,136,0" Background="DarkSeaGreen" Click="button_Click"/>
+                <Button Name="button" Content="Создать" Width="100" Height="30" Margin="136,228,136,-19" Background="DarkSeaGreen" Click="button_Click"/>
+            
 
         </Grid>
     </Grid>

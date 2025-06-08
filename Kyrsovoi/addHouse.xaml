@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-             Height="540" Width="350" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
+             Height="600" Width="390" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -110,15 +110,15 @@
             <Border Background="LightGray" CornerRadius="10" Margin="20,20,20,70">
                 <StackPanel Margin="20">
                     <!--<! — Заголовок ФИО —>-->
-                    <TextBlock Text="Основная информация" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
+                    <TextBlock Text="Основная информация" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5" FontSize="18"/>
                     <!--<! — Поля для ввода имени и фамилии —>-->
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Название"  Width="80" VerticalAlignment="Center"/>
-                        <TextBox MaxLength="40" x:Name="nameHouse" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" TextChanged="name_TextChanged" PreviewTextInput="nameHouse_PreviewTextInput"/>
+                        <TextBlock Text="Название"  Width="100" VerticalAlignment="Center" FontSize="16"/>
+                        <TextBox MaxLength="40" x:Name="nameHouse" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" TextChanged="name_TextChanged" PreviewTextInput="nameHouse_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Тип" Width="80" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="type" Text="{Binding Type, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0">
+                        <TextBlock Text="Тип" Width="100" VerticalAlignment="Center" FontSize="16"/>
+                        <ComboBox x:Name="type" Text="{Binding Type, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" TextBlock.FontSize="16">
                             <ComboBoxItem Content="tent"/>
                             <ComboBoxItem Content="cabin"/>
                             <ComboBoxItem Content="yurt"/>
@@ -127,38 +127,38 @@
                     </StackPanel>
 
                     <!--<! — Заголовок Контактная информация —>-->
-                    <TextBlock Text="Характеристики" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
+                    <TextBlock Text="Характеристики" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5" FontSize="18"/>
                     <!--<! — Поля для ввода Email и Телефона —>-->
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Вместимость" Width="80" VerticalAlignment="Center"/>
-                        <TextBox x:Name="capacity" Text="{Binding Capacity, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="capacity_PreviewTextInput"/>
+                        <TextBlock Text="Вместимость" Width="100" VerticalAlignment="Center" FontSize="16"/>
+                        <TextBox x:Name="capacity" Text="{Binding Capacity, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="capacity_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Цена за ночь" Width="80" VerticalAlignment="Center"/>
-                        <TextBox MaxLength="2" x:Name="price" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="capacity_PreviewTextInput"/>
+                        <TextBlock Text="Цена за ночь" Width="100" VerticalAlignment="Center" FontSize="16"/>
+                        <TextBox MaxLength="2" x:Name="price" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="capacity_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
 
                     <!--<!— Заголовок Личная информация —>-->
-                    <TextBlock Text="Вид" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5"/>
+                    <TextBlock Text="Вид" TextDecorations="Underline" FontWeight="Bold" Foreground="DarkGreen" Margin="0,10,0,5" FontSize="18"/>
                     <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                        <TextBlock Text="Описание" Width="85" VerticalAlignment="Center"/>
+                        <TextBlock Text="Описание" Width="100" VerticalAlignment="Center" FontSize="16"/>
                         <TextBox x:Name="description" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextWrapping="Wrap" 
                                 AcceptsReturn="True" 
                                 VerticalScrollBarVisibility="Visible" 
                                 HorizontalScrollBarVisibility="Disabled"
                                 MinHeight="50" 
                                  MaxLength="200"
-                                MinWidth="100" IsReadOnly="True"  Width="150" Margin="5,0" PreviewTextInput="nameHouse_PreviewTextInput"/>
+                                MinWidth="100" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="nameHouse_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <StackPanel Orientation="Vertical" Margin="0 0 20 0">
-                            <TextBlock Text="Фото" Width="80" VerticalAlignment="Center"/>
+                            <TextBlock Text="Фото" Width="80" VerticalAlignment="Center" FontSize="16"/>
                             <Image Name="Smena" Source="ImageButton/Smena.png" VerticalAlignment="Center" Margin="0,25" Width="40" Height="40" Stretch="Fill" MouseDown="Image_MouseDown"/>
                         </StackPanel>
-                        <Image Name="image"  Source="{Binding Photo}" Width="120" Height="120" Stretch="Fill"/>
+                        <Image Name="image"  Source="{Binding Photo}" Width="120" Height="120" Stretch="Fill" Margin="11, 0"/>
                     </StackPanel>
-                    
+
                 </StackPanel>
             </Border>
 

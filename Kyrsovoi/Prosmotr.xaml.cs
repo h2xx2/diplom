@@ -98,15 +98,6 @@ namespace Kyrsovoi
             base.OnClosed(e);
         }
     
-        public class Client {
-            public string name { get; set; }
-            public string surname { get; set; }
-            public string email { get; set; }
-            public string number { get; set; }
-            public string dateRegistration { get; set; }
-            public string passport { get; set; }
-            public string dateOfBirthday { get; set; }
-        }
         public class Home
         {
             public string unit_id { get; set; }
@@ -118,6 +109,51 @@ namespace Kyrsovoi
             public string status { get; set; }
             public BitmapImage photo { get; set; }
         }
+        public class Client
+        {
+            public string name { get; set; }
+            public string surname { get; set; }
+            public string email { get; set; }
+            public string number { get; set; }
+            public string dateRegistration { get; set; }
+            public string passport { get; set; }
+            public string dateOfBirthday { get; set; }
+
+            public string ProtectedSurname
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(surname))
+                        return string.Empty;
+                    return $"{surname[0]}.";
+                }
+            }
+
+            public string ProtectedNumber
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(number) || number.Length < 6)
+                        return number;
+                    return $"{number.Substring(0, 2)}****{number.Substring(number.Length - 4)}";
+                }
+            }
+
+            public string ProtectedEmail
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+                        return email;
+                    string[] parts = email.Split('@');
+                    string localPart = parts[0];
+                    if (localPart.Length <= 3)
+                        return email;
+                    return $"{localPart.Substring(0, 3)}****@{parts[1]}";
+                }
+            }
+        }
+
         public class Employee
         {
             public string employee_id { get; set; }
@@ -130,6 +166,40 @@ namespace Kyrsovoi
             public string login { get; set; }
             public string password { get; set; }
             public string role { get; set; }
+
+            public string ProtectedSurname
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(last_name))
+                        return string.Empty;
+                    return $"{last_name[0]}.";
+                }
+            }
+
+            public string ProtectedNumber
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(phone) || phone.Length < 6)
+                        return phone;
+                    return $"{phone.Substring(0, 2)}****{phone.Substring(phone.Length - 4)}";
+                }
+            }
+
+            public string ProtectedEmail
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+                        return email;
+                    string[] parts = email.Split('@');
+                    string localPart = parts[0];
+                    if (localPart.Length <= 3)
+                        return email;
+                    return $"{localPart.Substring(0, 3)}****@{parts[1]}";
+                }
+            }
         }
         public class Booking
         {
@@ -236,6 +306,10 @@ namespace Kyrsovoi
                     GeneratePageButtons();
 
                     int offset = (_currentPage - 1) * _pageSize;
+                    if (dopCom1 == "" && raspred == 0)
+                    {
+                        com += " ORDER BY b.created_at DESC ";
+                    }
                     MySqlCommand command = new MySqlCommand(com + $" LIMIT {_pageSize} OFFSET {offset}", connection);
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
@@ -264,6 +338,7 @@ namespace Kyrsovoi
                                 dateRegistration = reader["registration_date"].ToString(),
                                 passport = reader["passport_number"].ToString(),
                                 dateOfBirthday = reader["date_of_birth"].ToString(),
+                                // Используем защищенные свойства в UI привязке
                             });
                         }
                         else if (raspred == 0) // bookings
@@ -296,6 +371,7 @@ namespace Kyrsovoi
                             Class1.employee_id = Convert.ToInt32(reader["employee_id"]);
                             Employees.Add(new Employee
                             {
+                                employee_id = reader["employee_id"].ToString(),
                                 first_name = reader["first_name"].ToString(),
                                 last_name = reader["last_name"].ToString(),
                                 position = reader["position"].ToString(),
@@ -305,6 +381,7 @@ namespace Kyrsovoi
                                 login = reader["login"].ToString(),
                                 password = reader["password"].ToString(),
                                 role = reader["role"].ToString(),
+                                // Используем защищенные свойства в UI привязке
                             });
                         }
                         else if (raspred == 4) // glampingunits
@@ -412,25 +489,25 @@ namespace Kyrsovoi
             tbNameForm.Text = "Бронирование";
             table = "bookings";
             query = @"SELECT 
-                b.booking_id,
-                glampingunits.unit_name,
-                CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
-                CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
-                b.check_in_date, 
-                b.check_out_date, 
-                b.total_price, 
-                booking_status.booking_status, 
-                b.created_at
-            FROM 
-                glamping.bookings b
-            LEFT JOIN 
-                guests ON guests.guest_id = b.booking_id
-            LEFT JOIN 
-                glampingunits ON glampingunits.unit_id = b.unit_id
-            LEFT JOIN 
-                employees ON employees.employee_id = b.booking_id
-            LEFT JOIN 
-                booking_status ON booking_status.idbooking_status = b.booking_status";
+                        b.booking_id,
+                        glampingunits.unit_name,
+                        CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
+                        CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
+                        b.check_in_date, 
+                        b.check_out_date, 
+                        b.total_price, 
+                        booking_status.booking_status, 
+                        b.created_at
+                    FROM 
+                        glamping.bookings b
+                    LEFT JOIN 
+                        glamping.guests ON guests.guest_id = b.guest_id
+                    LEFT JOIN 
+                        glamping.glampingunits ON glampingunits.unit_id = b.unit_id
+                    LEFT JOIN 
+                        glamping.employees ON employees.employee_id = b.employees_id
+                    LEFT JOIN 
+                        glamping.booking_status ON booking_status.idbooking_status = b.booking_status";
             raspred = 0;
             com = query; // Инициализируем com без условий
             dopCom0 = "";

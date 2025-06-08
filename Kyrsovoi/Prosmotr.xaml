@@ -294,7 +294,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" MinWidth="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <!-- Колонка для текста -->
@@ -308,8 +308,8 @@
                                     <!-- Текстовые элементы в первой колонке -->
                                     <TextBlock Text="{Binding name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding surname}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
-                                    <TextBlock Text="{Binding number}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                    <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
+                                    <TextBlock Text="{Binding ProtectedNumber}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding ProtectedEmail}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
 
                                     <!-- Кнопка во второй колонке, выравнивается вправо -->
                                     <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -329,7 +329,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" MinWidth="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="2*" />
@@ -341,7 +341,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Текстовые элементы в первой колонке -->
-                                    <TextBlock Text="{Binding unit_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
+                                    <TextBlock Text="{Binding unit_name}" Grid.Column="0" FontWeight="Bold" TextWrapping="Wrap" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding description}" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" Width="150" FontSize="16" Margin="0 0 10 0"/>
                                     <TextBlock Text="{Binding price_per_night}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
                                     <Image Source="{Binding photo}" Grid.Column="3" Width="100" Height="100" Stretch="Fill"/>
@@ -364,7 +364,7 @@
                         <DataTemplate>
                             <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" CornerRadius="20" Margin="5">
                                 <!-- Используем Grid для управления расположением кнопки и текста -->
-                                <Grid ShowGridLines="False" Width="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid ShowGridLines="False" MinWidth="690" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -378,8 +378,8 @@
                                     <!-- Текстовые элементы в первой колонке -->
                                     <TextBlock Text="{Binding first_name}" Grid.Column="0" FontWeight="Bold" FontSize="16" Margin="10 0 5 0"/>
                                     <TextBlock Text="{Binding last_name}" Grid.Column="1" FontWeight="Bold" FontSize="16" Margin="0 0 10 0"/>
-                                    <TextBlock Text="{Binding phone}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
-                                    <TextBlock Text="{Binding email}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
+                                    <TextBlock Text="{Binding ProtectedNumber}" Grid.Column="2" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 10 0"/>
+                                    <TextBlock Text="{Binding ProtectedEmail}" Grid.Column="3" FontStyle="Italic" FontSize="13" Foreground="Gray" Margin="0 0 30 0"/>
 
                                     <!-- Кнопка во второй колонке, выравнивается вправо -->
                                     <Button Grid.Column="4" Content="Просмотр" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -522,8 +522,8 @@
                 <TextBlock Background="#F0D0D0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="650,0,10,10">
                 <Border Width="50" Height="15" BorderBrush="Black" BorderThickness="1"/>
                 </TextBlock>
-                <TextBlock Text="- Завершенный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="210,0,10,10"/>
-                <TextBlock Text="- Подтвежденный" Width="120" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="460,0,10,10"/>
+                <TextBlock Text="- Подтвежденный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="210,0,10,10"/>
+                <TextBlock Text="- Забронированный" Width="120" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="460,0,10,10"/>
                 <TextBlock Text="- Отменный" Width="100" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="710,0,10,10"/>
             </Grid>
 

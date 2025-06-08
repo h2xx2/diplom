@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,6 +25,7 @@ namespace Kyrsovoi
         {
             InitializeComponent();
         }
+
         public class ReportItem
         {
             public string Unit { get; set; }
@@ -46,13 +45,8 @@ namespace Kyrsovoi
                     DateTime selectedDate = CheckInDate.SelectedDate.Value;
                     if (DateTime.Now < selectedDate)
                     {
-                        // Ограничиваем минимальную дату второго DatePicker
                         CheckOutDate.DisplayDateStart = selectedDate.AddDays(1);
-
-                        // Блокируем недопустимые даты
                         HighlightInvalidDates(CheckOutDate, DateTime.MinValue, selectedDate);
-
-                        // Сбрасываем выбранную дату во втором, если она недопустима
                         if (CheckOutDate.SelectedDate.HasValue && CheckOutDate.SelectedDate <= selectedDate)
                         {
                             CheckOutDate.SelectedDate = null;
@@ -66,15 +60,14 @@ namespace Kyrsovoi
             }
             else
             {
-                // Сбрасываем ограничения
                 CheckOutDate.DisplayDateStart = null;
                 CheckOutDate.BlackoutDates.Clear();
             }
         }
+
         private void HighlightInvalidDates(DatePicker datePicker, DateTime startDate, DateTime endDate)
         {
             datePicker.BlackoutDates.Clear();
-
             if (startDate < endDate)
             {
                 datePicker.BlackoutDates.Add(new CalendarDateRange(startDate, endDate));
@@ -84,7 +77,6 @@ namespace Kyrsovoi
         private void CheckOutDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             CheckFields();
-
             if (CheckOutDate.SelectedDate.HasValue)
             {
                 if (Class1.add != 0)
@@ -92,13 +84,8 @@ namespace Kyrsovoi
                     DateTime selectedDate = CheckOutDate.SelectedDate.Value;
                     if (DateTime.Now < selectedDate)
                     {
-                        // Ограничиваем максимальную дату первого DatePicker
                         CheckInDate.DisplayDateEnd = selectedDate.AddDays(-1);
-
-                        // Блокируем недопустимые даты
                         HighlightInvalidDates(CheckInDate, selectedDate, DateTime.MaxValue);
-
-                        // Сбрасываем выбранную дату в первом, если она недопустима
                         if (CheckInDate.SelectedDate.HasValue && CheckInDate.SelectedDate >= selectedDate)
                         {
                             CheckInDate.SelectedDate = null;
@@ -109,31 +96,21 @@ namespace Kyrsovoi
                         CheckOutDate.Text = null;
                     }
                 }
-
             }
             else
             {
-                // Сбрасываем ограничения
                 CheckInDate.DisplayDateEnd = null;
                 CheckInDate.BlackoutDates.Clear();
             }
         }
+
         private void CheckFields()
         {
-            // Проверяем, выбраны ли значения в обоих полях
-            if (CheckInDate.SelectedDate.HasValue && CheckOutDate.SelectedDate.HasValue)
-            {
-                button.IsEnabled = true;
-            }
-            else
-            {
-                button.IsEnabled = false;
-            }
+            button.IsEnabled = CheckInDate.SelectedDate.HasValue && CheckOutDate.SelectedDate.HasValue;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка, что даты выбраны
             if (!CheckInDate.SelectedDate.HasValue || !CheckOutDate.SelectedDate.HasValue)
             {
                 MessageBox.Show("Пожалуйста, выберите даты начала и окончания периода.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -145,16 +122,13 @@ namespace Kyrsovoi
 
             try
             {
-                // Получение данных из базы
                 List<ReportItem> reportData = GetReportData(startDate, endDate);
-
                 if (reportData.Count == 0)
                 {
                     MessageBox.Show("За указанный период нет данных для формирования отчета.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
-                // Генерация отчета
                 GenerateOfficialWordReport(reportData);
             }
             catch (Exception ex)
@@ -169,44 +143,51 @@ namespace Kyrsovoi
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
-
-                string query = @"
-                    SELECT 
-                        gu.unit_name AS Unit,
-                        COUNT(b.booking_id) AS RentalCount,
-                        SUM(b.total_price) AS TotalRevenue
-                    FROM 
-                        glampingunits gu
-                    LEFT JOIN 
-                        bookings b ON b.unit_id = gu.unit_id
-                        AND b.check_in_date >= @startDate
-                        AND b.check_out_date <= @endDate
-                        AND b.booking_status IN (1, 2)
-                    GROUP BY 
-                        gu.unit_name
-                    HAVING 
-                        COUNT(b.booking_id) > 0
-                    ORDER BY 
-                        TotalRevenue DESC;";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                try
                 {
-                    command.Parameters.AddWithValue("@startDate", startDate);
-                    command.Parameters.AddWithValue("@endDate", endDate);
+                    connection.Open();
+                    string query = @"
+                        SELECT 
+                            gu.unit_name AS Unit,
+                            COUNT(b.booking_id) AS RentalCount,
+                            SUM(b.total_price) AS TotalRevenue
+                        FROM 
+                            glampingunits gu
+                        LEFT JOIN 
+                            bookings b ON b.unit_id = gu.unit_id
+                            AND b.check_in_date >= @startDate
+                            AND b.check_out_date <= @endDate
+                            AND b.booking_status IN (1, 2)
+                        GROUP BY 
+                            gu.unit_name
+                        HAVING 
+                            COUNT(b.booking_id) > 0
+                        ORDER BY 
+                            TotalRevenue DESC;";
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        command.Parameters.AddWithValue("@startDate", startDate);
+                        command.Parameters.AddWithValue("@endDate", endDate);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            reportData.Add(new ReportItem
+                            while (reader.Read())
                             {
-                                Unit = reader.GetString("Unit"),
-                                RentalCount = reader.GetInt32("RentalCount"),
-                                TotalRevenue = reader.GetDecimal("TotalRevenue")
-                            });
+                                reportData.Add(new ReportItem
+                                {
+                                    Unit = reader.GetString("Unit"),
+                                    RentalCount = reader.GetInt32("RentalCount"),
+                                    TotalRevenue = reader.GetDecimal("TotalRevenue")
+                                });
+                            }
                         }
                     }
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show($"Ошибка подключения к базе данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw; // Re-throw to be caught by the outer try-catch
                 }
             }
 
@@ -215,12 +196,16 @@ namespace Kyrsovoi
 
         private void GenerateOfficialWordReport(List<ReportItem> report)
         {
-            Excel.Application excelApp = new Excel.Application();
-            Excel.Workbook workbook = excelApp.Workbooks.Add();
-            Excel.Worksheet worksheet = workbook.ActiveSheet;
+            Excel.Application excelApp = null;
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
 
             try
             {
+                excelApp = new Excel.Application();
+                workbook = excelApp.Workbooks.Add();
+                worksheet = workbook.ActiveSheet;
+
                 int currentRow = 1;
 
                 // Вставляем логотип (если есть)
@@ -273,9 +258,7 @@ namespace Kyrsovoi
                 }
 
                 // Итоговая строка
-                decimal totalRevenue = 0m;
-                foreach (var item in report) totalRevenue += item.TotalRevenue;
-
+                decimal totalRevenue = report.Sum(item => item.TotalRevenue);
                 worksheet.Cells[currentRow, 1] = "ИТОГО";
                 Excel.Range totalRange = worksheet.Range["B" + currentRow, "C" + currentRow];
                 totalRange.Merge();
@@ -289,25 +272,14 @@ namespace Kyrsovoi
                 // Создаём путь
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 string excelDirectory = System.IO.Path.Combine(baseDirectory, "Excel");
-                if (!Directory.Exists(excelDirectory))
-                    Directory.CreateDirectory(excelDirectory);
-
+                Directory.CreateDirectory(excelDirectory); // Ensure directory exists
                 string filePath = System.IO.Path.Combine(excelDirectory, $"RevenueReport_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx");
 
-                // Сохраняем
                 // Сохраняем
                 workbook.SaveAs(filePath);
 
                 // Открываем файл Excel после создания
-                System.Diagnostics.Process.Start(filePath);
-
-                // Завершаем работу с Excel
-                workbook.Close(false);
-                Marshal.ReleaseComObject(workbook);
-
-                excelApp.Quit();
-                Marshal.ReleaseComObject(excelApp);
-
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(filePath) { UseShellExecute = true });
 
                 MessageBox.Show($"Отчёт успешно сохранён: {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -317,11 +289,22 @@ namespace Kyrsovoi
             }
             finally
             {
-                workbook.Close(false);
-                Marshal.ReleaseComObject(workbook);
+                // Cleanup COM objects
+                if (worksheet != null) Marshal.ReleaseComObject(worksheet);
+                if (workbook != null)
+                {
+                    workbook.Close(false);
+                    Marshal.ReleaseComObject(workbook);
+                }
+                if (excelApp != null)
+                {
+                    excelApp.Quit();
+                    Marshal.ReleaseComObject(excelApp);
+                }
 
-                excelApp.Quit();
-                Marshal.ReleaseComObject(excelApp);
+                // Force garbage collection to clean up
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 

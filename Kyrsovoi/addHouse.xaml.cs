@@ -37,8 +37,9 @@ namespace Kyrsovoi
         private string oldDescription = "";
         private string oldPrice = "";
         private string oldPhoto = "";
-        private string path = "";
 
+        private string path = "";
+        private string oldpath = "";
         public addHouse()
         {
             InitializeComponent();
@@ -126,6 +127,7 @@ namespace Kyrsovoi
                         house.Photo = bitmap;
                         oldPhoto = rdr["photo"].ToString();
                         path = oldPhoto;
+                        oldpath = oldPhoto;
                     }
                 }
                 catch (Exception ex)
@@ -280,6 +282,7 @@ namespace Kyrsovoi
                 }
 
             }
+            type.IsEnabled = !isReadOnly;
         }
         private bool AreFieldsFilled()
         {
@@ -306,7 +309,6 @@ namespace Kyrsovoi
                 oldCapacity = capacity;
                 oldPrice = price;
                 oldDescription = description;
-                oldPhoto = path;    
 
                 return true;
             }
@@ -342,7 +344,7 @@ namespace Kyrsovoi
 
                 }
 
-                if (IsTextChanged(nameHouse.Text, type.Text, capacity.Text, description.Text, price.Text, path))
+                if (IsTextChanged(nameHouse.Text, type.Text, capacity.Text, description.Text, price.Text, oldpath))
                 {
 
                     // Создаем подключение и команду
@@ -515,6 +517,7 @@ namespace Kyrsovoi
                         // Обновляем старое значение фото, если редактирование
                         if (!string.IsNullOrEmpty(oldPhoto))
                         {
+                            oldpath = oldPhoto;
                             oldPhoto = path;
                         }
                     }

@@ -204,7 +204,7 @@
             SelectedValuePath="Id"
           Foreground="Black"
                               Margin="68, 0, 0 ,0"
-         IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"  SelectedIndex="0" SelectedValue="1" TextBlock.FontSize="16">
+         IsReadOnly="True"  SelectedIndex="0" SelectedValue="1" TextBlock.FontSize="16">
                     </ComboBox>
                     <TextBlock Text="Статус бронирования" Style="{StaticResource headline}" FontWeight="Bold" FontSize="18"/>
                     <ComboBox x:Name="StatusBooking"  Text="{Binding Booking_status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200"  Panel.ZIndex="10"
@@ -212,14 +212,14 @@
                                 SelectedValuePath="Id"
                               Foreground="Black"
                               Margin="68,5,0, 0"
-                             IsReadOnly="True" SelectionChanged="cb1_SelectionChanged" SelectedIndex="1" SelectedValue="2" TextBlock.FontSize="16">
+                             IsReadOnly="True" SelectedIndex="1" SelectedValue="2" TextBlock.FontSize="16">
                     </ComboBox>
                 </StackPanel>
             </Border>
             <!-- Кнопки управления -->
             <StackPanel x:Name="panel_bron" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                <Button Name="button" Style="{DynamicResource ButtonStyle1}" Content="Редактировать" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click"/>
+                <Button Name="button" Style="{DynamicResource ButtonStyle1}" Content="Редактировать" Width="130" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click" FontSize="16"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="130" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click" FontSize="16"/>
             </StackPanel>
         </Grid>
     </Grid>

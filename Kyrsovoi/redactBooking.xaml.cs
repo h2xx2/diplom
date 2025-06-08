@@ -180,46 +180,43 @@ namespace Kyrsovoi
         public void FillTextBox()
         {
             string strCmd = @"SELECT 
-                                b.booking_id,
-                                CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
-                                guests.phone,
-                                glampingunits.unit_id,
-                                CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
-                                glampingunits.unit_name,
-                                b.check_in_date, 
-                                b.check_out_date, 
-                                b.total_price, 
-                                b.booking_status as 'idstatus',
-                                booking_status.booking_status,
-                                b.pay_status as 'idstatuspay',
-                                pay_status.pay_statuscol,
-                                b.upfront_payment,
-                                b.created_at
-                            FROM 
-                                glamping.bookings b
-                            LEFT JOIN 
-                                guests ON guests.guest_id = b.guest_id
-                            LEFT JOIN 
-                                glampingunits ON glampingunits.unit_id = b.unit_id 
-                            LEFT JOIN 
-                                employees ON employees.employee_id = b.employees_id
-                            LEFT JOIN 
-                                booking_status ON booking_status.idbooking_status = b.booking_status
-                            LEFT JOIN 
-                                pay_status ON pay_status.idpay_status = b.pay_status
-                            WHERE 
-                                b.booking_id = " + Class1.booking_id + @"
-                            GROUP BY 
-                                b.booking_id;
-                            ";
+                        b.booking_id,
+                        CONCAT(guests.first_name, ' ', guests.last_name) AS guest,
+                        guests.phone,
+                        glampingunits.unit_id,
+                        CONCAT(employees.first_name, ' ', employees.last_name) AS employee,
+                        glampingunits.unit_name,
+                        b.check_in_date, 
+                        b.check_out_date, 
+                        b.total_price, 
+                        b.booking_status as 'idstatus',
+                        booking_status.booking_status,
+                        b.pay_status as 'idstatuspay',
+                        pay_status.pay_statuscol,
+                        b.upfront_payment,
+                        b.created_at
+                    FROM 
+                        glamping.bookings b
+                    LEFT JOIN 
+                        guests ON guests.guest_id = b.guest_id
+                    LEFT JOIN 
+                        glampingunits ON glampingunits.unit_id = b.unit_id 
+                    LEFT JOIN 
+                        employees ON employees.employee_id = b.employees_id
+                    LEFT JOIN 
+                        booking_status ON booking_status.idbooking_status = b.booking_status
+                    LEFT JOIN 
+                        pay_status ON pay_status.idpay_status = b.pay_status
+                    WHERE 
+                        b.booking_id = " + Class1.booking_id + @"
+                    GROUP BY 
+                        b.booking_id;";
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-
                 try
                 {
                     con.Open();
-
                     MySqlCommand cmd = new MySqlCommand(strCmd, con);
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     if (rdr.Read())
@@ -232,21 +229,34 @@ namespace Kyrsovoi
                         oldGuest = booking.Guest_id;
                         booking.Unit_id = rdr["unit_name"].ToString();
                         oldUnit = booking.Unit_id;
-                        if (Class1.add ==1)
+                        if (Class1.add == 1)
                         {
                             booking.Employees_id = rdr["employee"].ToString();
                         }
-                        
-                        booking.Check_in_date = rdr["check_in_date"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(rdr["check_in_date"]);
-                        DateTime date1 = Convert.ToDateTime(booking.Check_in_date);
-                        dateIn = date1.ToString("MM.dd.yyyy");
-                        booking.Check_out_date = rdr["check_out_date"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(rdr["check_out_date"]);
 
-                        DateTime date = Convert.ToDateTime(booking.Check_out_date);
-                        dateOut = date.ToString("MM.dd.yyyy");
+                        booking.Check_in_date = rdr["check_in_date"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(rdr["check_in_date"]);
+                        if (booking.Check_in_date.HasValue)
+                        {
+                            dateIn = booking.Check_in_date.Value.ToString("MM.dd.yyyy");
+                        }
+                        else
+                        {
+                            dateIn = null;
+                        }
+
+                        booking.Check_out_date = rdr["check_out_date"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(rdr["check_out_date"]);
+                        if (booking.Check_out_date.HasValue)
+                        {
+                            dateOut = booking.Check_out_date.Value.ToString("MM.dd.yyyy");
+                        }
+                        else
+                        {
+                            dateOut = null;
+                        }
+
                         booking.Total_price = rdr["total_price"].ToString();
                         totalPrice = booking.Total_price;
-                        Payment_cost.Text = rdr["upfront_payment"].ToString(); 
+                        Payment_cost.Text = rdr["upfront_payment"].ToString();
                         booking.Booking_status = rdr["booking_status"].ToString();
                         bookingstatus = rdr["idstatus"].ToString();
                         booking.Pay_status = rdr["pay_statuscol"].ToString();
@@ -446,16 +456,12 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                _idleTimer.Stop();
                 Prosmotr prosmotr = new Prosmotr();
                 this.Hide();
                 prosmotr.ShowDialog();
                 this.Close();  
             }
-        }
-
-        private void cb1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void GuestID_LostFocus(object sender, RoutedEventArgs e)
@@ -1098,7 +1104,13 @@ namespace Kyrsovoi
                                             if (totalCost == paymentCost)
                                             {
                                                 GenerateAndSaveContract(Convert.ToInt32(result.ToString()));
-                                                MessageBox.Show("Договор успешно сохранен");
+                                                GenerateReceipt(Convert.ToInt32(result.ToString()));
+                                                MessageBox.Show("Договора успешно сохранен");
+                                                _idleTimer.Stop();
+                                                Prosmotr prosmotr = new Prosmotr();
+                                                this.Hide();
+                                                prosmotr.ShowDialog();
+                                                this.Close();
                                             }
                                         }
 
@@ -1169,6 +1181,10 @@ namespace Kyrsovoi
                 this.DataContext = booking; // Устанавливаем DataContext
                 SetFieldsReadOnly(true);
                 FillTextBox(); // Теперь DataContext точно не null
+                if (booking.Check_out_date.HasValue)
+                {
+                    CheckOutDate.SelectedDate = booking.Check_out_date; // Устанавливаем дату вручную
+                }
                 SpEmpoy.Visibility = Visibility.Collapsed;
                 if (Class1.role == 0)
                 {
@@ -1178,7 +1194,6 @@ namespace Kyrsovoi
             }
             else
             {
-                
                 var booking = new Booking();
                 this.DataContext = booking;
                 SetFieldsReadOnly(false);
@@ -1261,24 +1276,28 @@ namespace Kyrsovoi
         {
             try
             {
-                // Преобразуем TotalPrice.Text в decimal
-                if (decimal.TryParse(TotalPrice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal totalCost) &&
-                    decimal.TryParse(Payment_cost.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal paymentCost))
+                if (TotalPrice.Text != "")
                 {
-                    // Проверяем условие
-                    if (totalCost * 0.3m <= paymentCost) // Используем m для decimal
+    // Преобразуем TotalPrice.Text в decimal
+                    if (decimal.TryParse(TotalPrice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal totalCost) &&
+                        decimal.TryParse(Payment_cost.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal paymentCost))
                     {
-                        Status_pay.SelectedValue = 2;
+                        // Проверяем условие
+                        if (totalCost * 0.3m <= paymentCost) // Используем m для decimal
+                        {
+                            Status_pay.SelectedValue = 2;
+                        }
+                        if (totalCost == paymentCost) // Используем m для decimal
+                        {
+                            Status_pay.SelectedValue = 1;
+                        }
                     }
-                    if (totalCost == paymentCost) // Используем m для decimal
+                    else
                     {
-                        Status_pay.SelectedValue = 1;
+                        MessageBox.Show("Неверный формат чисел в TotalPrice или Payment_cost.");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Неверный формат чисел в TotalPrice или Payment_cost.");
-                }
+                
             }
             catch (Exception ex)
             {
