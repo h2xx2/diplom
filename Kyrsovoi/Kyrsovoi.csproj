@@ -361,6 +361,7 @@
     <Resource Include="home\pic9.jpg" />
     <Resource Include="home\tent.png" />
     <Resource Include="home\yurt.png" />
+    <Resource Include="ImageButton\logo.ico" />
     <Content Include="tools\mysqldump.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
