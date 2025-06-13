@@ -88,7 +88,7 @@
                         <BlurEffect Radius="1"/>
                     </Image.Effect>
                 </Image>
-                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown">
+                <Image Name="krest"  Height="13" Width="13" Margin="10" MouseDown="krest_MouseDown" MouseUp="krest_MouseUp">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Source" Value="source/krest.png"/>
@@ -139,13 +139,26 @@
 
         </TextBlock>
         <Label Content="Авторизация" HorizontalAlignment="Center" Margin="0,34,0,0" VerticalAlignment="Top"  FontSize="36" Foreground="White"/>
-        <TextBox x:Name="tb3" HorizontalAlignment="Left" Margin="420,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="35" Panel.ZIndex="0"
-         FontSize="20"
-         Background="#66D9D9D9"
-         Foreground="White"
-         MaxLength="30" PreviewTextInput="tb1_PreviewTextInput"
-         />
-        
+        <Grid>
+            <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="420,210,0,0">
+                <TextBox x:Name="tb3"
+                 Width="195"
+                 Height="35"
+                 TextWrapping="Wrap"
+                 FontSize="20"
+                 Background="#66D9D9D9"
+                 Foreground="White"
+                 MaxLength="30"
+                 PreviewTextInput="tb1_PreviewTextInput" Margin="10 , 0"/>
+                <Image Width="35" Height="35" Source="ImageButton/rest.png" MouseDown="Image_MouseDown"/>
+            </StackPanel>
+        </Grid>
+
+
+
         <Border BorderBrush="Black" BorderThickness="4">
         <Image Name="CaptchaImage" Width="230" Height="80" Margin="410, 0,40,100" MouseLeftButtonDown="CaptchaImage_MouseLeftButtonDown"/>
         </Border>

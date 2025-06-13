@@ -52,7 +52,11 @@ namespace Kyrsovoi
                 MessageBox.Show("Выберите таблицу для импорта данных.");
                 return;
             }
-
+            if (tb.Text == null)
+            {
+                MessageBox.Show("Выберите sql файл для импорта.");
+                return;
+            }
             importLog.Clear();
             ImportCsvDataToTable(filePath, cb.Text);
 

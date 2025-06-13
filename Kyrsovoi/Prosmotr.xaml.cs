@@ -1168,5 +1168,7 @@ namespace Kyrsovoi
             MainScaleTransform.ScaleX = scale;
             MainScaleTransform.ScaleY = scale;
         }
+
+       
     }
 }

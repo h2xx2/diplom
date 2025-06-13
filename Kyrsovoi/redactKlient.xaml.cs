@@ -129,6 +129,7 @@ namespace Kyrsovoi
                 if (Class1.add == 1)
                 {
                     _idleTimer.Stop();
+                    Class1.add = 0;
                     redactBooking prosmotr = new redactBooking();
                     this.Hide();
                     prosmotr.ShowDialog();
@@ -136,6 +137,7 @@ namespace Kyrsovoi
                 }
                 else {
                     _idleTimer.Stop();
+                    Class1.add = 0;
                     Prosmotr prosmotr = new Prosmotr();
                     this.Hide();
                     prosmotr.ShowDialog();

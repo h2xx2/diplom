@@ -10,8 +10,8 @@
     <Window.Resources>
         <!-- Button Style (перенесён из systemadmin.xaml) -->
         <Style x:Key="CustomButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#4A5668"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="DarkSeaGreen"/>
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Margin" Value="0,10,0,0"/>
@@ -79,13 +79,13 @@
         <Grid Margin="20,50,20,10">
             <Border Background="LightGray" CornerRadius="10" Padding="10">
                 <StackPanel>
-                    <TextBlock Text="Восстановление структуры" FontSize="15" 
+                    <TextBlock Text="Восстановление структуры" FontSize="18" 
                                TextAlignment="Center" Margin="0,0,0,20"/>
-                    <Button x:Name="rezerv" Content="Резервное копирование" Width="200" Height="30" 
+                    <Button x:Name="rezerv" Content="Резервное копирование"  Width="200" Height="30" 
                             Style="{StaticResource CustomButtonStyle}" Click="Button_Click_2"/>
                     <Button Content="Восстановить" Width="200" Height="30" 
                             Style="{StaticResource CustomButtonStyle}" Click="Button_Click_1"/>
-                    <Button Content="Импортирование" Width="200" Height="30" 
+                    <Button Content="Импорт данных" Width="200" Height="30" 
                             Style="{StaticResource CustomButtonStyle}" Click="Button_Click"/>
                     <Button Content="Экспорт данных" Width="200" Height="30" 
                             Style="{StaticResource CustomButtonStyle}" Click="Button_Click_3"/>

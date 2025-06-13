@@ -40,6 +40,8 @@ namespace Kyrsovoi
     {
         private Timer _idleTimer;
         private int _idleTimeout; // Время ожидания (секунды)
+        int err = 0;
+        int red = 0;
         public redactBooking()
         {
             InitializeComponent();
@@ -456,6 +458,7 @@ namespace Kyrsovoi
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                Class1.add = 0;
                 _idleTimer.Stop();
                 Prosmotr prosmotr = new Prosmotr();
                 this.Hide();
@@ -906,28 +909,54 @@ namespace Kyrsovoi
             CheckFields();
             if (CheckInDate.SelectedDate.HasValue)
             {
-                if (Class1.add != 0)
-                {
-                    DateTime selectedDate = CheckInDate.SelectedDate.Value;
-                    if (DateTime.Now < selectedDate)
+                
+                    if (Class1.add != 0)
                     {
-                        // Ограничиваем минимальную дату второго DatePicker
-                        CheckOutDate.DisplayDateStart = selectedDate.AddDays(1);
-
-                        // Блокируем недопустимые даты
-                        HighlightInvalidDates(CheckOutDate, DateTime.MinValue, selectedDate);
-
-                        // Сбрасываем выбранную дату во втором, если она недопустима
-                        if (CheckOutDate.SelectedDate.HasValue && CheckOutDate.SelectedDate <= selectedDate)
+                        DateTime selectedDate = CheckInDate.SelectedDate.Value;
+                        if (DateTime.Now < selectedDate)
                         {
-                            CheckOutDate.SelectedDate = null;
+                            // Ограничиваем минимальную дату второго DatePicker
+                            CheckOutDate.DisplayDateStart = selectedDate.AddDays(1);
+
+                            // Блокируем недопустимые даты
+                            HighlightInvalidDates(CheckOutDate, DateTime.MinValue, selectedDate);
+
+                            // Сбрасываем выбранную дату во втором, если она недопустима
+                            if (CheckOutDate.SelectedDate.HasValue && CheckOutDate.SelectedDate <= selectedDate)
+                            {
+                                CheckOutDate.SelectedDate = null;
+                            }
+                        }
+                        else
+                        {
+                            CheckOutDate.Text = null;
                         }
                     }
-                    else
+                    if (Class1.add != 0)
                     {
-                        CheckOutDate.Text = null;
+                        DateTime selectedDate = CheckInDate.SelectedDate.Value;
+                        if (DateTime.Now < selectedDate)
+                        {
+                            // Ограничиваем минимальную дату второго DatePicker
+                            CheckOutDate.DisplayDateStart = selectedDate.AddDays(1);
+
+                            // Блокируем недопустимые даты
+                            HighlightInvalidDates(CheckOutDate, DateTime.MinValue, selectedDate);
+
+                            // Сбрасываем выбранную дату во втором, если она недопустима
+                            if (CheckOutDate.SelectedDate.HasValue && CheckOutDate.SelectedDate <= selectedDate)
+                            {
+                                CheckOutDate.SelectedDate = null;
+                                MessageBox.Show("Дата заезда не может быть раньше даты выезда");
+                            }
+                        }
+                        else
+                        {
+                            CheckOutDate.SelectedDate = selectedDate;
+                            MessageBox.Show("Дата заезда не может быть раньше сегоднешнего дня");
+                        }
                     }
-                }
+                
             }
             else
             {
@@ -943,26 +972,58 @@ namespace Kyrsovoi
 
             if (CheckOutDate.SelectedDate.HasValue)
             {
-                if (Class1.add != 0)
+                if (red == 1)
                 {
-                    DateTime selectedDate = CheckOutDate.SelectedDate.Value;
-                    if (DateTime.Now < selectedDate)
+                    if (Class1.add != 0)
                     {
-                        // Ограничиваем максимальную дату первого DatePicker
-                        CheckInDate.DisplayDateEnd = selectedDate.AddDays(-1);
-
-                        // Блокируем недопустимые даты
-                        HighlightInvalidDates(CheckInDate, selectedDate, DateTime.MaxValue);
-
-                        // Сбрасываем выбранную дату в первом, если она недопустима
-                        if (CheckInDate.SelectedDate.HasValue && CheckInDate.SelectedDate >= selectedDate)
+                        DateTime selectedDate = CheckOutDate.SelectedDate.Value;
+                        if (DateTime.Now < selectedDate)
                         {
-                            CheckInDate.SelectedDate = null;
+                            // Ограничиваем максимальную дату первого DatePicker
+                            CheckInDate.DisplayDateEnd = selectedDate.AddDays(-1);
+
+                            // Блокируем недопустимые даты
+                            HighlightInvalidDates(CheckInDate, selectedDate, DateTime.MaxValue);
+
+                            // Сбрасываем выбранную дату в первом, если она недопустима
+                            if (CheckInDate.SelectedDate.HasValue && CheckInDate.SelectedDate >= selectedDate)
+                            {
+                                CheckInDate.SelectedDate = null;
+                                MessageBox.Show("Дата выезда не может быть раньше даты заезда");
+                            }
+                        }
+                        else
+                        {
+                            CheckOutDate.Text = null;
+                            MessageBox.Show("Дата выезда не может быть раньше сегоднешнего дня");
+
                         }
                     }
                     else
                     {
-                        CheckOutDate.Text = null;
+                        DateTime selectedDate = CheckOutDate.SelectedDate.Value;
+                        if (DateTime.Now < selectedDate)
+                        {
+                            // Ограничиваем максимальную дату первого DatePicker
+                            CheckInDate.DisplayDateEnd = selectedDate.AddDays(-1);
+
+                            // Блокируем недопустимые даты
+                            HighlightInvalidDates(CheckInDate, selectedDate, DateTime.MaxValue);
+
+                            // Сбрасываем выбранную дату в первом, если она недопустима
+                            if (CheckInDate.SelectedDate.HasValue && CheckInDate.SelectedDate >= selectedDate)
+                            {
+                                CheckInDate.SelectedDate = selectedDate;
+                                MessageBox.Show("Дата выезда не может быть раньше даты заезда");
+
+                            }
+                        }
+                        else
+                        {
+                            CheckInDate.SelectedDate = selectedDate;
+                            MessageBox.Show("Дата выезда не может быть раньше сегоднешнего дня");
+
+                        }
                     }
                 }
 
@@ -1023,6 +1084,8 @@ namespace Kyrsovoi
             // Пример: Если одно из значений изменилось
             if (guest != oldGuest || unit != oldUnit || datein != dateIn || dateout != dateOut || status != bookingstatus || totalprice != totalPrice || totalprice != totalPrice)
             {
+                err = 0;
+                red = 1;
                 // Обновляем старые значения
                 oldGuest = guest;
                 oldUnit = unit;
@@ -1048,11 +1111,17 @@ namespace Kyrsovoi
             }
             if (AreFieldsFilled())
             {
-                if (IsTextChanged(GuestID.Text, UnitID.Text, CheckInDate.Text, CheckOutDate.Text, StatusBooking.Text, TotalPrice.Text))
+                if (IsTextChanged(
+                GuestID.Text,
+                UnitID.Text,
+                DateTime.ParseExact(CheckInDate.Text, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("MM.dd.yyyy"),
+                DateTime.ParseExact(CheckOutDate.Text, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("MM.dd.yyyy"),
+                StatusBooking.SelectedValue.ToString(),
+                TotalPrice.Text) && err == 0)
                 {
                     if (Class1.add != 1)
                     {
-                        query = "UPDATE bookings SET guest_id = @guest_id, unit_id = @unit_id, check_in_date = @check_in_date, check_out_date = @check_out_date, total_price = REPLACE(@total_price, ',', '.'), upfront_payment = REPLACE(@upfront_payment, ',', '.'), pay_status=@pay_status booking_status =@booking_status WHERE booking_id = @id";
+                        query = "UPDATE bookings \r\nSET \r\n  guest_id = @guest_id, \r\n  unit_id = @unit_id, \r\n  check_in_date = @check_in_date, \r\n  check_out_date = @check_out_date, \r\n  total_price = CAST(REPLACE(@total_price, ',', '.') AS DECIMAL(10,2)), \r\n  upfront_payment = CAST(REPLACE(@upfront_payment, ',', '.') AS DECIMAL(10,2)), \r\n  pay_status = @pay_status, \r\n  booking_status = @booking_status \r\nWHERE booking_id = @id;\r\n";
 
                     }
                     else
@@ -1094,6 +1163,7 @@ namespace Kyrsovoi
                                 object result = command.ExecuteScalar();
                                 if (Class1.add == 1)
                                 {
+                                    Class1.add = 0;
                                     // Проверяем количество измененных строк
                                     if (result != null)
                                     {
@@ -1115,6 +1185,10 @@ namespace Kyrsovoi
                                         }
 
                                         GenerateReceipt(Convert.ToInt32(result.ToString()));
+                                        Prosmotr prosmotr1 = new Prosmotr();
+                                        this.Hide();
+                                        prosmotr1.ShowDialog();
+                                        this.Close();
                                     }
                                     else
                                     {
@@ -1126,6 +1200,27 @@ namespace Kyrsovoi
                                 else
                                 {
                                     MessageBox.Show("Данные успешно обновлены.");
+                                    if (decimal.TryParse(TotalPrice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal totalCost) &&
+                                             decimal.TryParse(Payment_cost.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal paymentCost))
+                                    {
+                                        if (totalCost == paymentCost)
+                                        {
+                                            GenerateAndSaveContract(Convert.ToInt32(Class1.booking_id));
+                                            GenerateReceipt(Convert.ToInt32(Class1.booking_id));
+                                            MessageBox.Show("Договора успешно сохранен");
+                                            _idleTimer.Stop();
+                                            Prosmotr prosmotr = new Prosmotr();
+                                            this.Hide();
+                                            prosmotr.ShowDialog();
+                                            this.Close();
+                                        }
+                                    }
+
+                                    GenerateReceipt(Convert.ToInt32(Class1.booking_id));
+                                    Prosmotr prosmotr1 = new Prosmotr();
+                                    this.Hide();
+                                    prosmotr1.ShowDialog();
+                                    this.Close();
                                 }
                             }
                             catch(Exception)
@@ -1134,6 +1229,15 @@ namespace Kyrsovoi
                             }
                         }
                     }
+                }
+                else
+                {
+                    
+                    if (err >=1)
+                    {
+                        MessageBox.Show("Данные не изменены.");
+                    }
+                    err++;
                 }
             }
             else
@@ -1183,7 +1287,8 @@ namespace Kyrsovoi
                 FillTextBox(); // Теперь DataContext точно не null
                 if (booking.Check_out_date.HasValue)
                 {
-                    CheckOutDate.SelectedDate = booking.Check_out_date; // Устанавливаем дату вручную
+                    CheckOutDate.SelectedDate = booking.Check_out_date;
+                    CheckInDate.SelectedDate = booking.Check_in_date;// Устанавливаем дату вручную
                 }
                 SpEmpoy.Visibility = Visibility.Collapsed;
                 if (Class1.role == 0)
@@ -1943,6 +2048,12 @@ namespace Kyrsovoi
                                     object fileName = filePath;
                                     object fileFormat = Word.WdSaveFormat.wdFormatDocumentDefault;
                                     wordDoc.SaveAs(ref fileName, ref fileFormat);
+                                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                    {
+                                        FileName = filePath,
+                                        UseShellExecute = true // обязательно для открытия через ассоциацию с Word
+                                    });
+
                                     Console.WriteLine("Договор успешно сохранен в: " + filePath);
                                 }
                                 catch (Exception ex)
@@ -2183,6 +2294,11 @@ left join
                             object fileName = filePath;
                             object fileFormat = Word.WdSaveFormat.wdFormatDocumentDefault;
                             wordDoc.SaveAs(ref fileName, ref fileFormat);
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = filePath,
+                                UseShellExecute = true 
+                            });
 
                             MessageBox.Show($"Чек успешно сохранён: {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         }

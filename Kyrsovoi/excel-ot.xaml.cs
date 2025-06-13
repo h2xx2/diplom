@@ -328,5 +328,15 @@ namespace Kyrsovoi
                 Window.GetWindow(this)?.DragMove();
             }
         }
+
+        private void CheckInDate_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void CheckOutDate_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

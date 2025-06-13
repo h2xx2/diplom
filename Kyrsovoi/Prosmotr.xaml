@@ -487,7 +487,7 @@
                          FontSize="20"
                          Background="Transparent"
                          Foreground="Black"
-                         MaxLength="40"
+                         MaxLength="20"
                         BorderBrush="Black"
                         BorderThickness="0 0 0 1" TextChanged="tb1_TextChanged" PreviewTextInput="tb1_PreviewTextInput"
                          />
@@ -506,11 +506,35 @@
             </TextBlock>
             <!--Sortable-->
 
-            <Button Content="Вперед" Width="100" VerticalAlignment="Bottom" Height="30" Margin="290, 0, 0, 55" Click="Button_Click_6"></Button>
+            <Grid>
+                <!-- Контейнер для кнопок "Назад", PageButtonsPanel и "Вперед" -->
+                <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Bottom"
+                Margin="90,0,90,50"
+                HorizontalAlignment="Center"
+                Height="40"
+                >
+                    <Button Content="Назад"
+                Width="100"
+                Height="30"
+                Margin="0,0,10,0"
+                Click="Button_Click_7" />
 
-            <WrapPanel x:Name="PageButtonsPanel" Orientation="Horizontal" Margin="200 20 0 50" VerticalAlignment="Bottom" Height="40"/>
+                    <WrapPanel x:Name="PageButtonsPanel"
+                   Orientation="Horizontal"
+                   Height="40"
+                   VerticalAlignment="Bottom"
+                   />
+
+                    <Button Content="Вперед"
+                Width="100"
+                Height="30"
+                Margin="10,0,0,0"
+                Click="Button_Click_6" />
+                </StackPanel>
+            </Grid>
+
             <TextBlock Name="labelPageInfo" FontSize="14" Width="145" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50"/>
-            <Button Content="Назад" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Margin="90, 0, 150, 55" Click="Button_Click_7"></Button>
 
             <Grid x:Name="panel" Visibility="Collapsed">
                 <TextBlock Background="#d0e8d0" Width="50" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="150,0,10,10">
@@ -529,7 +553,7 @@
 
 
 
-            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" MinWidth="210" MaxWidth="300"  Height="30" Panel.ZIndex="10"
+            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="cb1" HorizontalAlignment="Left"  Margin="310,50,0,0"  VerticalAlignment="Top" MinWidth="210" MaxWidth="300"  Height="35" Panel.ZIndex="10"
                          FontSize="20"
                          Foreground="Black"
                          IsReadOnly="True" SelectionChanged="cb1_SelectionChanged"
@@ -541,7 +565,7 @@
                 <ComboBoxItem Content="Все фильтры"/>
             </ComboBox>
             <!--filter-->
-            <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="540,50,0,0"  VerticalAlignment="Top" MinWidth="210" MaxWidth="300" Height="30" Panel.ZIndex="10"
+            <ComboBox x:Name="cb2" Template="{DynamicResource ComboBoxTemplate1}" Text="ubfghubt" HorizontalAlignment="Left"  Margin="540,50,0,0"  VerticalAlignment="Top" MinWidth="210" MaxWidth="300" Height="35" Panel.ZIndex="10"
              FontSize="20"
              Background="Transparent"
              Foreground="Black"
@@ -790,7 +814,7 @@ HorizontalAlignment="Right"
 
                             <ListViewItem.ToolTip>
                                 <ToolTip x:Name="tt_home"
-                                         Content="Главная страница"
+                                         Content="Выход"
                                          Style="{StaticResource hb_style}"/>
                             </ListViewItem.ToolTip>
 
@@ -802,7 +826,7 @@ HorizontalAlignment="Right"
                                        Width="30"
                                        Height="30"
                                        Margin="11 0 0 0"/>
-                                <TextBlock Text="Главная Страница"
+                                <TextBlock Text="Выход"
                                            Margin="25 0 0 0"
                                            Style="{StaticResource font_style}"/>
                             </StackPanel>

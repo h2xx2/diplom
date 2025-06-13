@@ -147,6 +147,7 @@ namespace Kyrsovoi
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            _idleTimer.Stop();
             Import import = new Import();
             this.Close();
             import.ShowDialog();
@@ -159,6 +160,7 @@ namespace Kyrsovoi
 
         private void krest_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            _idleTimer.Stop();
             systemadmin mainWindow = new systemadmin();
             this.Hide();
             mainWindow.ShowDialog();
@@ -254,6 +256,7 @@ namespace Kyrsovoi
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            _idleTimer.Stop();
             export export = new export();
             this.Hide();
             export.ShowDialog();

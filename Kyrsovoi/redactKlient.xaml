@@ -151,7 +151,7 @@
 
             <!--Кнопки управления-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="150" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="140" Height="40" FontSize="16" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
             </StackPanel>
 
             <!--Кнопка Назад-->

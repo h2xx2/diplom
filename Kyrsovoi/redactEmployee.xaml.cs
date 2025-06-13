@@ -135,6 +135,7 @@ namespace Kyrsovoi
             if (e.ChangedButton == MouseButton.Left)
             {
                 _idleTimer.Stop();
+                Class1.add = 0;
                 Prosmotr prosmotr = new Prosmotr();
                 this.Hide();
                 prosmotr.ShowDialog();
@@ -468,6 +469,10 @@ namespace Kyrsovoi
                         }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Данные не изменены");
+                }
             }
             else
             {
@@ -586,5 +591,7 @@ namespace Kyrsovoi
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+            
     }
 }

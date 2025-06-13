@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kyrsovoi"
         mc:Ignorable="d"
-         Height="610" Width="400" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded" FontSize="16">
+         Height="610" Width="460" Icon="/logo.png" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" OpacityMask="Black" BorderBrush="#FFD2FCD1" Background="#9AA09C" WindowStyle="None" Loaded="Window_Loaded" FontSize="16">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -114,11 +114,11 @@
                     <!--<! — Поля для ввода имени и фамилии —>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Имя"  Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBox MaxLength="40" x:Name="name" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" TextChanged="name_TextChanged" PreviewTextInput="name_PreviewTextInput" TextBlock.FontSize="16"/>
+                        <TextBox MaxLength="40" x:Name="name" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="210" Margin="10,0" TextChanged="name_TextChanged" PreviewTextInput="name_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Фамилия" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBox MaxLength="40" x:Name="surname" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="name_PreviewTextInput" TextBlock.FontSize="16"/>
+                        <TextBox MaxLength="40" x:Name="surname" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="210" Margin="10,0" PreviewTextInput="name_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
 
                     <!--<! — Заголовок Контактная информация —>-->
@@ -126,11 +126,11 @@
                     <!--<! — Поля для ввода Email и Телефона —>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Email" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBox MaxLength="40" x:Name="email" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="email_PreviewTextInput" TextBlock.FontSize="16"/>
+                        <TextBox MaxLength="40" x:Name="email" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="210" Margin="10,0" PreviewTextInput="email_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Телефон" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBox MaxLength="11" x:Name="number" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="150" Margin="10,0" PreviewTextInput="number_PreviewTextInput" TextBlock.FontSize="16"/>
+                        <TextBox MaxLength="11" x:Name="number" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True"  Width="210" Margin="10,0" PreviewTextInput="number_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
 
                     <!--<!— Заголовок Личная информация —>-->
@@ -138,11 +138,11 @@
                     <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Дата оформления" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="150" Margin="10,0" PreviewTextInput="db_PreviewTextInput" TextBlock.FontSize="16"/>
+                        <DatePicker x:Name="db" SelectedDate="{Binding Db, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="210" Margin="10,0" PreviewTextInput="db_PreviewTextInput" TextBlock.FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Должность" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <ComboBox x:Name="position" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="10,0" TextBlock.FontSize="16" >
+                        <ComboBox x:Name="position" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="210" Margin="10,0" TextBlock.FontSize="16" >
                             <ComboBoxItem Content="Специалист по продажам"/>
                             <ComboBoxItem Content="Маркетолог"/>
                             <ComboBoxItem Content="Логист"/>
@@ -153,18 +153,18 @@
                     <!--<! — Поля для ввода даты рождения и номера паспорта —>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Логин" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBox MaxLength="40" x:Name="login" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="10,0" PreviewTextInput="login_PreviewTextInput" TextBlock.FontSize="16" />
+                        <TextBox MaxLength="40" x:Name="login" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="210" Margin="10,0" PreviewTextInput="login_PreviewTextInput" TextBlock.FontSize="16" />
                     </StackPanel>
                     <StackPanel>
                         <TextBlock x:Name="GeneratePass" Text="Сгенерировать пароль" Foreground="DarkGreen"  FontSize="10" Margin="130,10,0,0" Width="130" VerticalAlignment="Center" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <TextBlock Text="Пароль" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                            <TextBox MaxLength="40" x:Name="password" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="11,0" PreviewTextInput="login_PreviewTextInput" TextBlock.FontSize="16" />
+                            <TextBox MaxLength="40" x:Name="password" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="210" Margin="11,0" PreviewTextInput="login_PreviewTextInput" TextBlock.FontSize="16" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Роль" Width="135" VerticalAlignment="Center" FontSize="16"/>
-                        <ComboBox x:Name="role" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="150" Margin="11,0" FontSize="16" >
+                        <ComboBox x:Name="role" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" IsReadOnly="True" Width="210" Margin="11,0 , 0, 0" FontSize="16" >
                             <ComboBoxItem Content="Администратор"/>
                             <ComboBoxItem Content="Менеджер"/>
                         </ComboBox>
@@ -174,8 +174,8 @@
 
             <!--Кнопки управления-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="130" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click"/>
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="Удалить" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="button" Content="Редактировать" Width="140" Height="40" Margin="10,0" FontSize="16" Background="DarkSeaGreen" Click="Button_Click"/>
+                <Button Visibility="Collapsed" Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="Удалить" Width="100" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click"/>
             </StackPanel>
 
             <!--Кнопка Назад-->

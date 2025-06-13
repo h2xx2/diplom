@@ -146,6 +146,7 @@ namespace Kyrsovoi
             if (e.ChangedButton == MouseButton.Left)
             {
                 _idleTimer.Stop();
+                Class1.add = 0;
                 Prosmotr prosmotr = new Prosmotr();
                 this.Hide();
                 prosmotr.ShowDialog();
@@ -321,7 +322,6 @@ namespace Kyrsovoi
             Smena.IsEnabled = true;
 
             button.Content = "Сохранить";
-            delete.Visibility = Visibility.Collapsed;
 
             string query = String.Empty;
             string name = nameHouse.Text;
@@ -434,7 +434,6 @@ namespace Kyrsovoi
                     SetFieldsReadOnly(false);
                     button.Content = "Сохранить";
                     button.Visibility = Visibility.Visible;
-                    delete.Visibility = Visibility.Visible;
                     image.Visibility = Visibility.Visible;
                 }
             }
@@ -445,8 +444,7 @@ namespace Kyrsovoi
                 FillTextBox();
                 SetFieldsReadOnly(false);
                 button.Visibility = Visibility.Collapsed;
-                delete.Visibility = Visibility.Collapsed;
-                image.Visibility = Visibility.Collapsed;
+                image.Visibility = Visibility.Visible;
             }
             
         }

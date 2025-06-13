@@ -50,6 +50,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=8.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -362,6 +365,8 @@
     <Resource Include="home\tent.png" />
     <Resource Include="home\yurt.png" />
     <Resource Include="ImageButton\logo.ico" />
+    <Resource Include="ImageButton\rest.png" />
+    <Resource Include="logo.ico" />
     <Content Include="tools\mysqldump.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

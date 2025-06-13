@@ -218,20 +218,20 @@
                     </ListView.ItemContainerStyle>
                     <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15" >
                         <ListViewItem.ToolTip>
-                            <ToolTip x:Name="tt_home" Content="Главная страница" Style="{StaticResource hb_style}"/>
+                            <ToolTip x:Name="tt_home" Content="Выход" Style="{StaticResource hb_style}"/>
                         </ListViewItem.ToolTip>
                         <StackPanel Orientation="Horizontal" Width="400" MouseDown="StackPanel_MouseDown">
                             <Image Source="ImageButton/home.png" Stretch="Fill" Width="30" Height="30" Margin="11 0 0 0"/>
-                            <TextBlock Text="Главная Страница" Margin="25 0 0 0" Style="{StaticResource font_style}"/>
+                            <TextBlock Text="Выход" Margin="25 0 0 0" Style="{StaticResource font_style}"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem HorizontalAlignment="Left" Margin="0 0 0 15">
                         <ListViewItem.ToolTip>
-                            <ToolTip x:Name="tt_service" Content="Восстановление" Style="{StaticResource tt_style}"/>
+                            <ToolTip x:Name="tt_service" Content="Управление данными" Style="{StaticResource tt_style}"/>
                         </ListViewItem.ToolTip>
                         <StackPanel x:Name="Service" Orientation="Horizontal" Width="400" MouseDown="Service_MouseDown">
                             <Image Source="ImageButton/vost.png" Stretch="Fill" Width="30" Height="30" Margin="11 0 0 0"/>
-                            <TextBlock Text="Восстановление" Margin="25 0 0 0" Style="{StaticResource font_style}" Width="224"/>
+                            <TextBlock Text="Управление данными" Margin="25 0 0 0" Style="{StaticResource font_style}" Width="224"/>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>

@@ -194,7 +194,7 @@
                     <TextBlock Text="Итоговая цена" Style="{StaticResource headline}" FontWeight="Bold" Margin="0,5" FontSize="18"/>
                     <TextBox Name="TotalPrice" Text="{Binding Total_price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="200" IsReadOnly="True" Margin="68,0,0,10" TextChanged="TotalPrice_TextChanged" TextBlock.FontSize="16"/>
                     <TextBlock Text="Предоплата" Style="{StaticResource headline}" FontWeight="Bold" FontSize="18"/>
-                    <TextBox x:Name="Payment_cost" Width="200" Margin="68, 0,0,0" TextChanged="Payment_TextChanged" TextBlock.FontSize="16"/>
+                    <TextBox x:Name="Payment_cost" Width="200" Margin="68, 0,0,0" TextChanged="Payment_TextChanged" TextBlock.FontSize="16" PreviewTextInput="GuestID_PreviewTextInput"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="*Минимум 30% для бронирования*" FontSize="11" Margin="150 0 7 0" Foreground="Red"/>
                     </StackPanel>
@@ -218,8 +218,8 @@
             </Border>
             <!-- Кнопки управления -->
             <StackPanel x:Name="panel_bron" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                <Button Name="button" Style="{DynamicResource ButtonStyle1}" Content="Редактировать" Width="130" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click" FontSize="16"/>
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="130" Height="30" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click" FontSize="16"/>
+                <Button Name="button" Style="{DynamicResource ButtonStyle1}" Content="Редактировать" Width="140" Height="40" Margin="10,0" Background="DarkSeaGreen" Click="Button_Click" FontSize="16"/>
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="delete" Content="удалить" Width="140" Height="40" Margin="10,0" Background="DarkSeaGreen" Click="delete_Click" FontSize="16"/>
             </StackPanel>
         </Grid>
     </Grid>

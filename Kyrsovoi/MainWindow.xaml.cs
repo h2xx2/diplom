@@ -39,11 +39,13 @@ namespace Kyrsovoi
         }
         private string _captchaText;
         private bool _isBlocked;
+        private DispatcherTimer _blockTimer; // Таймер для блокировки
         int error = 0;
         int error1 = 0;
+
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (tb2.Password.Length > 0 )
+            if (tb2.Password.Length > 0)
             {
                 watermatk.Visibility = Visibility.Collapsed;
             }
@@ -55,67 +57,83 @@ namespace Kyrsovoi
 
         private void krest_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            try
+            if (e.ChangedButton == MouseButton.Left)
             {
-                // Путь для сохранения резервной копии внутри проекта
-                string backupDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backups");
-                if (!Directory.Exists(backupDir))
+                e.Handled = true; // Помечаем событие как обработанное
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    Directory.CreateDirectory(backupDir);
-                }
+                    var result = MessageBox.Show(
+                        "Вы действительно хотите выйти?",
+                        "Подтверждение",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question
+                    );
 
-                // Автоматическое имя файла с датой и временем
-                string backupFileName = $"glamping_backup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.sql";
-                string backupPath = System.IO.Path.Combine(backupDir, backupFileName);
-
-                // Используем параметры из строки подключения или настроек
-                string host = Properties.Settings.Default.host;
-                string database = Properties.Settings.Default.database;
-                string user = Properties.Settings.Default.user;
-                string password = Properties.Settings.Default.passwordDB;
-
-                // Относительный путь к mysqldump
-                string mysqldumpPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "mysqldump.exe");
-                if (!File.Exists(mysqldumpPath))
-                {
-                    throw new FileNotFoundException($"Файл mysqldump.exe не найден по пути: {mysqldumpPath}. Убедитесь, что файл добавлен в папку Tools проекта.");
-                }
-
-                // Формирование аргументов для mysqldump
-                string arguments = $"--host={host} --user={user} --password={password} --databases {database} --result-file=\"{backupPath}\"";
-
-                // Настройка процесса
-                ProcessStartInfo processInfo = new ProcessStartInfo
-                {
-                    FileName = mysqldumpPath,
-                    Arguments = arguments,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                // Запуск процесса
-                using (Process process = new Process { StartInfo = processInfo })
-                {
-                    process.Start();
-                    string error = process.StandardError.ReadToEnd();
-                    process.WaitForExit();
-
-                    if (process.ExitCode == 0)
+                    if (result == MessageBoxResult.Yes)
                     {
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Ошибка: {error}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+                        try
+                        {
+                            // Путь для сохранения резервной копии внутри проекта
+                            string backupDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backups");
+                            if (!Directory.Exists(backupDir))
+                            {
+                                Directory.CreateDirectory(backupDir);
+                            }
 
+                            // Автоматическое имя файла с датой и временем
+                            string backupFileName = $"glamping_backup_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.sql";
+                            string backupPath = System.IO.Path.Combine(backupDir, backupFileName);
+
+                            // Используем параметры из строки подключения или настроек
+                            string host = Properties.Settings.Default.host;
+                            string database = Properties.Settings.Default.database;
+                            string user = Properties.Settings.Default.user;
+                            string password = Properties.Settings.Default.passwordDB;
+
+                            // Относительный путь к mysqldump
+                            string mysqldumpPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "mysqldump.exe");
+                            if (!File.Exists(mysqldumpPath))
+                            {
+                                throw new FileNotFoundException($"Файл mysqldump.exe не найден по пути: {mysqldumpPath}. Убедитесь, что файл добавлен в папку Tools проекта.");
+                            }
+
+                            // Формирование аргументов для mysqldump
+                            string arguments = $"--host={host} --user={user} --password={password} --databases {database} --result-file=\"{backupPath}\"";
+
+                            // Настройка процесса
+                            ProcessStartInfo processInfo = new ProcessStartInfo
+                            {
+                                FileName = mysqldumpPath,
+                                Arguments = arguments,
+                                RedirectStandardError = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true
+                            };
+
+                            // Запуск процесса
+                            using (Process process = new Process { StartInfo = processInfo })
+                            {
+                                process.Start();
+                                string error = process.StandardError.ReadToEnd();
+                                process.WaitForExit();
+
+                                if (process.ExitCode == 0)
+                                {
+                                }
+                                else
+                                {
+                                    MessageBox.Show($"Ошибка: {error}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                            this.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }));
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            this.Close();
         }
 
         private void Min_MouseDown(object sender, MouseButtonEventArgs e)
@@ -130,25 +148,22 @@ namespace Kyrsovoi
                 this.DragMove();
             }
         }
-        string GetHashPass(string password)
+
+        private string GetHashPass(string password)
         {
-
             byte[] bytesPass = Encoding.UTF8.GetBytes(password);
-
-            SHA256Managed hashstring = new SHA256Managed();
-
-            byte[] hash = hashstring.ComputeHash(bytesPass);
-
-            string hashPasswd = string.Empty;
-
-            foreach (byte x in hash)
+            using (SHA256Managed hashstring = new SHA256Managed())
             {
-                hashPasswd += String.Format("{0:x2}", x);
+                byte[] hash = hashstring.ComputeHash(bytesPass);
+                string hashPasswd = string.Empty;
+                foreach (byte x in hash)
+                {
+                    hashPasswd += String.Format("{0:x2}", x);
+                }
+                return hashPasswd;
             }
-
-            hashstring.Dispose();
-            return hashPasswd;
         }
+
         private void GenerateCaptcha()
         {
             var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -164,19 +179,15 @@ namespace Kyrsovoi
 
                 for (int i = 0; i < _captchaText.Length; i++)
                 {
-                    // Генерация случайного положения, угла и цвета символов
                     float x = 20 * i + random.Next(-5, 5);
                     float y = random.Next(5, 20);
                     float angle = random.Next(-30, 30);
 
-                    // Настраиваем шрифт
                     using (Font font = new Font(new System.Drawing.FontFamily("Arial"), random.Next(18, 24), System.Drawing.FontStyle.Bold))
                     {
-                        // Настройка цвета символа
                         using (System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(
                                    random.Next(50, 200), random.Next(0, 255), random.Next(0, 255), random.Next(0, 255))))
                         {
-                            // Вращение символа
                             g.TranslateTransform(x, y);
                             g.RotateTransform(angle);
                             g.DrawString(_captchaText[i].ToString(), font, brush, 0, 0);
@@ -185,7 +196,6 @@ namespace Kyrsovoi
                     }
                 }
 
-                // Добавляем шум
                 for (int i = 0; i < 5; i++)
                 {
                     using (System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(
@@ -196,7 +206,6 @@ namespace Kyrsovoi
                 }
             }
 
-            // Конвертация изображения в WPF-совместимый формат
             using (MemoryStream stream = new MemoryStream())
             {
                 bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
@@ -209,11 +218,39 @@ namespace Kyrsovoi
                 CaptchaImage.Source = image;
             }
         }
+
+        private void BlockInputs()
+        {
+            _isBlocked = true;
+            tb1.IsEnabled = false;
+            tb2.IsEnabled = false;
+            tb3.IsEnabled = false;
+            bt1.IsEnabled = false; // Предполагается, что кнопка входа имеет x:Name="LoginButton" в XAML
+            MessageBox.Show("Введена неверная капча. Поля заблокированы на 10 секунд.", "Блокировка", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            _blockTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(10)
+            };
+            _blockTimer.Tick += (s, e) =>
+            {
+                _isBlocked = false;
+                tb1.IsEnabled = true;
+                tb2.IsEnabled = true;
+                tb3.IsEnabled = true;
+                bt1.IsEnabled = true;
+                _blockTimer.Stop();
+                GenerateCaptcha();
+                tb3.Clear();
+                MessageBox.Show("Поля разблокированы. Введите данные снова.", "Разблокировка", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+            _blockTimer.Start();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (_isBlocked)
             {
-
                 return;
             }
 
@@ -221,13 +258,14 @@ namespace Kyrsovoi
             Class1.l = login;
             string hashPassword = tb2.Password;
             string hashbd = string.Empty;
+
             if (login.Length != 0)
             {
                 string conString = Class1.connection;
                 if (login != Properties.Settings.Default.login && hashbd != Properties.Settings.Default.password)
-                { 
-                using (MySqlConnection con = new MySqlConnection(conString))
                 {
+                    using (MySqlConnection con = new MySqlConnection(conString))
+                    {
                         using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM employees Where login = '" + login + "';", con))
                         {
                             cmd.CommandType = CommandType.Text;
@@ -239,8 +277,6 @@ namespace Kyrsovoi
                                     try
                                     {
                                         sda.Fill(dt);
-
-
                                         hashPassword = GetHashPass(hashPassword);
                                         try
                                         {
@@ -248,6 +284,7 @@ namespace Kyrsovoi
                                             Class1.fioEmploes = dt.Rows[0].ItemArray.GetValue(1).ToString() + " " + dt.Rows[0].ItemArray.GetValue(2).ToString();
                                             hashbd = dt.Rows[0].ItemArray.GetValue(8).ToString();
                                             string role = dt.Rows[0].ItemArray.GetValue(9).ToString();
+
                                             if (_captchaText == tb3.Text || error == 0)
                                             {
                                                 if (hashPassword == hashbd)
@@ -265,13 +302,11 @@ namespace Kyrsovoi
                                                         Prosmotr main = new Prosmotr();
                                                         this.Close();
                                                         main.ShowDialog();
-                                                        
                                                     }
-
                                                 }
                                                 else
                                                 {
-                                                    MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
+                                                    MessageBox.Show("Введен неправильный логин или пароль", "Ошибка авторизации");
                                                     error++;
                                                     error1 = Class1.k;
                                                     if (error >= 1 || error1 >= 1)
@@ -284,19 +319,25 @@ namespace Kyrsovoi
                                                         }
 
                                                         GenerateCaptcha();
-
+                                                        tb3.Clear();
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                MessageBox.Show("Captha не ведена", "Ошибка авторизации");
+                                                MessageBox.Show("Неверно введена капча", "Ошибка авторизации");
+                                                if (_captchaText != tb3.Text && error > 1)
+                                                {
+                                                    BlockInputs();
+                                                }
+                                                error++;
                                                 GenerateCaptcha();
+                                                tb3.Clear();
                                             }
                                         }
                                         catch (IndexOutOfRangeException)
                                         {
-                                            MessageBox.Show("Индекс вне границ массива", "Ошибка");
+                                            MessageBox.Show("Такого пользователя не сущесвтует", "Ошибка");
                                             error++;
                                             error1 = Class1.k;
                                             if (error >= 1 || error1 >= 1)
@@ -307,19 +348,22 @@ namespace Kyrsovoi
                                                 {
                                                     FillFuncBig();
                                                 }
-
                                                 GenerateCaptcha();
-
+                                                if (_captchaText != tb3.Text && error > 1)
+                                                {
+                                                    BlockInputs();
+                                                }
+                                                tb3.Clear();
                                             }
                                         }
                                     }
-                                    catch(MySqlException) {
-                                        MessageBox.Show("Отсутствует соединение с бд");
+                                    catch (MySqlException)
+                                    {
+                                        MessageBox.Show("Отсутствует соединение с БД");
                                     }
                                 }
                             }
                         }
-                    
                     }
                 }
                 else
@@ -331,7 +375,7 @@ namespace Kyrsovoi
             }
             else
             {
-                MessageBox.Show("Введен не правильный логин или пароль", "Ошибка авторизации");
+                MessageBox.Show("Введите логин или пароль", "Ошибка авторизации");
                 error++;
                 error1 = Class1.k;
                 if (error >= 1 || error1 >= 1)
@@ -343,6 +387,11 @@ namespace Kyrsovoi
                         FillFuncBig();
                     }
                     GenerateCaptcha();
+                    if (_captchaText != tb3.Text && error > 1)
+                    {
+                        BlockInputs();
+                    }
+                    tb3.Clear();
                 }
             }
         }
@@ -351,36 +400,41 @@ namespace Kyrsovoi
         {
             e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[a-zA-Z0-9]+$");
         }
-        void FillFuncBig()
+
+        private void FillFuncBig()
         {
             double currentHeight = 350;
             double targetHeight = 700; // Конечная высота
-            // Запускаем анимацию высоты и ширины
             AnimateListViewHeight(this, currentHeight, targetHeight, 0.5);
         }
+
         private void AnimateListViewHeight(Window grid, double fromWidth, double toHeight, double durationSeconds)
         {
-            // Создаем анимацию для высоты
             DoubleAnimation heightAnimation = new DoubleAnimation
             {
                 From = fromWidth,
                 To = toHeight,
                 Duration = new Duration(TimeSpan.FromSeconds(durationSeconds)),
-                EasingFunction = new QuadraticEase() // Для плавного эффекта
+                EasingFunction = new QuadraticEase()
             };
-
-            // Применяем анимацию к свойству высоты
             grid.BeginAnimation(WidthProperty, heightAnimation);
         }
 
         private void CaptchaImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             GenerateCaptcha();
+            tb3.Clear();
         }
 
-        private void Smena_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
             GenerateCaptcha();
+            tb3.Clear();
+        }
+
+        private void krest_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
